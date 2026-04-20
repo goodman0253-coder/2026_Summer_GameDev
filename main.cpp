@@ -1,15 +1,24 @@
 #include <DxLib.h>
+#include "Application.h"
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-	ChangeWindowMode(TRUE);
-	SetGraphMode(640, 480, 32);
+
+
 	DxLib_Init();
-	while (ProcessMessage() == 0)
+	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0 )
 	{
-		ClearDrawScreen();
-		DrawString(10, 10, "Hello, DxLib!", GetColor(255, 255, 255));
-		ScreenFlip();
+		Application application;
+
+		// ‰Šú‰»ˆ—
+		application.SystemInit();
+
+		// ƒQ[ƒ€‹N“®
+		application.Run();
+
+		// ‰ğ•úˆ—
+		application.Release();
+
 	}
 	DxLib_End();
 	return 0;
