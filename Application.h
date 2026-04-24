@@ -1,4 +1,6 @@
 #pragma once
+class GameScene;
+
 class Application
 {
 public:
@@ -6,12 +8,13 @@ public:
 	~Application();
 
 	bool SystemInit(void);
+	bool GameInit(void);
 	void Run();
 	bool Release(void);
 
 private:
 	void Update(void);
 	void Draw(void);
-
+	GameScene* gameScene;
 };
 
