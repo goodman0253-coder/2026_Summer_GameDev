@@ -6,20 +6,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 	DxLib_Init();
-	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0 )
-	{
-		Application application;
+	
+	Application application;
 
-		// 初期化処理
-		application.SystemInit();
+	// 初期化処理
+	application.SystemInit();
 
-		// ゲーム起動
-		application.Run();
+	// ゲーム起動
+	application.Run();
 
-		// 解放処理
-		application.Release();
+	// 解放処理
+	application.Release();
 
-	}
+	
 	DxLib_End();
 	return 0;
 }
