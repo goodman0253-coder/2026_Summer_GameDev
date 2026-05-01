@@ -17,7 +17,11 @@ bool Player::SystemInit()
 	vy = 0.0f;
 
 
-
+	if (image == -1)
+	{
+		return false;
+	}
+	return true;
 }
 
 bool Player::GameInit()
