@@ -2,9 +2,9 @@
 #include "Application.h"
 #include "GameScene.h"
 
-
 Application::Application()
 {
+
 }
 
 Application::~Application()
@@ -16,6 +16,7 @@ bool Application::SystemInit(void)
 {
 	// ƒVƒXƒeƒ€ˆ—
 	SetWindowText("‚Å‚è‚Î‚è‚¡‚×‚¥‚©‚è‚¡");
+	SetGraphMode(800,600,32);
 	ChangeWindowMode(true);
 	return true;
 }

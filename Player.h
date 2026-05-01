@@ -7,14 +7,26 @@ private:
     float vy;
     int image;
     bool onGround;
+
 public:
+    static constexpr int PLAYER_WID = 16;			// プレイヤーの横サイズ
+    static constexpr int PLAYER_HIG = 16;			// プレイヤーの縦サイズ
+
 	Player();
+    virtual ~Player();
+
+    bool SystemInit();
+
+    bool GameInit();
 
     void Update() override;
-        // キー入力で移動したり、重力を
+
 	void Draw() override;
-        // プレイヤーを
+
 	void Jump();
-        //ジャンプ特有の処理 
+
+    float playerPosx = 0.0f;
+    float playerPosy = 0.0f;
+
 };
 

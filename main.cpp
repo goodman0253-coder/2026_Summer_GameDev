@@ -12,6 +12,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// ‰Šú‰»ˆ—
 	application.SystemInit();
 
+	application.GameInit();
+
 	// ƒQ[ƒ€‹N“®
 	application.Run();
 
