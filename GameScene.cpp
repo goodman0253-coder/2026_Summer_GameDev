@@ -18,24 +18,15 @@ GameScene::~GameScene()
 
 bool GameScene::SystemInit(void)
 {
+
 	return true;
 }
 
 bool GameScene::GameInit(void)
 {
-	// ログを出して確認
-	printfDx("GameScene::GameInit Start!\n");
 
 	player = new Player();
-
-	if (player != nullptr) {
-		printfDx("Player object created successfully!\n");
-	}
-	else {
-		printfDx("Failed to create Player object...\n");
-	}
-
-	player ->GameInit();
+	player->GameInit();
 
 	return true;
 }

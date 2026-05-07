@@ -25,8 +25,8 @@ public:
 
 	void Jump();
 
-    float playerPosx = 0.0f;
-    float playerPosy = 0.0f;
+    float playerPosx ;
+    float playerPosy ;
 
 };
 

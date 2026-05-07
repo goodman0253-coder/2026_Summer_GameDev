@@ -18,6 +18,7 @@ bool Application::SystemInit(void)
 	SetWindowText("‚Å‚è‚Î‚è‚¡‚×‚¥‚©‚è‚¡");
 	SetGraphMode(800,600,32);
 	ChangeWindowMode(true);
+	if (DxLib_Init() == -1) return false;
 	return true;
 }
 
