@@ -3,22 +3,24 @@
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
+    Application application;
 
+    //初期化
+    if (application.SystemInit() == false)
+    {
+        return -1;
+    }
 
-	DxLib_Init();
-	
-	Application application;
+    if (application.GameInit() == false)
+    {
+        return -1;
+    }
 
-	// 初期化処理
-	application.SystemInit();
+    // ゲーム起動
+    application.Run();
 
-	application.GameInit();
-
-	// ゲーム起動
-	application.Run();
-
-	// 解放処理
-	application.Release();
+    // 解放処理
+    application.Release();
 
 	
 	DxLib_End();
