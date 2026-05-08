@@ -17,7 +17,7 @@ bool Application::SystemInit(void)
 	// ƒVƒXƒeƒ€ˆ—
 	SetWindowText("‚Å‚è‚Î‚è‚¡‚×‚¥‚©‚è‚¡");
 	SetGraphMode(800,600,32);
-	ChangeWindowMode(true);
+	ChangeWindowMode(false);
 	return true;
 }
 

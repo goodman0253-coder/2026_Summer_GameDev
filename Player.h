@@ -13,7 +13,7 @@ public:
     static constexpr int PLAYER_HIG = 16;			// プレイヤーの縦サイズ
 
 	Player();
-    virtual ~Player();
+    ~Player();
 
     bool SystemInit();
 

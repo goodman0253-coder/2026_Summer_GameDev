@@ -4,7 +4,6 @@
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 
-
 	DxLib_Init();
 	
 	Application application;
