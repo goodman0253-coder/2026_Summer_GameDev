@@ -3,9 +3,15 @@
 
 Player::Player() 
 {
+<<<<<<< HEAD
 
 	image = LoadGraph("Image/croissant.png");
 	//C:\GitProject\AGS2026Summer\Image
+=======
+	image = -1;
+
+	SystemInit();
+>>>>>>> salmon
 }
 
 Player::~Player()
@@ -13,13 +19,29 @@ Player::~Player()
 
 }
 
+<<<<<<< HEAD
 bool Player::SystemInit()
 {
 
 	
+=======
+bool Player::SystemInit()  
+{  
+	vy = 0.0f;  
+>>>>>>> salmon
 
+	image = LoadGraph("Image/croissant.png");
+	if (image == -1) 
+	{
+		printfDx("画像の読み込みに失敗しました\n");
+		return false;
+	}
 
+<<<<<<< HEAD
 	return true;
+=======
+	return true; 
+>>>>>>> salmon
 }
 
 bool Player::GameInit()
@@ -35,17 +57,22 @@ void Player::Update()
     // 前に書いた移動や重力の処理をここに書く
     if (CheckHitKey(KEY_INPUT_RIGHT)) playerPosx += 5.0f;
 	if (CheckHitKey(KEY_INPUT_LEFT)) playerPosx -= 5.0f;
+<<<<<<< HEAD
 	if (CheckHitKey(KEY_INPUT_SPACE))
 	{
 		Jump();
 	}
 	
+=======
+
+>>>>>>> salmon
 	vy += 0.5f; // 重力
 	if (vy > 5.0f)
 	{
 		vy = 5.0f;
 	}
 	playerPosy += vy; // 座標を更新
+
 	// 地面に衝突したら止まる
 	if (playerPosy > 300.0f)
 	{
@@ -56,6 +83,7 @@ void Player::Update()
 
 void Player::Draw()
 {
+<<<<<<< HEAD
 	// もし image が -1 (失敗状態) なら、今この瞬間に読み込みを試みる
 #if 0 
 	if (image == -1) {
@@ -73,6 +101,9 @@ void Player::Draw()
 	printfDx("Handle: %d  Pos: %f, %f\n", image, 30, 30);
 #endif
 	printfDx("X:%.1f Y:%.1f Handle:%d\n", playerPosx, playerPosy, image);
+=======
+	//printfDx("Handle: %d  Pos: %f, %f\n", image, 30, 30);
+>>>>>>> salmon
     DrawGraph((int)playerPosx, (int)playerPosy, image, TRUE);
 }
 
