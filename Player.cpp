@@ -6,7 +6,9 @@ Player::Player()
 
 
 
-	LoadDivGraph("image/player.png", PLAYER_ANIM_MAX,PLAYER_ANIM_XNUM, PLAYER_ANIM_YNUM,PLAYER_WID, PLAYER_HIG, playerImageArray)
+	LoadDivGraph("image/player.png", PLAYER_ANIM_MAX, PLAYER_ANIM_XNUM, PLAYER_ANIM_YNUM, PLAYER_WID, PLAYER_HIG, playerImageArray);
+
+
 }
 
 Player::~Player()
@@ -17,15 +19,6 @@ Player::~Player()
 
 bool Player::SystemInit()
 {
-
-	
-=======
-bool Player::SystemInit()  
-{  
-	vy = 0.0f;  
-		return false;
-	}
-
 
 	return true;
 
