@@ -31,6 +31,10 @@ bool GameScene::GameInit(void)
 	return true;
 }
 
+void GameScene::Initialize()
+{
+}
+
 void GameScene::Update(void)
 {
 	if (player != nullptr)

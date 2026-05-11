@@ -2,15 +2,6 @@
 #include "TitleScene.h" // ‚±‚ê‚©‚çì‚é
 #include "GameScene.h"
 
-SceneManager::SceneManager()
-{
-
-}
-
-SceneManager::~SceneManager()
-{
-
-}
 
 void SceneManager::ChangeScene(SceneType type) 
 {
@@ -32,9 +23,4 @@ void SceneManager::ChangeScene(SceneType type)
     }
 
     currentScene->Initialize();
-}
-
-void SceneManager::Draw()
-{
-
 }

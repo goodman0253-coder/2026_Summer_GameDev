@@ -4,8 +4,7 @@
 Player::Player() 
 {
 
-	image = LoadGraph("Image/croissant.png");
-	//C:\GitProject\AGS2026Summer\Image
+	LoadDivGraph("image/player.png", PLAYER_ANIM_MAX,PLAYER_ANIM_XNUM, PLAYER_ANIM_YNUM,PLAYER_WID, PLAYER_HIG, playerImageArray);
 }
 
 Player::~Player()
@@ -73,7 +72,7 @@ void Player::Draw()
 	printfDx("Handle: %d  Pos: %f, %f\n", image, 30, 30);
 #endif
 	printfDx("X:%.1f Y:%.1f Handle:%d\n", playerPosx, playerPosy, image);
-    DrawGraph((int)playerPosx, (int)playerPosy, image, TRUE);
+    DrawGraph((int)playerPosx, (int)playerPosy, playerImageArray[0], TRUE);
 }
 
 
