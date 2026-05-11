@@ -5,7 +5,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
     Application application;
 
-<<<<<<< HEAD
+
     //èâä˙âª
     if (application.SystemInit() == false)
     {
@@ -16,11 +16,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     {
         return -1;
     }
-=======
+
 	DxLib_Init();
-	
-	Application application;
->>>>>>> salmon
+
 
     // ÉQÅ[ÉÄãNìÆ
     application.Run();
