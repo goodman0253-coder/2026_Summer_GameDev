@@ -13,9 +13,6 @@
     <Filter Include="Camera">
       <UniqueIdentifier>{fd22f57a-7a9b-4d69-975b-737b659df95c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameScene">
-      <UniqueIdentifier>{7874101e-4840-421b-81d5-212b4df7db9e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameObject">
       <UniqueIdentifier>{98cf44c2-b526-461c-a324-bc95b6356149}</UniqueIdentifier>
     </Filter>
@@ -24,6 +21,18 @@
     </Filter>
     <Filter Include="GameObject\Player">
       <UniqueIdentifier>{1df400ab-3601-4c1a-890e-e6b78403cd37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SceneManager">
+      <UniqueIdentifier>{df753578-48d0-46c3-98a9-2c918d809c8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SceneManager\Scene">
+      <UniqueIdentifier>{26bd0668-3204-4007-84fa-b097a674437d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SceneManager\Scene\GameScene">
+      <UniqueIdentifier>{7874101e-4840-421b-81d5-212b4df7db9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SceneManager\Scene\TitleScene">
+      <UniqueIdentifier>{02781f50-23e7-4a5a-a966-279e71d758eb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -37,10 +46,17 @@
       <Filter>GameObject\Player</Filter>
     </ClCompile>
     <ClCompile Include="GameScene.cpp">
-      <Filter>GameScene</Filter>
+      <Filter>SceneManager\Scene\GameScene</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="BaseScene.cpp">
+      <Filter>SceneManager\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>SceneManager\Scene\TitleScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -51,10 +67,17 @@
       <Filter>GameObject\Player</Filter>
     </ClInclude>
     <ClInclude Include="GameScene.h">
-      <Filter>GameScene</Filter>
+      <Filter>SceneManager\Scene\GameScene</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="BaseScene.h">
+      <Filter>SceneManager\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>SceneManager\Scene\TitleScene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
