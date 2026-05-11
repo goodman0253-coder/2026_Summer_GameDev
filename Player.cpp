@@ -4,7 +4,9 @@
 Player::Player() 
 {
 
-	LoadDivGraph("image/player.png", PLAYER_ANIM_MAX,PLAYER_ANIM_XNUM, PLAYER_ANIM_YNUM,PLAYER_WID, PLAYER_HIG, playerImageArray);
+
+
+	LoadDivGraph("image/player.png", PLAYER_ANIM_MAX,PLAYER_ANIM_XNUM, PLAYER_ANIM_YNUM,PLAYER_WID, PLAYER_HIG, playerImageArray)
 }
 
 Player::~Player()
@@ -12,13 +14,21 @@ Player::~Player()
 
 }
 
+
 bool Player::SystemInit()
 {
 
 	
+=======
+bool Player::SystemInit()  
+{  
+	vy = 0.0f;  
+		return false;
+	}
 
 
 	return true;
+
 }
 
 bool Player::GameInit()
@@ -31,21 +41,23 @@ bool Player::GameInit()
 
 void Player::Update() 
 {
-    // ‘O‚É‘‚¢‚½ˆÚ“®‚âd—Í‚Ìˆ—‚ğ‚±‚±‚É‘‚­
+    // å‰ã«æ›¸ã„ãŸç§»å‹•ã‚„é‡åŠ›ã®å‡¦ç†ã‚’ã“ã“ã«æ›¸ã
     if (CheckHitKey(KEY_INPUT_RIGHT)) playerPosx += 5.0f;
 	if (CheckHitKey(KEY_INPUT_LEFT)) playerPosx -= 5.0f;
 	if (CheckHitKey(KEY_INPUT_SPACE))
 	{
 		Jump();
 	}
-	
-	vy += 0.5f; // d—Í
+
+
+	vy += 0.5f; // é‡åŠ›
 	if (vy > 5.0f)
 	{
 		vy = 5.0f;
 	}
-	playerPosy += vy; // À•W‚ğXV
-	// ’n–Ê‚ÉÕ“Ë‚µ‚½‚ç~‚Ü‚é
+	playerPosy += vy; // åº§æ¨™ã‚’æ›´æ–°
+
+	// åœ°é¢ã«è¡çªã—ãŸã‚‰æ­¢ã¾ã‚‹
 	if (playerPosy > 300.0f)
 	{
 		playerPosy = 300.0f;
@@ -55,24 +67,28 @@ void Player::Update()
 
 void Player::Draw()
 {
-	// ‚à‚µ image ‚ª -1 (¸”só‘Ô) ‚È‚çA¡‚±‚ÌuŠÔ‚É“Ç‚İ‚İ‚ğ‚İ‚é
+
+	// ã‚‚ã— image ãŒ -1 (å¤±æ•—çŠ¶æ…‹) ãªã‚‰ã€ä»Šã“ã®ç¬é–“ã«èª­ã¿è¾¼ã¿ã‚’è©¦ã¿ã‚‹
 #if 0 
 	if (image == -1) {
 		image = LoadGraph("player.png");
 
 		if (image != -1) {
-			// ‚±‚±‚Å¬Œ÷‚µ‚½‚çu“Ç‚İ‚Şƒ^ƒCƒ~ƒ“ƒO‚ª‘‚·‚¬‚½v‚Ì‚ªŒ´ˆö
-			printfDx("Draw“à‚Å“Ç‚İ‚İ¬Œ÷Iƒnƒ“ƒhƒ‹: %d\n", image);
+			// ã“ã“ã§æˆåŠŸã—ãŸã‚‰ã€Œèª­ã¿è¾¼ã‚€ã‚¿ã‚¤ãƒŸãƒ³ã‚°ãŒæ—©ã™ããŸã€ã®ãŒåŸå› 
+			printfDx("Drawå†…ã§èª­ã¿è¾¼ã¿æˆåŠŸï¼ãƒãƒ³ãƒ‰ãƒ«: %d\n", image);
 		}
 		else {
-			// ‚±‚±‚Å‚à¸”s‚µ‚½‚çuƒtƒ@ƒCƒ‹–¼‚©êŠv‚ªŒ´ˆö
-			printfDx("Draw“à‚Å‚à“Ç‚İ‚İ¸”s...ƒpƒX‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢\n");
+			// ã“ã“ã§ã‚‚å¤±æ•—ã—ãŸã‚‰ã€Œãƒ•ã‚¡ã‚¤ãƒ«åã‹å ´æ‰€ã€ãŒåŸå› 
+			printfDx("Drawå†…ã§ã‚‚èª­ã¿è¾¼ã¿å¤±æ•—...ãƒ‘ã‚¹ã‚’ç¢ºèªã—ã¦ãã ã•ã„\n");
 		}
 	}
 	printfDx("Handle: %d  Pos: %f, %f\n", image, 30, 30);
 #endif
 	printfDx("X:%.1f Y:%.1f Handle:%d\n", playerPosx, playerPosy, image);
+
     DrawGraph((int)playerPosx, (int)playerPosy, playerImageArray[0], TRUE);
+
+
 }
 
 

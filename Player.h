@@ -11,7 +11,7 @@ public:
     static constexpr int PLAYER_ANIM_MAX = PLAYER_ANIM_XNUM * PLAYER_ANIM_YNUM;// 爆発アニメーションのパターン数
 
 	Player();
-    virtual ~Player();
+    ~Player();
 
     bool SystemInit();
 

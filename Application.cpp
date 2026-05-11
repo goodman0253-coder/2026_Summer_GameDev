@@ -17,8 +17,12 @@ bool Application::SystemInit(void)
 	// ƒVƒXƒeƒ€ˆ—
 	SetWindowText("‚Å‚è‚Î‚è‚¡‚×‚¥‚©‚è‚¡");
 	SetGraphMode(800,600,32);
+<<<<<<< HEAD
 	ChangeWindowMode(true);
 	if (DxLib_Init() == -1) return false;
+=======
+	ChangeWindowMode(false);
+>>>>>>> salmon
 	return true;
 }
 
