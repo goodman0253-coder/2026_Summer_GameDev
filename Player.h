@@ -3,14 +3,12 @@
 // プレイヤー（GameObjectを継承）
 class Player : public GameObject
 {
-private:
-    float vy;
-    int image;
-    bool onGround;
-
 public:
-    static constexpr int PLAYER_WID = 16;			// プレイヤーの横サイズ
-    static constexpr int PLAYER_HIG = 16;			// プレイヤーの縦サイズ
+    static constexpr int PLAYER_WID = 64;			// プレイヤーの横サイズ
+    static constexpr int PLAYER_HIG = 64;			// プレイヤーの縦サイズ
+    static constexpr int PLAYER_ANIM_XNUM = 4; // 爆発画像ファイル内の横方向のパターン数
+    static constexpr int PLAYER_ANIM_YNUM = 2; // 爆発画像ファイル内の縦方向のパターン数
+    static constexpr int PLAYER_ANIM_MAX = PLAYER_ANIM_XNUM * PLAYER_ANIM_YNUM;// 爆発アニメーションのパターン数
 
 	Player();
     ~Player();
@@ -27,6 +25,15 @@ public:
 
     float playerPosx ;
     float playerPosy ;
+
+private:
+    float vy;
+    int image;
+    bool onGround;
+
+    int playerImageArray[PLAYER_ANIM_MAX]; // 爆発の画像のハンドル番号テーブル
+
+
 
 };
 

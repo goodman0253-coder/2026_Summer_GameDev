@@ -52,9 +52,6 @@
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="BaseScene.cpp">
-      <Filter>SceneManager\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="TitleScene.cpp">
       <Filter>SceneManager\Scene\TitleScene</Filter>
     </ClCompile>
