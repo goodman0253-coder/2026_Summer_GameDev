@@ -37,10 +37,7 @@ void Player::Update()
     // 前に書いた移動や重力の処理をここに書く
     if (CheckHitKey(KEY_INPUT_RIGHT)) playerPosx += 5.0f;
 	if (CheckHitKey(KEY_INPUT_LEFT)) playerPosx -= 5.0f;
-	if (CheckHitKey(KEY_INPUT_SPACE))
-	{
-		Jump();
-	}
+
 
 
 	vy += 0.5f; // 重力
@@ -55,6 +52,10 @@ void Player::Update()
 	{
 		playerPosy = 300.0f;
 		vy = 0.0f;
+		if (CheckHitKey(KEY_INPUT_SPACE))
+		{
+			Jump();
+		}
 	}
 }
 
@@ -63,16 +64,19 @@ void Player::Draw()
 
 	// もし image が -1 (失敗状態) なら、今この瞬間に読み込みを試みる
 #if 0 
-	if (image == -1) {
+	if (image == -1) 
+	{
 		image = LoadGraph("player.png");
 
-		if (image != -1) {
-			// ここで成功したら「読み込むタイミングが早すぎた」のが原因
-			printfDx("Draw内で読み込み成功！ハンドル: %d\n", image);
+		if (image != -1)
+		{
+		
+			printfDx("Draw内読み込み成功_ハンドル: %d\n", image);
 		}
-		else {
-			// ここでも失敗したら「ファイル名か場所」が原因
-			printfDx("Draw内でも読み込み失敗...パスを確認してください\n");
+		else
+		{
+			
+			printfDx("Draw内読み込み失敗\n");
 		}
 	}
 	printfDx("Handle: %d  Pos: %f, %f\n", image, 30, 30);
