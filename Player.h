@@ -23,6 +23,16 @@ public:
 
 	void Jump();
 
+    // アニメーション状態
+    enum class ANIM_STATE
+    {
+        IDLE,
+        RUN,
+        JUMP,
+        THROW,
+        MAX
+    };
+
     float playerPosx ;
     float playerPosy ;
 
@@ -30,10 +40,12 @@ private:
     float vy;
     int image;
     bool onGround;
+    
 
     int playerImageArray[PLAYER_ANIM_MAX]; // 爆発の画像のハンドル番号テーブル
 
-
+    // アニメーション状態
+    ANIM_STATE animState;
 
 };
 

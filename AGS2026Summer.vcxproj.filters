@@ -34,6 +34,15 @@
     <Filter Include="SceneManager\Scene\TitleScene">
       <UniqueIdentifier>{02781f50-23e7-4a5a-a966-279e71d758eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="InputManager">
+      <UniqueIdentifier>{f126f263-8688-42b5-ab33-5be8317267ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vector2">
+      <UniqueIdentifier>{d0fbca24-63e5-4a0f-a30d-59945b63d379}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vector2\Vector2F">
+      <UniqueIdentifier>{98d9cb4c-f13b-4b7f-a2a0-25697d6ac901}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -51,9 +60,20 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="TitleScene.cpp">
       <Filter>SceneManager\Scene\TitleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>InputManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2.cpp">
+      <Filter>Vector2</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2F.cpp">
+      <Filter>Vector2\Vector2F</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -69,12 +89,23 @@
     <ClInclude Include="GameObject.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="BaseScene.h">
       <Filter>SceneManager\Scene</Filter>
     </ClInclude>
     <ClInclude Include="TitleScene.h">
       <Filter>SceneManager\Scene\TitleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>InputManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>Vector2</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2F.h">
+      <Filter>Vector2\Vector2F</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
