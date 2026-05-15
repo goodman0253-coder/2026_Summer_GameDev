@@ -25,6 +25,9 @@
     <Filter Include="GameObject\Player">
       <UniqueIdentifier>{1df400ab-3601-4c1a-890e-e6b78403cd37}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Bread">
+      <UniqueIdentifier>{9e92e86a-e0bc-4f64-9090-651c9060cc3e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -42,6 +45,12 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Bread.cpp">
+      <Filter>GameObject\Bread</Filter>
+    </ClCompile>
+    <ClCompile Include="BreadManager.cpp">
+      <Filter>GameObject\Bread</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -55,6 +64,12 @@
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Bread.h">
+      <Filter>GameObject\Bread</Filter>
+    </ClInclude>
+    <ClInclude Include="BreadManager.h">
+      <Filter>GameObject\Bread</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
