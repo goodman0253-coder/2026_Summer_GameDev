@@ -6,7 +6,7 @@ protected:
 public:
 	virtual ~GameObject() {} // 仮想デストラクタ
     virtual void Update() = 0; // 更新処理（純粋仮想関数）
-    virtual void Draw() = 0;   // 描画処理
+    virtual void Draw(float camX, float camY) = 0;   // 描画処理
 };
 
 

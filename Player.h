@@ -19,21 +19,30 @@ public:
 
     void Update() override;
 
-	void Draw() override;
+	void Draw(float camX, float camY) override;
+
+    void Run();
 
 	void Jump();
 
     float playerPosx ;
     float playerPosy ;
 
+    float GetX() const { return playerPosx; }
+    float GetY() const { return playerPosy; }
+
 private:
     float vy;
     int image;
     bool onGround;
+    float speed = 5;
 
     int playerImageArray[PLAYER_ANIM_MAX]; // 爆発の画像のハンドル番号テーブル
 
+    int animTimer = 0;
+    int animNoNow = 0;
 
+    const int ANIM_SPEED = 8;
 
 };
 

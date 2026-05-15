@@ -1,4 +1,8 @@
 #include "DxLib.h"
+#include "Application.h"
+#include "SceneManager.h"
+#include "Vector2.h"
+#include "InputManager.h"
 #include "Player.h"
 
 Player::Player() 
@@ -34,13 +38,9 @@ bool Player::GameInit()
 
 void Player::Update() 
 {
-    // 前に書いた移動や重力の処理をここに書く
-    if (CheckHitKey(KEY_INPUT_RIGHT)) playerPosx += 5.0f;
-	if (CheckHitKey(KEY_INPUT_LEFT)) playerPosx -= 5.0f;
-	if (CheckHitKey(KEY_INPUT_SPACE))
-	{
-		Jump();
-	}
+
+	Run();
+	Jump();
 
 
 	vy += 0.5f; // 重力
@@ -55,10 +55,11 @@ void Player::Update()
 	{
 		playerPosy = 300.0f;
 		vy = 0.0f;
+		
 	}
 }
 
-void Player::Draw()
+void Player::Draw(float camX,float camY)
 {
 
 	// もし image が -1 (失敗状態) なら、今この瞬間に読み込みを試みる
@@ -77,15 +78,38 @@ void Player::Draw()
 	}
 	printfDx("Handle: %d  Pos: %f, %f\n", image, 30, 30);
 #endif
-	printfDx("X:%.1f Y:%.1f Handle:%d\n", playerPosx, playerPosy, image);
+	printfDx("PlayerPosX: %.1f, PlayerPosY: %.1f, CameraX: %.1f, CameraY: %.1f\n", playerPosx, playerPosy, camX, camY);
+	DrawGraph((int)(playerPosx - camX), (int)(playerPosy - camY), playerImageArray[0], TRUE);
 
-    DrawGraph((int)playerPosx, (int)playerPosy, playerImageArray[0], TRUE);
 
+}
+
+void Player::Run()
+{
+	if (CheckHitKey(KEY_INPUT_RIGHT))playerPosx += speed;
+	if (CheckHitKey(KEY_INPUT_LEFT))playerPosx -= speed;
+#if 0
+	if (InputManager::GetInstance().IsNew(KEY_INPUT_LEFT))
+	{
+		playerPosx =- speed;
+	}
+	if (InputManager::GetInstance().IsNew(KEY_INPUT_RIGHT))
+	{
+		playerPosx =+ speed;
+	}
+#endif
 
 }
 
 
 void Player::Jump() 
 {
-    vy = -12.0f;
+	if (playerPosy >= 300)
+	{
+
+		if (CheckHitKey(KEY_INPUT_SPACE))
+		{
+			vy = -12.0f;
+		}
+	}
 }
