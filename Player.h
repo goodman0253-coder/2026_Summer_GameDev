@@ -1,7 +1,5 @@
 #pragma once
-#include <DxLib.h>
 #include "GameObject.h"
-#include "Bread.h"
 // プレイヤー（GameObjectを継承）
 class Player : public GameObject
 {
@@ -20,17 +18,15 @@ public:
     bool SystemInit();
 
     bool GameInit();
-    
+
     void Update() override;
-	
-    void Draw() override;
-	
-    void Jump();
+
+	void Draw() override;
+
+	void Jump();
 
     float playerPosx = 0.0f;
     float playerPosy = 0.0f;
-
-
 
 };
 
