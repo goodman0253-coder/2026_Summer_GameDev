@@ -38,18 +38,9 @@ bool Player::GameInit()
 
 void Player::Update() 
 {
-<<<<<<< HEAD
 
-	Run();
+
 	Jump();
-=======
-    // 前に書いた移動や重力の処理をここに書く
-    if (CheckHitKey(KEY_INPUT_RIGHT)) playerPosx += 5.0f;
-	if (CheckHitKey(KEY_INPUT_LEFT)) playerPosx -= 5.0f;
-
->>>>>>> 47ac59c752867f8ce9ca122c0543236f31fd0070
-
-
 	vy += 0.5f; // 重力
 	if (vy > 5.0f)
 	{
@@ -62,14 +53,6 @@ void Player::Update()
 	{
 		playerPosy = 300.0f;
 		vy = 0.0f;
-<<<<<<< HEAD
-		
-=======
-		if (CheckHitKey(KEY_INPUT_SPACE))
-		{
-			Jump();
-		}
->>>>>>> 47ac59c752867f8ce9ca122c0543236f31fd0070
 	}
 }
 
