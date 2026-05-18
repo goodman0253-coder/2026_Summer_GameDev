@@ -39,8 +39,8 @@ bool Player::GameInit()
 void Player::Update() 
 {
 
-
-	Jump();
+	Run();
+	
 	vy += 0.5f; // 重力
 	if (vy > 5.0f)
 	{
@@ -49,11 +49,25 @@ void Player::Update()
 	playerPosy += vy; // 座標を更新
 
 	// 地面に衝突したら止まる
-	if (playerPosy > 300.0f)
+	if (playerPosy > 500.0f)
 	{
-		playerPosy = 300.0f;
+		playerPosy = 500.0f;
 		vy = 0.0f;
+		Jump();
 	}
+
+	if (playerPosx < 100.0f)
+	{
+		playerPosx = 100.0f;
+
+	}	
+	
+	if (playerPosx > 6400.0f)
+	{
+		playerPosx = 6400.0f;
+
+	}
+
 }
 
 void Player::Draw(float camX,float camY)
@@ -104,12 +118,10 @@ void Player::Run()
 
 void Player::Jump() 
 {
-	if (playerPosy >= 300)
-	{
 
-		if (CheckHitKey(KEY_INPUT_SPACE))
-		{
+
+	if (CheckHitKey(KEY_INPUT_SPACE))
+	{
 			vy = -12.0f;
-		}
 	}
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseScene.h"
 class Player;
+class Stage;
 
 class GameScene:public BaseScene
 {
@@ -18,6 +19,7 @@ public:
 private:
 
 	Player* player;
+	Stage* stage;
 	float cameraX = 0.0f;
 	float cameraY = 0.0f;
 

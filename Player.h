@@ -45,7 +45,6 @@ private:
     float vy;
     int image;
     bool onGround;
-<<<<<<< HEAD
     float speed = 5;
 
     int playerImageArray[PLAYER_ANIM_MAX]; // 爆発の画像のハンドル番号テーブル
@@ -54,14 +53,9 @@ private:
     int animNoNow = 0;
 
     const int ANIM_SPEED = 8;
-=======
     
-
-    int playerImageArray[PLAYER_ANIM_MAX]; // 爆発の画像のハンドル番号テーブル
-
     // アニメーション状態
     ANIM_STATE animState;
->>>>>>> 47ac59c752867f8ce9ca122c0543236f31fd0070
 
 };
 

@@ -1,6 +1,7 @@
 #include <DxLib.h>
 #include "GameScene.h"
 #include "Player.h"
+#include "Stage.h"
 
 
 GameScene::GameScene()
@@ -13,6 +14,11 @@ GameScene::~GameScene()
 	{
 		delete player;
 		player = nullptr;
+	}
+	if (stage != nullptr)
+	{
+		delete stage;
+		stage = nullptr;
 	}
 }
 
@@ -27,6 +33,8 @@ bool GameScene::GameInit(void)
 
 	player = new Player();
 	player->GameInit();
+	stage = new Stage();
+	stage->Initialize();
 
 	return true;
 }
@@ -55,6 +63,11 @@ void GameScene::Draw(void)
 		int x = (int)(i - cameraX);
 		DrawLine(x, 0, x, 3000, GetColor(100, 100, 100));
 	}
+	// 1. ‚Ü‚¸”wŒiEƒXƒe[ƒW‚ð•`‰æ
+	if (stage != nullptr)
+	{
+		stage->Draw(cameraX, cameraY);
+	}
 	if (player != nullptr)
 	{
 		player->Draw(cameraX, cameraY);
@@ -63,5 +76,7 @@ void GameScene::Draw(void)
 
 bool GameScene::Release(void)
 {
+	if (player != nullptr) { delete player; player = nullptr; }
+	if (stage != nullptr) { delete stage;  stage = nullptr; }
 	return true;
 }
