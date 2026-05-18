@@ -43,6 +43,9 @@
     <Filter Include="Vector2\Vector2F">
       <UniqueIdentifier>{98d9cb4c-f13b-4b7f-a2a0-25697d6ac901}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SceneManager\Scene\GameScene\Stage">
+      <UniqueIdentifier>{e1ec415a-e87c-488f-960e-ae2020b62433}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -66,15 +69,7 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>SceneManager</Filter>
     </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>InputManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector2.cpp">
-      <Filter>Vector2</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector2F.cpp">
-      <Filter>Vector2\Vector2F</Filter>
-    </ClCompile>
+    <ClCompile Include="Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -98,14 +93,6 @@
     <ClInclude Include="SceneManager.h">
       <Filter>SceneManager</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>InputManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector2.h">
-      <Filter>Vector2</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector2F.h">
-      <Filter>Vector2\Vector2F</Filter>
-    </ClInclude>
+    <ClInclude Include="Stage.h" />
   </ItemGroup>
 </Project>
