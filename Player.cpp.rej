@@ -1,0 +1,12 @@
+diff a/Player.cpp b/Player.cpp	(rejected hunks)
+@@ -52,6 +52,10 @@
+ 	{
+ 		playerPosy = 300.0f;
+ 		vy = 0.0f;
++		if (CheckHitKey(KEY_INPUT_SPACE))
++		{
++			Jump();
++		}
+ 	}
+ }
+ 
