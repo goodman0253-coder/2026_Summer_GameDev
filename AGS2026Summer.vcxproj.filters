@@ -46,6 +46,9 @@
     <Filter Include="SceneManager\Scene\GameScene\Stage">
       <UniqueIdentifier>{e1ec415a-e87c-488f-960e-ae2020b62433}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{96cc4a86-5859-4540-bb32-af156c77cdbf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -75,6 +78,17 @@
     </ClCompile>
     <ClCompile Include="EnemyBase.cpp">
       <Filter>GameObject\Enemy</Filter>
+    <ClCompile Include="Vector2F.cpp">
+      <Filter>Vector2\Vector2F</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2.cpp">
+      <Filter>Vector2</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>InputManager</Filter>
+    </ClCompile>
+    <ClCompile Include="AsoUtility.cpp">
+      <Filter>Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -105,6 +119,17 @@
     </ClInclude>
     <ClInclude Include="EnemyBase.h">
       <Filter>GameObject\Enemy</Filter>
+    <ClInclude Include="Vector2F.h">
+      <Filter>Vector2\Vector2F</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>Vector2</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>InputManager</Filter>
+    </ClInclude>
+    <ClInclude Include="AsoUtility.h">
+      <Filter>Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
