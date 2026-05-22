@@ -16,7 +16,7 @@ bool Application::SystemInit(void)
 {
 	// ƒVƒXƒeƒ€ˆ—
 	SetWindowText("‚Å‚è‚Î‚è‚¡‚×‚¥‚©‚è‚¡");
-	SetGraphMode(800,600,32);
+	SetGraphMode(SCREEN_SIZE_WID, SCREEN_SIZE_HIG,32);
 	ChangeWindowMode(true);
 	if (DxLib_Init() == -1) return false;
 

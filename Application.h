@@ -4,6 +4,8 @@ class GameScene;
 class Application
 {
 public:
+	static constexpr int SCREEN_SIZE_WID = 800; // ゲーム画面の横サイズ
+	static constexpr int SCREEN_SIZE_HIG = 600; // ゲーム画面の縦サイズ
 	Application();
 	~Application();
 
@@ -12,6 +14,7 @@ public:
 	void Run();
 	bool Release(void);
 
+	
 private:
 	void Update(void);
 	void Draw(void);

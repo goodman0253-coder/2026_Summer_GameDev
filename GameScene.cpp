@@ -2,10 +2,21 @@
 #include "GameScene.h"
 #include "Player.h"
 #include "Stage.h"
+#include "EnemyBase.h"
+#include "Enemy1.h"
 
 
 GameScene::GameScene()
 {
+	enemys.push_back(new Enemy1());
+	for (int i = 0; i < enemys.size();i++)
+	{
+		if (!enemys[i]->SystemInit(this))
+		{
+			printfDx("敵の初期化に失敗");
+		}
+		enemys[i]->GameInit();
+	}
 }
 
 GameScene::~GameScene()
@@ -79,6 +90,12 @@ void GameScene::Draw(void)
 		player->Draw(cameraX, cameraY);
 	}
 
+	size_t size = enemys.size(); // 敵のテーブルの要素数を取得
+	std::vector<EnemyBase*>::iterator eitr = enemys.begin(); // イテレータを取得
+	for (int ii = 0; ii < size; ii++) {
+		(*eitr)->Draw();
+		eitr++;
+	}
 	;        
 	if (stage != nullptr)
 	{
