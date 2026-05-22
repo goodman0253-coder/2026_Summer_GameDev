@@ -1,4 +1,5 @@
 #include "Vector2F.h"
+#include "AsoUtility.h"
 #include "Vector2.h"
 
 // デフォルトコンストラクタ
@@ -17,10 +18,8 @@ Vector2::Vector2(int vX, int vY)
 
 Vector2::Vector2(Vector2F value)
 {
-<<<<<<< HEAD
-=======
-
->>>>>>> 47ac59c752867f8ce9ca122c0543236f31fd0070
+	x = AsoUtility::Round(value.x);
+	y = AsoUtility::Round(value.y);
 }
 
 Vector2F Vector2::ToVector2F(void)
