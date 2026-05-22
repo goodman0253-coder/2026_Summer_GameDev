@@ -73,6 +73,11 @@
       <Filter>SceneManager</Filter>
     </ClCompile>
     <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="Enemy1.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBase.cpp">
+      <Filter>GameObject\Enemy</Filter>
     <ClCompile Include="Vector2F.cpp">
       <Filter>Vector2\Vector2F</Filter>
     </ClCompile>
@@ -109,6 +114,11 @@
       <Filter>SceneManager</Filter>
     </ClInclude>
     <ClInclude Include="Stage.h" />
+    <ClInclude Include="Enemy1.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBase.h">
+      <Filter>GameObject\Enemy</Filter>
     <ClInclude Include="Vector2F.h">
       <Filter>Vector2\Vector2F</Filter>
     </ClInclude>
