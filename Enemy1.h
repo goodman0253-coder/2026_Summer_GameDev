@@ -1,4 +1,8 @@
 #pragma once
-class Enemy1
-{};
+#include "EnemyBase.h"
+
+class Enemy1 : public EnemyBase
+{
+	void SetEnemyParam(void) override;
+};
 
