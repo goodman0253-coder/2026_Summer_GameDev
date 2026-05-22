@@ -63,14 +63,30 @@ void GameScene::Draw(void)
 		int x = (int)(i - cameraX);
 		DrawLine(x, 0, x, 3000, GetColor(100, 100, 100));
 	}
-	// 1. ‚Ü‚¸”wŒiEƒXƒe[ƒW‚ð•`‰æ
+
 	if (stage != nullptr)
 	{
-		stage->Draw(cameraX, cameraY);
+		// ”wŒi‚ð•`‚­
+		stage->Draw(cameraX, cameraY, LAYER_BACKGROUND);
+
+		// ’†Œi‚ð•`‚­
+		stage->Draw(cameraX, cameraY, LAYER_MIDDLEGROUND);
 	}
+
+	// ƒvƒŒƒCƒ„[‚ð•`‰æ
 	if (player != nullptr)
 	{
 		player->Draw(cameraX, cameraY);
+	}
+
+	;        
+	if (stage != nullptr)
+	{
+		// ‘OŒi‚ð•`‚­
+		stage->Draw(cameraX, cameraY, LAYER_OBJECT);
+
+		// ‘OŒi‚ð•`‚­
+		stage->Draw(cameraX, cameraY, LAYER_FOREGROUND);
 	}
 }
 

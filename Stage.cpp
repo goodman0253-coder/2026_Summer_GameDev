@@ -1,14 +1,16 @@
-#include "Stage.h"
+ï»¿#include "Stage.h"
 #include "DxLib.h"
 #include <fstream>
 #include <sstream>
 
 Stage::Stage()
 {
-    // ”z—ñ‚Ì‰Šú‰»
-    for (int y = 0; y < MAP_HEIGHT; y++) {
-        for (int x = 0; x < MAP_WIDTH; x++) {
-            stageMap[y][x] = -1; 
+    // é…åˆ—ã®åˆæœŸåŒ–
+    for (int l = 0; l < LAYER_MAX; l++) {
+        for (int y = 0; y < MAP_HEIGHT; y++) {
+            for (int x = 0; x < MAP_WIDTH; x++) {
+                stageMap[l][y][x] = -1;
+            }
         }
     }
     for (int i = 0; i < TILE_MAX; i++) {
@@ -32,15 +34,19 @@ void Stage::Initialize()
     int yNum = 58;
     LoadDivGraph("image/MAP-Office.png", xNum * yNum, xNum, yNum, TILE_SIZE, TILE_SIZE, tileImages);
 
-    //ƒ}ƒbƒvCSV‚ğ“Ç‚İ‚Ş
-    LoadMapCSV("image/MAP0V1.csv");
+    //ãƒãƒƒãƒ—CSVã‚’èª­ã¿è¾¼ã‚€
+    LoadMapCSV("image/MAP02BACKV1.csv", LAYER_BACKGROUND); // èƒŒæ™¯ç”¨CSV
+    LoadMapCSV("image/MAP02MIDV1.csv", LAYER_MIDDLEGROUND); // ä¸­æ™¯ç”¨CSVï¼ˆä»Šã®ãƒ¡ã‚¤ãƒ³ãƒãƒƒãƒ—ï¼‰
+    LoadMapCSV("image/MAP02OBJV1.csv", LAYER_OBJECT); // éšœå®³ç‰©ç”¨CSV
+    LoadMapCSV("image/MAP02FOREV1.csv", LAYER_FOREGROUND); // å‰æ™¯ç”¨CSV
+
 }
 
-void Stage::LoadMapCSV(const std::string& filename)
+void Stage::LoadMapCSV(const std::string& filename, eOfficeMapLayer OLayer)
 {
     std::ifstream file(filename);
     if (!file.is_open()) {
-        printfDx("CSVƒtƒ@ƒCƒ‹ [%s] ‚Ì“Ç‚İ‚İ‚É¸”s/\n", filename.c_str());
+        printfDx("CSVãƒ•ã‚¡ã‚¤ãƒ« [%s] ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—/\n", filename.c_str());
         return;
     }
 
@@ -55,34 +61,29 @@ void Stage::LoadMapCSV(const std::string& filename)
 
         while (std::getline(ss, value, ',') && x < MAP_WIDTH)
         {
-            stageMap[y][x] = std::stoi(value);
+            stageMap[OLayer][y][x] = std::stoi(value);
             x++;
         }
         y++;
     }
 }
 
-void Stage::Draw(float cameraX, float cameraY)
+// â­• æŒ‡å®šã•ã‚ŒãŸãƒ¬ã‚¤ãƒ¤ãƒ¼ã ã‘ã‚’æç”»ã™ã‚‹é–¢æ•°ã«ã™ã‚‹
+void Stage::Draw(float cameraX, float cameraY, eOfficeMapLayer OLayer)
 {
     for (int y = 0; y < MAP_HEIGHT; y++)
     {
         for (int x = 0; x < MAP_WIDTH; x++)
         {
-            int chipIndex = stageMap[y][x];
+            // æŒ‡å®šã•ã‚ŒãŸãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒãƒƒãƒ—ç•ªå·ã‚’å–å¾—
+            int chipIndex = stageMap[OLayer][y][x];
 
-            // —LŒø‚È‰æ‘œƒnƒ“ƒhƒ‹‚ª‚ ‚éê‡‚Ì‚İ•`‰æ
             if (chipIndex >= 0 && chipIndex < TILE_MAX && tileImages[chipIndex] != -1)
             {
-                // ƒJƒƒ‰À•W‚ğˆø‚«Z‚µ‚ÄƒXƒNƒ[ƒ‹ˆÊ’u‚ğŒvZ
                 int drawX = x * TILE_SIZE - (int)cameraX;
                 int drawY = y * TILE_SIZE - (int)cameraY;
-
-                // ‰æ–ÊŠOiã‰º¶‰E1ƒ}ƒX•ª—]—T‚ğ‚½‚¹‚éj‚Ì‚à‚Ì‚Í•`‰æƒXƒLƒbƒviŒy—Ê‰»j
-                if (drawX >= -TILE_SIZE && drawX <= 640 &&
-                    drawY >= -TILE_SIZE && drawY <= 480)
-                {
-                    DrawGraph(drawX, drawY, tileImages[chipIndex], TRUE);
-                }
+                DrawGraph(drawX, drawY+200, tileImages[chipIndex], TRUE);
+                
             }
         }
     }

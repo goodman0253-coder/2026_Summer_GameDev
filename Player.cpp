@@ -73,25 +73,7 @@ void Player::Update()
 void Player::Draw(float camX,float camY)
 {
 
-	// もし image が -1 (失敗状態) なら、今この瞬間に読み込みを試みる
-#if 0 
-	if (image == -1) 
-	{
-		image = LoadGraph("player.png");
-
-		if (image != -1)
-		{
-		
-			printfDx("Draw内読み込み成功_ハンドル: %d\n", image);
-		}
-		else
-		{
-			
-			printfDx("Draw内読み込み失敗\n");
-		}
-	}
-	printfDx("Handle: %d  Pos: %f, %f\n", image, 30, 30);
-#endif
+	clsDx();
 	printfDx("PlayerPosX: %.1f, PlayerPosY: %.1f, CameraX: %.1f, CameraY: %.1f\n", playerPosx, playerPosy, camX, camY);
 	DrawGraph((int)(playerPosx - camX), (int)(playerPosy - camY), playerImageArray[0], TRUE);
 
