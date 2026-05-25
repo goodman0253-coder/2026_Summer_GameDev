@@ -4,6 +4,7 @@
 enum SceneType
 {
     SCENE_TITLE,
+    SCENE_STAGESELECT,
     SCENE_GAME,
 };
 

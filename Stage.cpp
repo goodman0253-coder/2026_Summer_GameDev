@@ -35,7 +35,7 @@ void Stage::Initialize()
     LoadDivGraph("image/MAP-Office.png", xNum * yNum, xNum, yNum, TILE_SIZE, TILE_SIZE, tileImages);
 
     //マップCSVを読み込む
-    LoadMapCSV("image/MAP02BACKV1.csv", LAYER_BACKGROUND); // 背景用CSV
+    LoadMapCSV("image/MAP02BACKV2.csv", LAYER_BACKGROUND); // 背景用CSV
     LoadMapCSV("image/MAP02MIDV1.csv", LAYER_MIDDLEGROUND); // 中景用CSV（今のメインマップ）
     LoadMapCSV("image/MAP02OBJV1.csv", LAYER_OBJECT); // 障害物用CSV
     LoadMapCSV("image/MAP02FOREV1.csv", LAYER_FOREGROUND); // 前景用CSV
@@ -82,7 +82,7 @@ void Stage::Draw(float cameraX, float cameraY, eOfficeMapLayer OLayer)
             {
                 int drawX = x * TILE_SIZE - (int)cameraX;
                 int drawY = y * TILE_SIZE - (int)cameraY;
-                DrawGraph(drawX, drawY+200, tileImages[chipIndex], TRUE);
+                DrawGraph(drawX, drawY, tileImages[chipIndex], TRUE);
                 
             }
         }

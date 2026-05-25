@@ -63,7 +63,12 @@ void GameScene::Update(void)
 
 	// プレイヤーの座標(playerX, playerY)が画面中央に来るようにカメラを配置
 	cameraX = player->GetX() - (SCREEN_WIDTH / 2);
+	if (cameraX <= 0)
+	{
+		cameraX = 0;
+	}
 	cameraY = player->GetY() - (SCREEN_HEIGHT / 2);
+
 }
 
 void GameScene::Draw(void)
