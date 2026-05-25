@@ -3,13 +3,21 @@
 
 class TitleScene:public BaseScene
 {
+private:
+    int titleImage = -1;
+    int fontTitle = -1;
+
+    int stringWidth = 0;
+    int stringHeight = 0;
+
 public:
     TitleScene() {}
     virtual ~TitleScene() {}
 
-    // 親クラスの宿題（純粋仮想関数）をここで宣言する
     void Initialize() override;
     void Update() override;
     void Draw() override;
+    bool Release(void);
+
 };
 

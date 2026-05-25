@@ -1,13 +1,55 @@
+#include <DxLib.h>
+#include <string>
 #include "TitleScene.h"
+#include "Application.h"
 
 void TitleScene::Initialize()
 {
+    titleImage = LoadGraph("image/title.png");
 }
 
 void TitleScene::Update()
 {
+
+    if (CheckHitKey(KEY_INPUT_SPACE))
+    {
+       
+    }
 }
 
-void TitleScene::Draw()
+void TitleScene::Draw(void)
 {
+
+
+    if (titleImage != -1)
+    {
+        DrawExtendGraph(0, 0, Application::SCREEN_SIZE_WID, Application::SCREEN_SIZE_HIG, titleImage, true);
+    }
+    //else
+    //{
+    //    DrawBox(0, 0, 640, 480, GetColor(0, 0, 0), TRUE);
+    //}
+    //DrawBox(0, 0, 640, 480, 0xffffff, TRUE);
+
+
+
+    static int blinkTimer = 0;
+    blinkTimer++;
+    if ((blinkTimer / 30) % 2 == 0)
+    {
+       
+        std::string text = "PRESS SPACE TO START";
+       
+    }
+}
+
+bool TitleScene::Release(void)
+{
+
+    if (titleImage != -1)
+    {
+        DeleteGraph(titleImage);
+    }
+
+    return false;
 }

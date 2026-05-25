@@ -1,6 +1,7 @@
 #include "SceneManager.h"
-#include "TitleScene.h" // Ç±ÇÍÇ©ÇÁçÏÇÈ
+#include "TitleScene.h" 
 #include "GameScene.h"
+#include "StageSelectScene.h"
 
 
 void SceneManager::ChangeScene(SceneType type) 

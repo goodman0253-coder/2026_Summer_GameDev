@@ -16,8 +16,8 @@ class Stage
 
 public:
     static const int TILE_SIZE = 32;     // タイル1マスのサイズ(32x32ピクセル)
-    static const int MAP_WIDTH = 200;    // CSVの横の列数 (※MAP0V1.csvの実際の列数に合わせてください)
-    static const int MAP_HEIGHT = 20;    // CSVの縦の行数
+    static const int MAP_WIDTH = 200;    // CSVの横の列数 
+    static const int MAP_HEIGHT = 60;    // CSVの縦の行数
     Stage();
     ~Stage();
 

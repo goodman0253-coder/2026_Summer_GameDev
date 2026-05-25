@@ -1,11 +1,13 @@
 #pragma once
+class BaseScene;
+class TitleScene;
 class GameScene;
 
 class Application
 {
 public:
-	static constexpr int SCREEN_SIZE_WID = 800; // ゲーム画面の横サイズ
-	static constexpr int SCREEN_SIZE_HIG = 600; // ゲーム画面の縦サイズ
+	static constexpr int SCREEN_SIZE_WID = 1920; // ゲーム画面の横サイズ
+	static constexpr int SCREEN_SIZE_HIG = 1080; // ゲーム画面の縦サイズ
 	Application();
 	~Application();
 
@@ -18,6 +20,11 @@ public:
 private:
 	void Update(void);
 	void Draw(void);
-	GameScene* gameScene;
+
+	TitleScene* titleScene = nullptr;
+	GameScene* gameScene = nullptr;
+
+	BaseScene* currentScene = nullptr;
+
 };
 
