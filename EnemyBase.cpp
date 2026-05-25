@@ -51,8 +51,11 @@ void EnemyBase::GameInit(void) // ゲーム起動・再開時に必ず呼び出す処理
 	//}
 	
 
-	pos.x = static_cast<float>(epos.x);
-	pos.y = static_cast<float>(epos.y);
+	//pos.x = static_cast<float>(epos.x);
+	//pos.y = static_cast<float>(epos.y);
+
+	pos.x = 500;
+	pos.y = 531;
 
 	animCounter = 0;
 	aliveFlg = true;
@@ -61,6 +64,10 @@ void EnemyBase::GameInit(void) // ゲーム起動・再開時に必ず呼び出す処理
 
 void EnemyBase::Update(void) // 更新処理
 {
+	// アニメーションカウンタの進行
+	animCounter++;
+	animNo = (animCounter / ANIM_INTERVAL) % ANIM_NUMS; //現在表示しているアニメーション番号
+	if (animCounter >= ANIM_INTERVAL * ANIM_NUMS)animCounter = 0; // カウンタのリセット
 	//// プレイヤーの位置
 	//Vector2 pPos = gInst->GetLpPlayer()->GetPlayerPos();
 	//// ベクトル(相手 - 自分)
@@ -89,23 +96,21 @@ void EnemyBase::Update(void) // 更新処理
 	//	// 移動方向の設定
 	//	setMoveDirection(direction);
 	//}
-	// アニメーションカウンタの進行
-	animCounter++;
+	
 }
 
 void EnemyBase::Draw(void) // 描画処理
 {
-	int animNo = (animCounter / ANIM_INTERVAL) % ANIM_NUMS;
-	float stposX = gInst->GetCameraX();
-	float stposY = gInst->GetCameraY();
-
-
-	//DrawGraph(pos.x - size.x / 2 - stposX,
-	//	pos.y - size.y / 2 - stposY,
-	//	img[dir][animNo], true);
+	float stposX = gInst->GetCameraX();	//カメラ座標X
+	float stposY = gInst->GetCameraY();	//カメラ座標Y
 
 	printfDx("表示");
-	DrawGraph(150,500,img[0][0], true);
+	DrawFormatString(0, 40, GetColor(255, 255, 255), "Counter:%d  No:%d", animCounter, animNo);
+	DrawGraph(pos.x - size.x / 2 - stposX,
+		pos.y - size.y / 2 - stposY,
+		img[dir][animNo], true);
+
+	//DrawGraph(150,500,img[0][0], true);
 }
 
 bool EnemyBase::Release(void) // 解放処理(最後の１回のみ実行)
@@ -127,7 +132,7 @@ void EnemyBase::SetEnemyParam(void) // 敵キャラ個別のパラメータ設定処理
 	// 敵の画像サイズ
 	size = { 64, 64 };
 	// 敵の移動速度
-	speed = 0.1f;
+	speed = 0.0f;
 	// 敵のヒットポイント最大値
 	hpMax = 1;
 }

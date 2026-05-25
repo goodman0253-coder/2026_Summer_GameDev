@@ -61,6 +61,14 @@ void GameScene::Update(void)
 		player->Update();
 	}
 
+	for (size_t i = 0; i < enemys.size(); i++)
+	{
+		if (enemys[i] != nullptr)
+		{
+			enemys[i]->Update();
+		}
+	}
+
 	// プレイヤーの座標(playerX, playerY)が画面中央に来るようにカメラを配置
 	cameraX = player->GetX() - (SCREEN_WIDTH / 2);
 	if (cameraX <= 0)

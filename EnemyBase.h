@@ -15,9 +15,10 @@ public:
 		
 		E_TYPE_MAX,
 	};
-	static constexpr int ANIM_NUMS = 2; // 方向毎のアニメーション数
+	static constexpr int ANIM_NUMS = 2; // 表示するアニメーションの数
 	static constexpr int CHARA_MAX = ANIM_NUMS * static_cast<int>(AsoUtility::DIR::MAX);
-	static constexpr int ANIM_INTERVAL = 10; // アニメーションの更新間隔
+	static constexpr int ANIM_INTERVAL = 30; // アニメーションの更新間隔
+	int animNo; // 現在表示しているアニメーション番号
 
 	EnemyBase();
 	~EnemyBase(void);
