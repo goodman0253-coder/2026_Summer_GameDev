@@ -4,6 +4,10 @@
 #include "Vector2.h"
 #include "InputManager.h"
 #include "Player.h"
+#include "BreadBase.h"
+#include "Bread.h"
+#include "GameScene.h"
+
 
 Player::Player() 
 {
@@ -68,6 +72,29 @@ void Player::Update()
 
 	}
 
+	if (shotCoolTime > 0)
+	{
+		shotCoolTime--;
+	}
+
+	if (CheckHitKey(KEY_INPUT_V) && shotCoolTime == 0)
+	{
+		// パンを生成する（プレイヤーの中心付近から発射）
+		float spawnX = playerPosx;
+		float spawnY = playerPosy;
+
+		// ⭕ 基本のパン（Bread）のインスタンスを作成
+		Bread* newBread = new Bread(spawnX, spawnY, playerDir);
+
+		if (gameScene != nullptr)
+		{
+			gameScene->AddBread(newBread);
+		}
+
+		// クールタイムを3秒（1秒=60フレーム × 3 = 180フレーム）に設定
+		shotCoolTime = 180;
+	}
+
 }
 
 void Player::Draw(float camX,float camY)
@@ -75,26 +102,72 @@ void Player::Draw(float camX,float camY)
 
 	clsDx();
 	printfDx("PlayerPosX: %.1f, PlayerPosY: %.1f, CameraX: %.1f, CameraY: %.1f\n", playerPosx, playerPosy, camX, camY);
-	DrawGraph((int)(playerPosx - camX), (int)(playerPosy - camY), playerImageArray[0], TRUE);
+	
 
+	// 描画する画面上の座標を計算
+	int drawX = (int)(playerPosx - camX);
+	int drawY = (int)(playerPosy - camY);
+
+	// ⭕ プレイヤーの向きが「左（LEFT）」のときだけ画像を左右反転して描画する
+	if (playerDir == AsoUtility::DIR::LEFT)
+	{
+		// DrawTurnGraph( x座標, y座標, グラフィックハンドル, 透過フラグ )
+		DrawTurnGraph(drawX, drawY, playerImageArray[0], TRUE);
+	}
+	else
+	{
+		// 右向き、あるいは上下を向いているときは通常通り描画
+		DrawGraph(drawX, drawY, playerImageArray[0], TRUE);
+	}
 
 }
 
 void Player::Run()
 {
-	if (CheckHitKey(KEY_INPUT_RIGHT))playerPosx += speed;
-	if (CheckHitKey(KEY_INPUT_LEFT))playerPosx -= speed;
-#if 0
-	if (InputManager::GetInstance().IsNew(KEY_INPUT_LEFT))
-	{
-		playerPosx =- speed;
-	}
-	if (InputManager::GetInstance().IsNew(KEY_INPUT_RIGHT))
-	{
-		playerPosx =+ speed;
-	}
-#endif
+	bool isMoving = false;
+	AsoUtility::DIR moveDir = AsoUtility::DIR::MAX; // 初期値として無効な値を設定
 
+	if (CheckHitKey(KEY_INPUT_UP))
+	{
+		moveDir = AsoUtility::DIR::UP;
+	}
+	else if (CheckHitKey(KEY_INPUT_DOWN))
+	{
+		moveDir = AsoUtility::DIR::DOWN;
+	}
+	else if (CheckHitKey(KEY_INPUT_LEFT))
+	{
+		moveDir = AsoUtility::DIR::LEFT;
+		isMoving = true;
+	}
+	else if (CheckHitKey(KEY_INPUT_RIGHT))
+	{
+		moveDir = AsoUtility::DIR::RIGHT;
+		isMoving = true;
+	}
+
+
+	if (moveDir != AsoUtility::DIR::MAX)
+	{
+		playerDir = moveDir;
+	}
+
+	if (isMoving)
+	{
+		float moveSpeed = 4.0f;
+
+		switch (playerDir)
+		{
+		case AsoUtility::DIR::LEFT:
+			playerPosx -= moveSpeed;
+			break;
+		case AsoUtility::DIR::RIGHT:
+			playerPosx += moveSpeed;
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 

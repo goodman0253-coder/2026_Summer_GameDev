@@ -2,6 +2,7 @@
 #include "BaseScene.h"
 #include "EnemyBase.h"
 #include <vector>
+#include "BreadBase.h"
 class Player;
 class Stage;
 
@@ -21,6 +22,7 @@ public:
 	void Update() override;
 	void Draw() override;
 	bool Release(void);
+	void AddBread(BreadBase* bread) { breadList.push_back(bread); }
 
 	float GetCameraX() const { return cameraX; }
 	float GetCameraY() const { return cameraY; }
@@ -29,6 +31,7 @@ private:
 	Player* player;
 	Stage* stage;
 	std::vector<EnemyBase*> enemys;
+	std::vector<BreadBase*> breadList;
 	float cameraX = 0.0f;
 	float cameraY = 0.0f;
 

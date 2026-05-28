@@ -1,9 +1,11 @@
-#include <DxLib.h>
+ï»¿#include <DxLib.h>
 #include "GameScene.h"
 #include "Player.h"
 #include "Stage.h"
 #include "EnemyBase.h"
 #include "Enemy1.h"
+#include "BreadBase.h"
+#include "Bread.h"
 
 
 GameScene::GameScene()
@@ -13,7 +15,7 @@ GameScene::GameScene()
 	{
 		if (!enemys[i]->SystemInit(this))
 		{
-			printfDx("“G‚Ì‰Šú‰»‚É¸”s");
+			printfDx("æ•µã®åˆæœŸåŒ–ã«å¤±æ•—");
 		}
 		enemys[i]->GameInit();
 	}
@@ -43,6 +45,7 @@ bool GameScene::GameInit(void)
 {
 
 	player = new Player();
+	player->SetGameScene(this);
 	player->GameInit();
 	stage = new Stage();
 	stage->Initialize();
@@ -61,6 +64,27 @@ void GameScene::Update(void)
 		player->Update();
 	}
 
+	for (auto* bread : breadList)
+	{
+		if (bread->IsAlive())
+		{
+			bread->Update();
+		}
+	}
+
+	for (auto it = breadList.begin(); it != breadList.end(); )
+	{
+		if (!(*it)->IsAlive()) // lifeTimerãŒ0ã«ãªã£ã¦IsAliveãŒfalseã«ãªã£ãŸã‚‰
+		{
+			delete (*it);              // ãƒ¡ãƒ¢ãƒªè§£æ”¾
+			it = breadList.erase(it);  // ãƒªã‚¹ãƒˆã‹ã‚‰é™¤å¤–
+		}
+		else
+		{
+			++it; // ç”Ÿãã¦ã„ã‚Œã°æ¬¡ã¸
+		}
+	}
+
 	for (size_t i = 0; i < enemys.size(); i++)
 	{
 		if (enemys[i] != nullptr)
@@ -69,7 +93,7 @@ void GameScene::Update(void)
 		}
 	}
 
-	// ƒvƒŒƒCƒ„[‚ÌÀ•W(playerX, playerY)‚ª‰æ–Ê’†‰›‚É—ˆ‚é‚æ‚¤‚ÉƒJƒƒ‰‚ğ”z’u
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åº§æ¨™(playerX, playerY)ãŒç”»é¢ä¸­å¤®ã«æ¥ã‚‹ã‚ˆã†ã«ã‚«ãƒ¡ãƒ©ã‚’é…ç½®
 	cameraX = player->GetX() - (SCREEN_WIDTH / 2);
 	if (cameraX <= 0)
 	{
@@ -81,8 +105,8 @@ void GameScene::Update(void)
 
 void GameScene::Draw(void)
 {
-	// --- ‚±‚±‚©‚çƒeƒXƒg—pF’n–Ê‚ğ•`‚­ ---
-	// ‰æ–Ê‚Ì‰º‚Ì•û‚ÉA50ƒsƒNƒZƒ‹‚¨‚«‚Écü‚ğˆø‚­
+	// --- ã“ã“ã‹ã‚‰ãƒ†ã‚¹ãƒˆç”¨ï¼šåœ°é¢ã‚’æã ---
+	// ç”»é¢ã®ä¸‹ã®æ–¹ã«ã€50ãƒ”ã‚¯ã‚»ãƒ«ãŠãã«ç¸¦ç·šã‚’å¼•ã
 	for (int i = 0; i < 20000; i += 50) {
 		int x = (int)(i - cameraX);
 		DrawLine(x, 0, x, 3000, GetColor(100, 100, 100));
@@ -90,32 +114,38 @@ void GameScene::Draw(void)
 
 	if (stage != nullptr)
 	{
-		// ”wŒi‚ğ•`‚­
+		// èƒŒæ™¯ã‚’æã
 		stage->Draw(cameraX, cameraY, LAYER_BACKGROUND);
 
-		// ’†Œi‚ğ•`‚­
+		// ä¸­æ™¯ã‚’æã
 		stage->Draw(cameraX, cameraY, LAYER_MIDDLEGROUND);
 	}
 
-	// ƒvƒŒƒCƒ„[‚ğ•`‰æ
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’æç”»
 	if (player != nullptr)
 	{
 		player->Draw(cameraX, cameraY);
 	}
 
-	size_t size = enemys.size(); // “G‚Ìƒe[ƒuƒ‹‚Ì—v‘f”‚ğæ“¾
-	std::vector<EnemyBase*>::iterator eitr = enemys.begin(); // ƒCƒeƒŒ[ƒ^‚ğæ“¾
+	size_t size = enemys.size(); // æ•µã®ãƒ†ãƒ¼ãƒ–ãƒ«ã®è¦ç´ æ•°ã‚’å–å¾—
+	std::vector<EnemyBase*>::iterator eitr = enemys.begin(); // ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ã‚’å–å¾—
 	for (int ii = 0; ii < size; ii++) {
 		(*eitr)->Draw();
 		eitr++;
+	};        
+
+	// 2. â­• ã™ã¹ã¦ã®ãƒ‘ãƒ³ã®æç”»å‡¦ç†
+	for (auto* bread : breadList)
+	{
+		bread->Draw(cameraX, cameraY);
 	}
-	;        
+
 	if (stage != nullptr)
 	{
-		// ‘OŒi‚ğ•`‚­
+		// å‰æ™¯ã‚’æã
 		stage->Draw(cameraX, cameraY, LAYER_OBJECT);
 
-		// ‘OŒi‚ğ•`‚­
+		// å‰æ™¯ã‚’æã
 		stage->Draw(cameraX, cameraY, LAYER_FOREGROUND);
 	}
 }
@@ -124,5 +154,10 @@ bool GameScene::Release(void)
 {
 	if (player != nullptr) { delete player; player = nullptr; }
 	if (stage != nullptr) { delete stage;  stage = nullptr; }
+	for (auto* bread : breadList)
+	{
+		delete bread;
+	}
+	breadList.clear(); // ãƒªã‚¹ãƒˆè‡ªä½“ã®ä¸­èº«ã‚‚ç©ºã£ã½ã«ã™ã‚‹
 	return true;
 }

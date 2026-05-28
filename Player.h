@@ -1,6 +1,10 @@
 #pragma once
 #include "GameObject.h"
-// プレイヤー（GameObjectを継承）
+#include "AsoUtility.h"
+
+class GameScene;
+class BreadBase;
+
 class Player : public GameObject
 {
 public:
@@ -25,6 +29,8 @@ public:
 
 	void Jump();
 
+    void SetGameScene(GameScene* scene) { gameScene = scene; }
+
     // アニメーション状態
     enum class ANIM_STATE
     {
@@ -47,7 +53,10 @@ private:
     bool onGround;
     float speed = 5;
 
-    int playerImageArray[PLAYER_ANIM_MAX]; // 爆発の画像のハンドル番号テーブル
+    int playerImageArray[PLAYER_ANIM_MAX];
+
+    int shotCoolTime;      // クールタイム用のタイマーカウンター
+    AsoUtility::DIR playerDir;
 
     int animTimer = 0;
     int animNoNow = 0;
@@ -56,6 +65,8 @@ private:
     
     // アニメーション状態
     ANIM_STATE animState;
+
+    GameScene* gameScene = nullptr;
 
 };
 

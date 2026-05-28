@@ -6,6 +6,7 @@
 void TitleScene::Initialize()
 {
     titleImage = LoadGraph("image/title.png");
+
 }
 
 void TitleScene::Update()
@@ -29,7 +30,7 @@ void TitleScene::Draw(void)
     //{
     //    DrawBox(0, 0, 640, 480, GetColor(0, 0, 0), TRUE);
     //}
-    //DrawBox(0, 0, 640, 480, 0xffffff, TRUE);
+    //DrawBox(0, 0, 640, 480, 0xffffff, TRUE);PRESS SPACE TO START
 
 
 
@@ -37,8 +38,9 @@ void TitleScene::Draw(void)
     blinkTimer++;
     if ((blinkTimer / 30) % 2 == 0)
     {
-       
-        std::string text = "PRESS SPACE TO START";
+        SetFontSize(100);
+        DrawString(450, 600, "PRESS SPACE TO START", GetColor(255, 255, 0));
+        
        
     }
 }
