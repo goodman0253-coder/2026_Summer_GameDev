@@ -31,6 +31,16 @@ GameScene::~GameScene()
 		delete stage;
 		stage = nullptr;
 	}
+
+	for (size_t i = 0; i < enemys.size(); i++)
+	{
+		if (enemys[i] != nullptr)
+		{
+			enemys[i]->Release();
+			delete enemys[i];
+		}
+	}
+	enemyBullets.clear();
 }
 
 bool GameScene::SystemInit(void)
@@ -54,6 +64,19 @@ void GameScene::Initialize()
 {
 }
 
+void GameScene::AddEnemyBullet(EnemyBulletBase* newBullet, Vector2F spawnPos, Vector2F vel)
+{
+	if (newBullet != nullptr)
+	{
+		if (newBullet != nullptr)
+		{
+			newBullet->SystemInit(this); // “G’e‚Ì‰æ‘œ‚ð“Ç‚Ýž‚Þ
+			newBullet->GameInit(spawnPos, vel); // “G’e‚Ì‰ŠúˆÊ’u‚Æ‘¬“x‚ðÝ’è
+			enemyBullets.push_back(newBullet); // GamwScene‚ÌƒŠƒXƒg‚É’Ç‰Á
+		}
+	}
+}
+
 void GameScene::Update(void)
 {
 	if (player != nullptr)
@@ -66,6 +89,30 @@ void GameScene::Update(void)
 		if (enemys[i] != nullptr)
 		{
 			enemys[i]->Update();
+		}
+	}
+
+	for (size_t i = 0; i < enemyBullets.size(); i++)
+	{
+		if (enemyBullets[i] != nullptr)
+		{
+			enemyBullets[i]->Update();
+		}
+	}
+
+	// ¶‘¶‚µ‚Ä‚¢‚È‚¢“G’e‚ðƒŠƒXƒg‚©‚çíœ‚·‚é
+	auto bitr = enemyBullets.begin();
+	while (bitr != enemyBullets.end())
+	{
+		if (!(*bitr)->GetAlive())
+		{
+			(*bitr)->Release();
+			delete (*bitr);
+			bitr = enemyBullets.erase(bitr);
+		}
+		else
+		{
+			++bitr;
 		}
 	}
 
@@ -109,7 +156,16 @@ void GameScene::Draw(void)
 		(*eitr)->Draw();
 		eitr++;
 	}
-	;        
+
+	// “G‚Ì’e‚ð•`‰æ
+	for (size_t i = 0; i < enemyBullets.size(); i++)
+	{
+		if (enemyBullets[i] != nullptr)
+		{
+			enemyBullets[i]->Draw();
+		}
+	}
+     
 	if (stage != nullptr)
 	{
 		// ‘OŒi‚ð•`‚­
@@ -124,5 +180,16 @@ bool GameScene::Release(void)
 {
 	if (player != nullptr) { delete player; player = nullptr; }
 	if (stage != nullptr) { delete stage;  stage = nullptr; }
+
+	for (size_t i = 0; i < enemyBullets.size(); i++)
+	{
+		if (enemyBullets[i] != nullptr)
+		{
+			enemyBullets[i]->Release();
+			delete enemyBullets[i];
+		}
+	}
+	enemyBullets.clear();
+
 	return true;
 }
