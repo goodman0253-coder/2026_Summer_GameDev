@@ -1,8 +1,12 @@
 #pragma once
 #include "EnemyBase.h"
-
+#include "EnemyBulletBase.h"
 class Enemy1 : public EnemyBase
 {
+public:
 	void SetEnemyParam(void) override;
+	void Update(void) override;
+private:
+	int shotTimer = 0;
 };
 
