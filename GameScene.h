@@ -2,6 +2,7 @@
 #include "BaseScene.h"
 #include "EnemyBase.h"
 #include <vector>
+#include "BreadBase.h"
 class Player;
 class Stage;
 class EnemyBulletBase;
@@ -19,6 +20,7 @@ public:
 	void Update() override;
 	void Draw() override;
 	bool Release(void);
+	void AddBread(BreadBase* bread) { breadList.push_back(bread); }
 
 	float GetCameraX() const { return cameraX; }
 	float GetCameraY() const { return cameraY; }
@@ -31,13 +33,14 @@ private:
 	std::vector<EnemyBase*> enemys;
 	std::vector<EnemyBulletBase*> enemyBullets;
 
+	std::vector<BreadBase*> breadList;
 	float cameraX = 0.0f;
 	float cameraY = 0.0f;
 
 	const int SCREEN_WIDTH = 1920;
 	const int SCREEN_HEIGHT = 1080;
 
-	bool isPlayerAlive = true; // ƒvƒŒƒCƒ„[‚Ì¶‘¶ó‘Ô‚ğŠÇ—‚·‚éƒtƒ‰ƒO
+	bool isPlayerAlive = true; // ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½Ô‚ï¿½ï¿½Ç—ï¿½ï¿½ï¿½ï¿½ï¿½tï¿½ï¿½ï¿½O
 
 };
 
