@@ -51,6 +51,7 @@
     </Filter>
     <Filter Include="GameObject\Bullet">
       <UniqueIdentifier>{4c0176cc-dfdd-4832-aa2c-ac84fa094829}</UniqueIdentifier>
+    </Filter>
     <Filter Include="SceneManager\Scene\StageSlectScene">
       <UniqueIdentifier>{b9854463-0f10-4b4f-8507-a4c7a2c69acd}</UniqueIdentifier>
     </Filter>
@@ -107,12 +108,12 @@
     <ClCompile Include="AsoUtility.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
-    <ClCompile Include="StageSelectScene.cpp" />
     <ClCompile Include="EnemyBulletBase.cpp">
       <Filter>GameObject\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="Stage1_EnemyA_Bullet.cpp">
       <Filter>GameObject\Bullet</Filter>
+    </ClCompile>
     <ClCompile Include="Stage.cpp">
       <Filter>SceneManager\Scene\GameScene\Stage</Filter>
     </ClCompile>
@@ -130,6 +131,9 @@
     </ClCompile>
     <ClCompile Include="GameOverScene.cpp">
       <Filter>SceneManager\Scene\GameOverScene</Filter>
+    </ClCompile>
+    <ClCompile Include="StageSelectScene.cpp">
+      <Filter>SceneManager\Scene\StageSlectScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,12 +176,12 @@
     <ClInclude Include="AsoUtility.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="StageSelectScene.h" />
     <ClInclude Include="EnemyBulletBase.h">
       <Filter>GameObject\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="Stage1_EnemyA_Bullet.h">
       <Filter>GameObject\Bullet</Filter>
+    </ClInclude>
     <ClInclude Include="Stage.h">
       <Filter>SceneManager\Scene\GameScene\Stage</Filter>
     </ClInclude>
@@ -195,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="GameOverScene.h">
       <Filter>SceneManager\Scene\GameOverScene</Filter>
+    </ClInclude>
+    <ClInclude Include="StageSelectScene.h">
+      <Filter>SceneManager\Scene\StageSlectScene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
