@@ -196,13 +196,12 @@ void GameScene::Update(void)
 		}
 	}
 
-
 	if (isClearTriggered)
 	{
 		clearTimer++; // 毎フレーム 1 ずつ増やす
 
-		// 3秒（60フレーム × 3秒 = 180フレーム）経ったらシーン遷移
-		if (clearTimer >= 180)
+		// 3秒（60フレーム × 10秒 = 600フレーム）経ったらシーン遷移
+		if (clearTimer >= 600)
 		{
 			if(sceneManager != nullptr)
 			{
