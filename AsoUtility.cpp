@@ -19,11 +19,6 @@ std::vector<std::string> AsoUtility::Split(std::string& line, char delimiter)
         result.push_back(field);
     }
 
-    // 例："aaa,bbb,ccc"
-    // 　　⇒result[0] = aaa
-    // 　　　result[1] = bbb
-    // 　　　result[2] = ccc
-
     return result;
 
 }

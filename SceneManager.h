@@ -1,33 +1,47 @@
 #pragma once
 #include "BaseScene.h"
+#include "TitleScene.h"
+#include "GameScene.h"
+#include "StageSelectScene.h"
+#include "GameClearScene.h"
+#include "GameOverScene.h"
 
 enum SceneType
 {
+    SCENE_NONE,
     SCENE_TITLE,
     SCENE_STAGESELECT,
     SCENE_GAME,
+    SCENE_GAMECLEAR,
+    SCENE_GAMEOVER,
 };
 
 class SceneManager 
 {
-
-
-
 private:
 
-    BaseScene* currentScene; // 現在のシーンを保持
+
+    TitleScene* titleScene = nullptr;
+    GameScene* gameScene = nullptr;
+    StageSelectScene* stageSlectScene = nullptr;
+    GameClearScene* gameClearScene = nullptr;
+    GameOverScene* gameOverScene = nullptr;
+
+    BaseScene* currentScene = nullptr;
 
 
+    SceneType nextScene = SCENE_NONE;
 
+    void ProcChangeScene();
 public:
 
-    SceneManager() : currentScene(nullptr) {}
-    ~SceneManager() { delete currentScene; }
+    SceneManager();
+    ~SceneManager();
 
 
     // シーンを切り替える関数
     void ChangeScene(SceneType type);
 
-    void Update() { if (currentScene) currentScene->Update(); }
+    void Update();
     void Draw() { if (currentScene) currentScene->Draw(); }
 };

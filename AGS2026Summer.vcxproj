@@ -145,8 +145,13 @@
     <ClCompile Include="Enemy1.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="AsoUtility.cpp" />
+
+    <ClCompile Include="GameClearScene.cpp" />
+
     <ClCompile Include="EnemyBulletBase.cpp" />
+
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
@@ -167,8 +172,13 @@
     <ClInclude Include="BreadBase.h" />
     <ClInclude Include="Enemy1.h" />
     <ClInclude Include="EnemyBase.h" />
+
+    <ClInclude Include="GameClearScene.h" />
+
     <ClInclude Include="EnemyBulletBase.h" />
+
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Player.h" />

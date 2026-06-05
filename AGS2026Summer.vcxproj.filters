@@ -125,6 +125,12 @@
     <ClCompile Include="Bread.cpp">
       <Filter>GameObject\Bread\Bread</Filter>
     </ClCompile>
+    <ClCompile Include="GameClearScene.cpp">
+      <Filter>SceneManager\Scene\GameClearScene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverScene.cpp">
+      <Filter>SceneManager\Scene\GameOverScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -183,6 +189,12 @@
     </ClInclude>
     <ClInclude Include="Bread.h">
       <Filter>GameObject\Bread\Bread</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClearScene.h">
+      <Filter>SceneManager\Scene\GameClearScene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverScene.h">
+      <Filter>SceneManager\Scene\GameOverScene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

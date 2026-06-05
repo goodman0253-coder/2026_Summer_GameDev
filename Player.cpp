@@ -7,6 +7,7 @@
 #include "BreadBase.h"
 #include "Bread.h"
 #include "GameScene.h"
+#include "Stage.h"
 
 
 Player::Player() 
@@ -35,8 +36,8 @@ bool Player::SystemInit()
 bool Player::GameInit()
 {
 	vy = 0.0f;
-	playerPosx = 100;
-	playerPosy = 100;
+	playerPosx = 4000;
+	playerPosy = 500;
 	return true;
 }
 
@@ -53,22 +54,28 @@ void Player::Update()
 	playerPosy += vy; // 座標を更新
 
 	// 地面に衝突したら止まる
-	if (playerPosy > 1000.0f)
+	if (playerPosy > 1200.0f)
 	{
-		playerPosy = 1000.0f;
+		playerPosy = 1200.0f;
 		vy = 0.0f;
 		Jump();
 	}
 
-	if (playerPosx < 100.0f)
+	if (playerPosx < 0)
 	{
-		playerPosx = 100.0f;
+		playerPosx = 0;
 
 	}	
-	
-	if (playerPosx > 6400.0f)
+	if (gameScene->GetCameraX() == Stage::TILE_SIZE * Stage::MAP_WIDTH - PLAYER_WID - gameScene->GetScreenW())
 	{
-		playerPosx = 6400.0f;
+		if (playerPosx < Stage::TILE_SIZE * Stage::MAP_WIDTH - PLAYER_WID - gameScene->GetScreenW())
+		{
+			playerPosx = Stage::TILE_SIZE * Stage::MAP_WIDTH - PLAYER_WID - gameScene->GetScreenW();
+		}
+	}
+	if (playerPosx > Stage::TILE_SIZE * Stage::MAP_WIDTH - PLAYER_WID)
+	{
+		playerPosx = Stage::TILE_SIZE * Stage::MAP_WIDTH - PLAYER_WID;
 
 	}
 
@@ -95,6 +102,10 @@ void Player::Update()
 		shotCoolTime = 180;
 	}
 
+	if (invincibleTimer > 0)
+	{
+		invincibleTimer--; // 1フレームごとに1減らす（60フレーム = 1秒）
+	}
 }
 
 void Player::Draw(float camX,float camY)
@@ -102,7 +113,13 @@ void Player::Draw(float camX,float camY)
 
 	clsDx();
 	printfDx("PlayerPosX: %.1f, PlayerPosY: %.1f, CameraX: %.1f, CameraY: %.1f\n", playerPosx, playerPosy, camX, camY);
-	
+	if (IsInvincible())
+	{
+		if ((invincibleTimer / 4) % 2 == 0)
+		{
+			return; // このフレームは描画をスキップ（非表示にして点滅を表現）
+		}
+	}
 
 	// 描画する画面上の座標を計算
 	int drawX = (int)(playerPosx - camX);
@@ -178,5 +195,19 @@ void Player::Jump()
 	if (CheckHitKey(KEY_INPUT_SPACE))
 	{
 			vy = -12.0f;
+	}
+}
+
+void Player::ApplyDamage()
+{
+	// すでに無敵状態、または体力が0ならダメージを通さない
+	if (IsInvincible() || hp <= 0) return;
+
+	hp -= 1; // 体力を1減らす
+
+	if (hp > 0)
+	{
+		// ⭕ まだ生きていれば2秒間（60フレーム×2＝120フレーム）の無敵をつける
+		invincibleTimer = 120;
 	}
 }

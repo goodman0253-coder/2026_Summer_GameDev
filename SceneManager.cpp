@@ -1,27 +1,102 @@
-#include "SceneManager.h"
+﻿#include "SceneManager.h"
 #include "TitleScene.h" 
 #include "GameScene.h"
 #include "StageSelectScene.h"
+#include "GameClearScene.h"
+#include "GameOverScene.h"
 
 
-void SceneManager::ChangeScene(SceneType type) 
+
+
+SceneManager::SceneManager()
 {
-    // �Â��V�[��������
+    nextScene = SCENE_NONE;
+}
+
+SceneManager::~SceneManager()
+{
+    // ⭕ 【安全に修正】現在動いているシーンだけを解放すればOKです！
+    // 存在しない titleScene や gameScene を個別に delete しようとするとバグの原因になります。
     if (currentScene != nullptr)
     {
         delete currentScene;
+        currentScene = nullptr;
+    }
+}
+
+void SceneManager::ChangeScene(SceneType type)
+{
+    nextScene = type;
+    ProcChangeScene();
+    
+}
+
+void SceneManager::ProcChangeScene()
+{
+    if (nextScene == SCENE_NONE) return;
+    // 古いシーンを消す
+    if (currentScene != nullptr)
+    {
+        delete currentScene;
+        currentScene = nullptr; // 安全のため一度空っぽにする
     }
 
-    // �V�����V�[�������
-    switch (type)
+    // 新しいシーンを作る
+    switch (nextScene)
     {
     case SCENE_TITLE:
-        currentScene = new TitleScene();
-        break;
-    case SCENE_GAME:
-        currentScene = new GameScene();
+    {
+        
+        TitleScene* tScene = new TitleScene();
+        tScene->SetSceneManager(this);
+
+        // 最後に管理用の「currentScene」に代入する
+        currentScene = tScene;
         break;
     }
 
-    currentScene->Initialize();
+    case SCENE_GAME:
+    {
+        
+        GameScene* gScene = new GameScene();
+
+        gScene->SetSceneManager(this);
+        gScene->GameInit();
+
+        // 最後に管理用の「currentScene」に代入する
+        currentScene = gScene;
+        break;
+    }
+
+    case SCENE_STAGESELECT:
+        break;
+
+    case SCENE_GAMECLEAR:
+    {
+        // ⭕ ゲームクリアシーンも同様に安全に生成します
+        GameClearScene* cScene = new GameClearScene();
+        cScene->SetSceneManager(this);
+        currentScene = cScene;
+        break;
+    }
+
+    case SCENE_GAMEOVER:
+        break;
+    }
+
+    // 各シーン共通の Initialize 処理（GameScene以外）
+    if (currentScene != nullptr && nextScene != SCENE_GAME)
+    {
+        currentScene->Initialize();
+    }
+}
+
+void SceneManager::Update()
+{
+
+    if (nullptr != currentScene)
+    {
+        currentScene->Update();
+    }
+
 }

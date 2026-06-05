@@ -1,7 +1,6 @@
 #include <DxLib.h>
 #include "Application.h"
-#include "TitleScene.h"
-#include "GameScene.h"
+#include "SceneManager.h"
 
 Application::Application()
 {
@@ -10,9 +9,6 @@ Application::Application()
 
 Application::~Application()
 {
-
-	delete titleScene;
-	delete gameScene;
 
 }
 
@@ -23,21 +19,15 @@ bool Application::SystemInit(void)
 	SetGraphMode(SCREEN_SIZE_WID, SCREEN_SIZE_HIG,32);
 	if (DxLib_Init() == -1) return false;
 
+
 	ChangeWindowMode(false);
 	return true;
 }
 
 bool Application::GameInit(void)
 {
-
-
-	titleScene = new TitleScene();
-	titleScene->Initialize();
-
-	gameScene = new GameScene();
-	gameScene->GameInit();
-
-	currentScene = titleScene;
+	sceneManager = new SceneManager();
+	sceneManager->ChangeScene(SCENE_TITLE);
 
 	return true;
 }
@@ -60,6 +50,11 @@ bool Application::Release(void)
 
 void Application::Update(void)
 {
+	if (sceneManager != nullptr)
+	{
+		sceneManager->Update();
+	}
+#if 0;
 	if (currentScene != nullptr)
 	{
 		currentScene->Update();
@@ -73,6 +68,8 @@ void Application::Update(void)
 			currentScene = gameScene; 
 		}
 	}
+#endif;
+
 }
 
 void Application::Draw(void)
@@ -80,9 +77,9 @@ void Application::Draw(void)
 	SetDrawScreen(DX_SCREEN_BACK); // •`‰æ‚·‚é‰æ–Ê‚ð— ‚Ì‰æ–Ê‚ÉÝ’è‚·‚é
 	ClearDrawScreen(); // •`‰æ‚·‚é‰æ–Ê‚Ì“à—e‚ðÁ‹Ž(ƒNƒŠƒA)‚·‚é
 
-	if (currentScene != nullptr)
+	if (sceneManager != nullptr)
 	{
-		currentScene->Draw();
+		sceneManager->Draw();
 	}
 
 	ScreenFlip(); // — ‰æ–Ê‚Æ•\‰æ–Ê‚ð“ü‚ê‘Ö‚¦‚é

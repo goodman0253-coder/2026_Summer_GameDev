@@ -29,7 +29,14 @@ public:
 
 	void Jump();
 
-    void SetGameScene(GameScene* scene) { gameScene = scene; }
+    // 外部（GameSceneなど）から体力を取得するための関数
+    int GetHp() const { return hp; }
+
+    // 無敵中かどうかを判定する関数（タイマーが0より大きければ無敵）
+    bool IsInvincible() const { return invincibleTimer > 0; }
+
+    // ダメージを受ける関数
+    void ApplyDamage();
 
     // アニメーション状態
     enum class ANIM_STATE
@@ -46,12 +53,15 @@ public:
 
     float GetX() const { return playerPosx; }
     float GetY() const { return playerPosy; }
-
+    void SetGameScene(GameScene* scene) { gameScene = scene; };
 private:
     float vy;
     int image;
     bool onGround;
     float speed = 5;
+    int hp = 5;                        // 現在の体力（初期値マックス5）
+    static const int MAX_HP = 5;       // 最大体力
+    int invincibleTimer = 0;           // 無敵時間タイマー（フレーム単位）
 
     int playerImageArray[PLAYER_ANIM_MAX];
 

@@ -32,13 +32,13 @@ void Stage::Initialize()
 
     int xNum = 8;
     int yNum = 58;
-    LoadDivGraph("image/MAP-Office.png", xNum * yNum, xNum, yNum, TILE_SIZE, TILE_SIZE, tileImages);
+    LoadDivGraph("Data/MAP-Office.png", xNum * yNum, xNum, yNum, TILE_SIZE, TILE_SIZE, tileImages);
 
     //マップCSVを読み込む
-    LoadMapCSV("image/MAP02BACKV2.csv", LAYER_BACKGROUND); // 背景用CSV
-    LoadMapCSV("image/MAP02MIDV1.csv", LAYER_MIDDLEGROUND); // 中景用CSV（今のメインマップ）
-    LoadMapCSV("image/MAP02OBJV1.csv", LAYER_OBJECT); // 障害物用CSV
-    LoadMapCSV("image/MAP02FOREV1.csv", LAYER_FOREGROUND); // 前景用CSV
+    LoadMapCSV("Data/MAP02BACKV3.csv", LAYER_BACKGROUND); // 背景用CSV
+    LoadMapCSV("Data/MAP02MIDV3.csv", LAYER_MIDDLEGROUND); // 中景用CSV（今のメインマップ）
+    LoadMapCSV("Data/MAP02OBJV3.csv", LAYER_OBJECT); // 障害物用CSV
+    LoadMapCSV("Data/MAP02FOREV3.csv", LAYER_FOREGROUND); // 前景用CSV
 
 }
 
