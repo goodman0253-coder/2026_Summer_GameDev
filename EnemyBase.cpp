@@ -30,7 +30,7 @@ void EnemyBase::GameInit(void) // ゲーム起動・再開時に必ず呼び出す処理
 {
 
 	// 敵の初期位置を設定する(引数無しの場合デフォルト位置に呼び出し)
-	GameInit(Vector2F(500.0f, 700.0f));
+	GameInit(Vector2F(500.0f, 1250.0f));
 
 }
 
@@ -59,6 +59,11 @@ void EnemyBase::Update(void) // 更新処理
 	{
 		aliveFlg = false;
 	}
+	else
+	{
+		// カメラの中にいるときは更新処理を行う
+		aliveFlg = true;
+	}
 }
 
 void EnemyBase::Draw(void) // 描画処理
@@ -66,8 +71,7 @@ void EnemyBase::Draw(void) // 描画処理
 	float stposX = gInst->GetCameraX();	//カメラ座標X
 	float stposY = gInst->GetCameraY();	//カメラ座標Y
 
-	printfDx("表示");
-	DrawFormatString(0, 40, GetColor(255, 255, 255), "Counter:%d  No:%d", animCounter, animNo);
+	//printfDx("表示");
 	DrawGraph(pos.x - size.x / 2 - stposX,
 		pos.y - size.y / 2 - stposY,
 		img[dir][animNo], true);
