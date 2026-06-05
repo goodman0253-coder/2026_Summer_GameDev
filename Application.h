@@ -2,6 +2,10 @@
 class BaseScene;
 class TitleScene;
 class GameScene;
+class StageSelectScene;
+class GameClearScene;
+class GameOverScene;
+class SceneManager;
 
 class Application
 {
@@ -21,10 +25,7 @@ private:
 	void Update(void);
 	void Draw(void);
 
-	TitleScene* titleScene = nullptr;
-	GameScene* gameScene = nullptr;
-
-	BaseScene* currentScene = nullptr;
+	SceneManager* sceneManager = nullptr;
 
 };
 

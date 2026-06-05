@@ -2,19 +2,13 @@
 #include "BaseScene.h"
 class SceneManager;
 
-class TitleScene:public BaseScene
+class GameClearScene :public BaseScene
 {
-private:
-    int titleImage = -1;
-    int fontTitle = -1;
-
-    int stringWidth = 0;
-    int stringHeight = 0;
+    int gameClearImage = -1;
     SceneManager* sceneManager = nullptr;
-
 public:
-    TitleScene() {}
-    virtual ~TitleScene() {}
+    GameClearScene() {}
+    virtual ~GameClearScene() {}
 
     void Initialize() override;
     void Update() override;

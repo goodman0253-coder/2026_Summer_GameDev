@@ -1,20 +1,17 @@
+#if 0
+
 #pragma once
 #include "BaseScene.h"
 class SceneManager;
 
-class TitleScene:public BaseScene
+class GameOverScene :public BaseScene
 {
 private:
-    int titleImage = -1;
-    int fontTitle = -1;
-
-    int stringWidth = 0;
-    int stringHeight = 0;
+    int gameOverImage = -1;
     SceneManager* sceneManager = nullptr;
-
 public:
-    TitleScene() {}
-    virtual ~TitleScene() {}
+    GameOverScene() {}
+    virtual ~GameOverScene() {}
 
     void Initialize() override;
     void Update() override;
@@ -22,4 +19,4 @@ public:
     bool Release(void);
     void SetSceneManager(SceneManager* sm) { sceneManager = sm; }
 };
-
+#endif

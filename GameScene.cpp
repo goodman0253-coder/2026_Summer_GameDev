@@ -1,4 +1,5 @@
 ﻿#include <DxLib.h>
+#include "SceneManager.h"
 #include "GameScene.h"
 #include "Player.h"
 #include "Stage.h"
@@ -49,6 +50,10 @@ bool GameScene::GameInit(void)
 	player->GameInit();
 	stage = new Stage();
 	stage->Initialize();
+	 
+	//仮のクリア
+	isClearTriggered = false;
+	clearTimer = 0;
 
 	return true;
 }
@@ -59,9 +64,11 @@ void GameScene::Initialize()
 
 void GameScene::Update(void)
 {
+
 	if (player != nullptr)
 	{
 		player->Update();
+		cameraY = player->GetY() - (SCREEN_HEIGHT / 2);
 	}
 
 	for (auto* bread : breadList)
@@ -94,23 +101,77 @@ void GameScene::Update(void)
 	}
 
 	// プレイヤーの座標(playerX, playerY)が画面中央に来るようにカメラを配置
-	cameraX = player->GetX() - (SCREEN_WIDTH / 2);
+
+	if (cameraX != Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH)
+	{
+		cameraX = player->GetX() - (SCREEN_WIDTH / 2);
+	}
+
 	if (cameraX <= 0)
 	{
 		cameraX = 0;
 	}
-	cameraY = player->GetY() - (SCREEN_HEIGHT / 2);
+	if (cameraX >= Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH)
+	{
+
+		cameraX = Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH;
+		
+	}
+
+	if (player != nullptr && !player->IsInvincible())
+	{
+		// すべてのエネミーに対して当たり判定をチェック
+		for (auto enemy : enemys)
+		{
+			if (enemy == nullptr) continue;
+
+			
+		}
+	}
+	if (player != nullptr && player->GetHp() <= 0)
+	{
+		if (sceneManager != nullptr)
+		{
+			
+			sceneManager->ChangeScene(SCENE_GAMEOVER);
+			return;
+		}
+	}
+
+	//仮のクリア
+	if (cameraX >= Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - (SCREEN_WIDTH * 1.5))
+	{
+		//ここ
+		if (!isClearTriggered)
+		{
+			isClearTriggered = true;
+			clearTimer = 0; // タイマーをリセット
+		}
+	}
+
+
+	if (isClearTriggered)
+	{
+		clearTimer++; // 毎フレーム 1 ずつ増やす
+
+		// 3秒（60フレーム × 3秒 = 180フレーム）経ったらシーン遷移
+		if (clearTimer >= 180)
+		{
+			if(sceneManager != nullptr)
+			{
+				
+				sceneManager->ChangeScene(SCENE_GAMECLEAR);// 現在のシーンを保持
+
+			}
+
+		}
+	}
+
 
 }
 
 void GameScene::Draw(void)
 {
-	// --- ここからテスト用：地面を描く ---
-	// 画面の下の方に、50ピクセルおきに縦線を引く
-	for (int i = 0; i < 20000; i += 50) {
-		int x = (int)(i - cameraX);
-		DrawLine(x, 0, x, 3000, GetColor(100, 100, 100));
-	}
 
 	if (stage != nullptr)
 	{
@@ -147,6 +208,24 @@ void GameScene::Draw(void)
 
 		// 前景を描く
 		stage->Draw(cameraX, cameraY, LAYER_FOREGROUND);
+	}
+
+	if (player != nullptr)
+	{
+		SetFontSize(40);
+		DrawFormatString(50, 50, GetColor(255, 255, 255), "PLAYER HP: %d / 5", player->GetHp());
+
+		if (player->IsInvincible())
+		{
+			DrawString(50, 100, "INVINCIBLE!!", GetColor(255, 0, 0));
+		}
+	}
+
+	// --- ここからテスト用：地面を描く ---
+	// 画面の下の方に、64ピクセルおきに縦線を引く
+	for (int i = 0; i < 20000; i += 64) {
+		int x = (int)(i - cameraX);
+		DrawLine(x, 0, x, 3000, GetColor(100, 100, 100));
 	}
 }
 

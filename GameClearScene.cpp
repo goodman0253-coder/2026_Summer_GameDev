@@ -1,31 +1,32 @@
+#include "GameClearScene.h"
+#include "SceneManager.h"
 #include <DxLib.h>
 #include <string>
-#include "TitleScene.h"
-#include "Application.h"
-#include "SceneManager.h"
 
-void TitleScene::Initialize()
+#include "Application.h"
+
+void GameClearScene::Initialize()
 {
-    titleImage = LoadGraph("image/title.png");
+    gameClearImage = LoadGraph("image/GameClear.png");
 
 }
 
-void TitleScene::Update()
+void GameClearScene::Update()
 {
 
     if (CheckHitKey(KEY_INPUT_SPACE))
     {
-        sceneManager->ChangeScene(SCENE_GAME);
+        sceneManager->ChangeScene(SCENE_TITLE);
     }
 }
 
-void TitleScene::Draw(void)
+void GameClearScene::Draw(void)
 {
 
 
-    if (titleImage != -1)
+    if (gameClearImage != -1)
     {
-        DrawExtendGraph(0, 0, Application::SCREEN_SIZE_WID, Application::SCREEN_SIZE_HIG, titleImage, true);
+        DrawExtendGraph(0, 0, Application::SCREEN_SIZE_WID, Application::SCREEN_SIZE_HIG, gameClearImage, true);
     }
     //else
     //{
@@ -41,18 +42,21 @@ void TitleScene::Draw(void)
     {
         SetFontSize(100);
         DrawString(450, 600, "PRESS SPACE TO START", GetColor(255, 255, 0));
-        
-       
+
+
     }
 }
 
-bool TitleScene::Release(void)
+bool GameClearScene::Release(void)
 {
 
-    if (titleImage != -1)
+    if (gameClearImage != -1)
     {
-        DeleteGraph(titleImage);
+        DeleteGraph(gameClearImage);
     }
 
     return false;
 }
+
+                 
+   
