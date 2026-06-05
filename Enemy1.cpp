@@ -28,8 +28,7 @@ void Enemy1::Update(void)
 
 	if (shotTimer % 120 == 0)
 	{
-		Vector2F bulletVel = { -3.0f, 0.0f }; // 弾の速度ベクトル
-
+		Vector2F bulletVel = { -3.0f, 0.0f }; // 弾の速度ベクト
 		EnemyBulletBase* newBullet = new BulletST1A();
 		
 		if (gInst != nullptr)

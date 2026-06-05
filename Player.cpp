@@ -36,8 +36,8 @@ bool Player::SystemInit()
 bool Player::GameInit()
 {
 	vy = 0.0f;
-	playerPosx = 4000;
-	playerPosy = 500;
+	playerPosx = 2000;
+	playerPosy = 1200;
 	return true;
 }
 
@@ -46,14 +46,14 @@ void Player::Update()
 
 	Run();
 	
-	vy += 0.5f; // é‡åŠ›
+	vy += 0.5f; // d—Í
 	if (vy > 5.0f)
 	{
 		vy = 5.0f;
 	}
-	playerPosy += vy; // åº§æ¨™ã‚’æ›´æ–°
+	playerPosy += vy; // À•W‚ğXV
 
-	// åœ°é¢ã«è¡çªã—ãŸã‚‰æ­¢ã¾ã‚‹
+	// ’n–Ê‚ÉÕ“Ë‚µ‚½‚ç~‚Ü‚é
 	if (playerPosy > 1200.0f)
 	{
 		playerPosy = 1200.0f;
@@ -86,11 +86,11 @@ void Player::Update()
 
 	if (CheckHitKey(KEY_INPUT_V) && shotCoolTime == 0)
 	{
-		// ãƒ‘ãƒ³ã‚’ç”Ÿæˆã™ã‚‹ï¼ˆãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ä¸­å¿ƒä»˜è¿‘ã‹ã‚‰ç™ºå°„ï¼‰
+		// ƒpƒ“‚ğ¶¬‚·‚éiƒvƒŒƒCƒ„[‚Ì’†S•t‹ß‚©‚ç”­Ëj
 		float spawnX = playerPosx;
 		float spawnY = playerPosy;
 
-		// â­• åŸºæœ¬ã®ãƒ‘ãƒ³ï¼ˆBreadï¼‰ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ä½œæˆ
+		// ? Šî–{‚Ìƒpƒ“iBreadj‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğì¬
 		Bread* newBread = new Bread(spawnX, spawnY, playerDir);
 
 		if (gameScene != nullptr)
@@ -98,42 +98,42 @@ void Player::Update()
 			gameScene->AddBread(newBread);
 		}
 
-		// ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ ã‚’3ç§’ï¼ˆ1ç§’=60ãƒ•ãƒ¬ãƒ¼ãƒ  Ã— 3 = 180ãƒ•ãƒ¬ãƒ¼ãƒ ï¼‰ã«è¨­å®š
+		// ƒN[ƒ‹ƒ^ƒCƒ€‚ğ3•bi1•b=60ƒtƒŒ[ƒ€ ~ 3 = 180ƒtƒŒ[ƒ€j‚Éİ’è
 		shotCoolTime = 180;
 	}
 
 	if (invincibleTimer > 0)
 	{
-		invincibleTimer--; // 1ãƒ•ãƒ¬ãƒ¼ãƒ ã”ã¨ã«1æ¸›ã‚‰ã™ï¼ˆ60ãƒ•ãƒ¬ãƒ¼ãƒ  = 1ç§’ï¼‰
+		invincibleTimer--; // 1ƒtƒŒ[ƒ€‚²‚Æ‚É1Œ¸‚ç‚·i60ƒtƒŒ[ƒ€ = 1•bj
 	}
 }
 
 void Player::Draw(float camX,float camY)
 {
 
-	clsDx();
-	printfDx("PlayerPosX: %.1f, PlayerPosY: %.1f, CameraX: %.1f, CameraY: %.1f\n", playerPosx, playerPosy, camX, camY);
+	//clsDx();
+	//printfDx("PlayerPosX: %.1f, PlayerPosY: %.1f, CameraX: %.1f, CameraY: %.1f\n", playerPosx, playerPosy, camX, camY);
 	if (IsInvincible())
 	{
 		if ((invincibleTimer / 4) % 2 == 0)
 		{
-			return; // ã“ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã¯æç”»ã‚’ã‚¹ã‚­ãƒƒãƒ—ï¼ˆéè¡¨ç¤ºã«ã—ã¦ç‚¹æ»…ã‚’è¡¨ç¾ï¼‰
+			return; // ‚±‚ÌƒtƒŒ[ƒ€‚Í•`‰æ‚ğƒXƒLƒbƒvi”ñ•\¦‚É‚µ‚Ä“_–Å‚ğ•\Œ»j
 		}
 	}
 
-	// æç”»ã™ã‚‹ç”»é¢ä¸Šã®åº§æ¨™ã‚’è¨ˆç®—
+	// •`‰æ‚·‚é‰æ–Êã‚ÌÀ•W‚ğŒvZ
 	int drawX = (int)(playerPosx - camX);
 	int drawY = (int)(playerPosy - camY);
 
-	// â­• ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å‘ããŒã€Œå·¦ï¼ˆLEFTï¼‰ã€ã®ã¨ãã ã‘ç”»åƒã‚’å·¦å³åè»¢ã—ã¦æç”»ã™ã‚‹
+	// ? ƒvƒŒƒCƒ„[‚ÌŒü‚«‚ªu¶iLEFTjv‚Ì‚Æ‚«‚¾‚¯‰æ‘œ‚ğ¶‰E”½“]‚µ‚Ä•`‰æ‚·‚é
 	if (playerDir == AsoUtility::DIR::LEFT)
 	{
-		// DrawTurnGraph( xåº§æ¨™, yåº§æ¨™, ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒãƒ³ãƒ‰ãƒ«, é€éãƒ•ãƒ©ã‚° )
+		// DrawTurnGraph( xÀ•W, yÀ•W, ƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹, “§‰ßƒtƒ‰ƒO )
 		DrawTurnGraph(drawX, drawY, playerImageArray[0], TRUE);
 	}
 	else
 	{
-		// å³å‘ãã€ã‚ã‚‹ã„ã¯ä¸Šä¸‹ã‚’å‘ã„ã¦ã„ã‚‹ã¨ãã¯é€šå¸¸é€šã‚Šæç”»
+		// ‰EŒü‚«A‚ ‚é‚¢‚Íã‰º‚ğŒü‚¢‚Ä‚¢‚é‚Æ‚«‚Í’Êí’Ê‚è•`‰æ
 		DrawGraph(drawX, drawY, playerImageArray[0], TRUE);
 	}
 
@@ -142,7 +142,7 @@ void Player::Draw(float camX,float camY)
 void Player::Run()
 {
 	bool isMoving = false;
-	AsoUtility::DIR moveDir = AsoUtility::DIR::MAX; // åˆæœŸå€¤ã¨ã—ã¦ç„¡åŠ¹ãªå€¤ã‚’è¨­å®š
+	AsoUtility::DIR moveDir = AsoUtility::DIR::MAX; // ‰Šú’l‚Æ‚µ‚Ä–³Œø‚È’l‚ğİ’è
 
 	if (CheckHitKey(KEY_INPUT_UP))
 	{
@@ -200,14 +200,14 @@ void Player::Jump()
 
 void Player::ApplyDamage()
 {
-	// ã™ã§ã«ç„¡æ•µçŠ¶æ…‹ã€ã¾ãŸã¯ä½“åŠ›ãŒ0ãªã‚‰ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’é€šã•ãªã„
+	// ‚·‚Å‚É–³“Gó‘ÔA‚Ü‚½‚Í‘Ì—Í‚ª0‚È‚çƒ_ƒ[ƒW‚ğ’Ê‚³‚È‚¢
 	if (IsInvincible() || hp <= 0) return;
 
-	hp -= 1; // ä½“åŠ›ã‚’1æ¸›ã‚‰ã™
+	hp -= 1; // ‘Ì—Í‚ğ1Œ¸‚ç‚·
 
 	if (hp > 0)
 	{
-		// â­• ã¾ã ç”Ÿãã¦ã„ã‚Œã°2ç§’é–“ï¼ˆ60ãƒ•ãƒ¬ãƒ¼ãƒ Ã—2ï¼120ãƒ•ãƒ¬ãƒ¼ãƒ ï¼‰ã®ç„¡æ•µã‚’ã¤ã‘ã‚‹
+		// ? ‚Ü‚¾¶‚«‚Ä‚¢‚ê‚Î2•bŠÔi60ƒtƒŒ[ƒ€~2120ƒtƒŒ[ƒ€j‚Ì–³“G‚ğ‚Â‚¯‚é
 		invincibleTimer = 120;
 	}
 }
