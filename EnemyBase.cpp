@@ -29,34 +29,14 @@ bool EnemyBase::SystemInit(GameScene* gs) // 初期化処理(最初の１回のみ実行)
 void EnemyBase::GameInit(void) // ゲーム起動・再開時に必ず呼び出す処理
 {
 
-	// 敵の初期位置を設定する
-	Vector2F epos = { gInst->GetCameraX(), gInst->GetCameraY() };
+	// 敵の初期位置を設定する(引数無しの場合デフォルト位置に呼び出し)
+	GameInit(Vector2F(500.0f, 700.0f));
 
-	//// 画面外のランダムな位置に出現させる
-	//switch (eDir) {
-	//case AsoUtility::DIR::UP:
-	//	epos.x += GetRand(Application::SCREEN_SIZE_WID - 1);
-	//	epos.y += Application::SCREEN_SIZE_HIG;
-	//	break;
-	//case AsoUtility::DIR::DOWN:
-	//	epos.x += GetRand(Application::SCREEN_SIZE_WID - 1);
-	//	break;
-	//case AsoUtility::DIR::LEFT:
-	//	epos.y += GetRand(Application::SCREEN_SIZE_HIG - 1);
-	//	epos.x += Application::SCREEN_SIZE_WID;
-	//	break;
-	//case AsoUtility::DIR::RIGHT:
-	//	epos.y += GetRand(Application::SCREEN_SIZE_HIG - 1);
-	//	break;
-	//}
-	
+}
 
-	//pos.x = static_cast<float>(epos.x);
-	//pos.y = static_cast<float>(epos.y);
-
-	pos.x = 500;
-	pos.y = 531;
-
+void EnemyBase::GameInit(Vector2F spawnPos) // ゲーム起動・再開時に必ず呼び出す処理(スポーン位置指定)
+{
+	pos = spawnPos;
 	animCounter = 0;
 	aliveFlg = true;
 	hp = hpMax;
@@ -68,35 +48,17 @@ void EnemyBase::Update(void) // 更新処理
 	animCounter++;
 	animNo = (animCounter / ANIM_INTERVAL) % ANIM_NUMS; //現在表示しているアニメーション番号
 	if (animCounter >= ANIM_INTERVAL * ANIM_NUMS)animCounter = 0; // カウンタのリセット
-	//// プレイヤーの位置
-	//Vector2 pPos = gInst->GetLpPlayer()->GetPlayerPos();
-	//// ベクトル(相手 - 自分)
-	//Vector2F vec = Vector2F(
-	//	static_cast<float>(pPos.x - pos.x),
-	//	static_cast<float>(pPos.y - pos.y)
-	//);
-
-	//// ベクトルの大きさ(長さ)
-	//float size = sqrtf(vec.x * vec.x + vec.y * vec.y);
-	//if (size < speed)
-	//{
-	//	// ブルブルしないように、
-	//	// 移動量よりも、位置差が短い場合は移動しない
-	//}
-	//else
-	//{
-	//	// 方向(単位ベクトル)
-	//	Vector2F direction;
-	//	direction.x = vec.x / size;
-	//	direction.y = vec.y / size;
-	//	// 座標に移動量を加える
-	//	pos.x += static_cast<int>(direction.x * speed);
-	//	pos.y += static_cast<int>(direction.y * speed);
-	//
-	//	// 移動方向の設定
-	//	setMoveDirection(direction);
-	//}
 	
+	// カメラ座標の取得
+	float camX = gInst->GetCameraX();
+	float camY = gInst->GetCameraY();
+
+	// カメラの外に出たら消える
+	if(pos.x < camX -200 || pos.x > camX + 1920 +200 ||
+		pos.y < camY - 200 || pos.y > camY + 1080 + 200)
+	{
+		aliveFlg = false;
+	}
 }
 
 void EnemyBase::Draw(void) // 描画処理
@@ -110,7 +72,6 @@ void EnemyBase::Draw(void) // 描画処理
 		pos.y - size.y / 2 - stposY,
 		img[dir][animNo], true);
 
-	//DrawGraph(150,500,img[0][0], true);
 }
 
 bool EnemyBase::Release(void) // 解放処理(最後の１回のみ実行)
@@ -137,11 +98,7 @@ void EnemyBase::SetEnemyParam(void) // 敵キャラ個別のパラメータ設定処理
 	hpMax = 1;
 }
 
-// プレイヤーにダメージを与える
-// Input:
-// int dp : ダメージ
-// Ountput:
-// 無し
+// 敵にダメージを与える
 void EnemyBase::SetDamage(int dp)
 {
 	hp -= dp;

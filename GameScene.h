@@ -5,15 +5,16 @@
 #include "BreadBase.h"
 class Player;
 class Stage;
+
 class SceneManager;
 class Application;
 
+class EnemyBulletBase;
+
+
 class GameScene:public BaseScene
 {
-
-
 public:
-
 	Stage* GetLpStage(void) { return stage; }
 	Player* GetLpPlayer(void) { return player; }
 	GameScene();
@@ -31,6 +32,9 @@ public:
 	float GetScreenW() const { return SCREEN_WIDTH; }
 
 	void SetSceneManager(SceneManager* sm) { sceneManager = sm; }
+
+	void AddEnemyBullet(EnemyBulletBase* newBullet, Vector2F spawnPos, Vector2F vel);
+
 private:
 
 	Player* player;
@@ -38,6 +42,8 @@ private:
 	SceneManager* sceneManager = nullptr;
 	Application* application = nullptr;
 	std::vector<EnemyBase*> enemys;
+	std::vector<EnemyBulletBase*> enemyBullets;
+
 	std::vector<BreadBase*> breadList;
 	float cameraX = 0.0f;
 	float cameraY = 0.0f;
@@ -45,9 +51,9 @@ private:
 	const int SCREEN_WIDTH = 1920;
 	const int SCREEN_HEIGHT = 1080;
 
-	//‰¼‚ÌƒNƒŠƒA
-	bool isClearTriggered = false; // ƒNƒŠƒA‰‰o‚ªŠJn‚³‚ê‚½‚©
-	int clearTimer = 0;            // 3•b‚ğ”‚¦‚é‚½‚ß‚Ìƒ^ƒCƒ}[
-	
+	//ï¿½ï¿½ï¿½ÌƒNï¿½ï¿½ï¿½A
+	bool isClearTriggered = false; // ï¿½Nï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½oï¿½ï¿½ï¿½Jï¿½nï¿½ï¿½ï¿½ê‚½ï¿½ï¿½
+	int clearTimer = 0;            // 3ï¿½bï¿½ğ”‚ï¿½ï¿½é‚½ï¿½ß‚Ìƒ^ï¿½Cï¿½}ï¿½[
+	bool isPlayerAlive = true; // ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½Ô‚ï¿½ï¿½Ç—ï¿½ï¿½ï¿½ï¿½ï¿½tï¿½ï¿½ï¿½O
 };
 

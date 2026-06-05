@@ -6,10 +6,11 @@
 #include "Application.h"
 
 class GameScene;
+
 class EnemyBase
 {
 public:
-	enum class ENEMY_TYPE
+	enum class ENEMY_TYPE //ENEMYの種類
 	{
 		E_TYPE_ST1_A,
 		
@@ -25,6 +26,7 @@ public:
 
 	virtual bool SystemInit(GameScene* gs); // 初期化処理(最初の１回のみ実行)
 	virtual void GameInit(void); // ゲーム起動・再開時に必ず呼び出す処理
+	virtual void GameInit(Vector2F spawnPos); // ゲーム起動・再開時に必ず呼び出す処理(スポーン位置指定)
 	virtual void Update(void); // 更新処理
 	virtual void Draw(void); // 描画処理
 	virtual bool Release(void); // 解放処理(最後の１回のみ実行)

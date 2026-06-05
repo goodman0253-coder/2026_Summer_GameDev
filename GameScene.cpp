@@ -34,6 +34,16 @@ GameScene::~GameScene()
 		delete stage;
 		stage = nullptr;
 	}
+
+	for (size_t i = 0; i < enemys.size(); i++)
+	{
+		if (enemys[i] != nullptr)
+		{
+			enemys[i]->Release();
+			delete enemys[i];
+		}
+	}
+	enemyBullets.clear();
 }
 
 bool GameScene::SystemInit(void)
@@ -60,6 +70,19 @@ bool GameScene::GameInit(void)
 
 void GameScene::Initialize()
 {
+}
+
+void GameScene::AddEnemyBullet(EnemyBulletBase* newBullet, Vector2F spawnPos, Vector2F vel)
+{
+	if (newBullet != nullptr)
+	{
+		if (newBullet != nullptr)
+		{
+			newBullet->SystemInit(this); // �G�e�̉摜��ǂݍ���
+			newBullet->GameInit(spawnPos, vel); // �G�e�̏����ʒu�Ƒ��x��ݒ�
+			enemyBullets.push_back(newBullet); // GamwScene�̃��X�g�ɒǉ�
+		}
+	}
 }
 
 void GameScene::Update(void)
@@ -100,6 +123,30 @@ void GameScene::Update(void)
 		}
 	}
 
+
+	for (size_t i = 0; i < enemyBullets.size(); i++)
+	{
+		if (enemyBullets[i] != nullptr)
+		{
+			enemyBullets[i]->Update();
+		}
+	}
+	// �������Ă��Ȃ��G�e�����X�g����폜����
+	auto bitr = enemyBullets.begin();
+	while (bitr != enemyBullets.end())
+	{
+		if (!(*bitr)->GetAlive())
+		{
+			(*bitr)->Release();
+			delete (*bitr);
+			bitr = enemyBullets.erase(bitr);
+		}
+		else
+		{
+			++bitr;
+		}
+	}
+	// �v���C���[�̍��W(playerX, playerY)����ʒ����ɗ���悤�ɃJ������z�u
 	// プレイヤーの座標(playerX, playerY)が画面中央に来るようにカメラを配置
 
 	if (cameraX != Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH)
@@ -201,6 +248,14 @@ void GameScene::Draw(void)
 		bread->Draw(cameraX, cameraY);
 	}
 
+	// �G�̒e��`��
+	for (size_t i = 0; i < enemyBullets.size(); i++)
+	{
+		if (enemyBullets[i] != nullptr)
+		{
+			enemyBullets[i]->Draw();
+		}
+	}
 	if (stage != nullptr)
 	{
 		// 前景を描く
@@ -233,6 +288,15 @@ bool GameScene::Release(void)
 {
 	if (player != nullptr) { delete player; player = nullptr; }
 	if (stage != nullptr) { delete stage;  stage = nullptr; }
+	for (size_t i = 0; i < enemyBullets.size(); i++)
+	{
+		if (enemyBullets[i] != nullptr)
+		{
+			enemyBullets[i]->Release();
+			delete enemyBullets[i];
+		}
+	}
+	enemyBullets.clear();
 	for (auto* bread : breadList)
 	{
 		delete bread;
