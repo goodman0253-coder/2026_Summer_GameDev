@@ -33,7 +33,12 @@ void Enemy1::Update(void)
 		
 		if (gInst != nullptr)
 		{
-			gInst->AddEnemyBullet(newBullet, this->pos, bulletVel);
+			Vector2F spownPos = this->pos; // 敵の現在位置を取得
+
+			spownPos.x -= 20.0f; // 弾のスポーン位置をトランペットの位置に調整
+			spownPos.y -= 10.0f; // 弾のスポーン位置をトランペットの位置に調整
+
+			gInst->AddEnemyBullet(newBullet, spownPos, bulletVel);
 		}
 	}
 }
