@@ -51,6 +51,9 @@ public:
 
 	// 敵にダメージを与える
 	void SetDamage(int dp);
+	
+	// 敵の画像サイズ
+	Vector2 size;
 protected:
 	GameScene* gInst; // ゲームシーンのインスタンスのポインタ
 
@@ -66,10 +69,6 @@ protected:
 
 	// 敵の画像ファイル名
 	std::string imgFName;
-
-	// 敵の画像サイズ
-	Vector2 size;
-
 	// 敵の移動速度
 	float speed;
 };
