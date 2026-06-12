@@ -78,7 +78,10 @@ void EnemyBase::Draw(void) // 描画処理
 	DrawGraph(pos.x - size.x / 2 - stposX,
 		pos.y - size.y / 2 - stposY,
 		img[dir][animNo], true);
-
+	// 当たり判定の可視化（デバッグ用）
+	DrawBox(pos.x - 16 - stposX, pos.y - size.y / 2 - stposY,
+		pos.x + 16 - stposX, pos.y + size.y / 2 - stposY,
+		GetColor(255, 0, 0), FALSE);
 }
 
 bool EnemyBase::Release(void) // 解放処理(最後の１回のみ実行)
