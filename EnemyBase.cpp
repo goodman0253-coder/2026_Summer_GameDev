@@ -44,6 +44,9 @@ void EnemyBase::GameInit(Vector2F spawnPos) // ƒQ[ƒ€‹N“®EÄŠJ‚É•K‚¸ŒÄ‚Ño‚·
 
 void EnemyBase::Update(void) // XVˆ—
 {
+	// €‚ñ‚Å‚¢‚é‚Æ‚«‚ÍXV‚µ‚È‚¢
+	if (hp <= 0) return;
+
 	// ƒAƒjƒ[ƒVƒ‡ƒ“ƒJƒEƒ“ƒ^‚Ìis
 	animCounter++;
 	animNo = (animCounter / ANIM_INTERVAL) % ANIM_NUMS; //Œ»İ•\¦‚µ‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“”Ô†
@@ -75,7 +78,10 @@ void EnemyBase::Draw(void) // •`‰æˆ—
 	DrawGraph(pos.x - size.x / 2 - stposX,
 		pos.y - size.y / 2 - stposY,
 		img[dir][animNo], true);
-
+	// “–‚½‚è”»’è‚Ì‰Â‹‰»iƒfƒoƒbƒO—pj
+	DrawBox(pos.x - 16 - stposX, pos.y - size.y / 2 - stposY,
+		pos.x + 16 - stposX, pos.y + size.y / 2 - stposY,
+		GetColor(255, 0, 0), FALSE);
 }
 
 bool EnemyBase::Release(void) // ‰ğ•úˆ—(ÅŒã‚Ì‚P‰ñ‚Ì‚İÀs)

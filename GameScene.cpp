@@ -1,9 +1,10 @@
-﻿#include <DxLib.h>
+#include <DxLib.h>
 #include "SceneManager.h"
 #include "GameScene.h"
 #include "Player.h"
 #include "Stage.h"
 #include "EnemyBase.h"
+#include "EnemyBulletBase.h"
 #include "Enemy1.h"
 #include "BreadBase.h"
 #include "Bread.h"
@@ -78,9 +79,36 @@ void GameScene::AddEnemyBullet(EnemyBulletBase* newBullet, Vector2F spawnPos, Ve
 	{
 		if (newBullet != nullptr)
 		{
-			newBullet->SystemInit(this); // 
-			newBullet->GameInit(spawnPos, vel); // 
-			enemyBullets.push_back(newBullet); // 
+
+			newBullet->SystemInit(this); // EnemyBulletBaseのSystemInit()にGameSceneのインスタンスを渡す
+			newBullet->GameInit(spawnPos, vel); // EnemyBulletBaseのGameInit()に初期位置と速度を設定
+			enemyBullets.push_back(newBullet); // GameSceneの敵弾リストに追加
+		}
+	}
+}
+
+void GameScene::CollisionCheckPE()
+{
+	PX = player->GetX();
+	PY = player->GetY();
+
+	for(int i =0;i< enemys.size();i++)
+	{
+		if (enemys[i] != nullptr)
+		{
+			Vector2F pos = enemys[i]->GetEnemyPos(); // EnemyBase のインスタンスから取得
+			EX = (int)pos.x;
+			EY = (int)pos.y;
+			
+			if (PX + 23 < EX + 16 && // プレイヤーの右端が敵の左端より左にある場合
+				PX + Player::PLAYER_WID - 23 > EX - 16 && // プレイヤーの左端が敵の右端より右にある場合
+				PY < EY + (enemys[i]->GetEnemySize().y / 2) && // プレイヤーの下端が敵の上端より下にある場合
+				PY + Player::PLAYER_HIG > EY - (enemys[i]->GetEnemySize().y / 2)) // プレイヤーの上端が敵の下端より上にある場合
+			{
+				player->ApplyDamage(); // プレイヤーにダメージを与える関数を呼び出す
+				//player->invincibleTimer = 120; // 無敵時間を120フレーム（約2秒）に設定
+			}
+
 		}
 	}
 }
@@ -123,7 +151,7 @@ void GameScene::Update(void)
 		}
 	}
 
-
+	// すべての敵弾に対して更新処理を行う
 	for (size_t i = 0; i < enemyBullets.size(); i++)
 	{
 		if (enemyBullets[i] != nullptr)
@@ -131,7 +159,7 @@ void GameScene::Update(void)
 			enemyBullets[i]->Update();
 		}
 	}
-	// 
+	// 画面外に出た敵弾を削除する処理
 	auto bitr = enemyBullets.begin();
 	while (bitr != enemyBullets.end())
 	{
@@ -146,7 +174,7 @@ void GameScene::Update(void)
 			++bitr;
 		}
 	}
-	// �v���C���[�̍��W(playerX, playerY)����ʒ����ɗ���悤�ɃJ������z�u
+	// すべての敵弾に対して更新処理を行う
 	// プレイヤーの座標(playerX, playerY)が画面中央に来るようにカメラを配置
 
 	if (cameraX != Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH)
@@ -212,7 +240,7 @@ void GameScene::Update(void)
 
 		}
 	}
-
+	CollisionCheckPE(); // プレイヤーと敵の当たり判定を行う関数
 
 }
 
@@ -241,13 +269,13 @@ void GameScene::Draw(void)
 		eitr++;
 	};        
 
-	// 2. ⭕ すべてのパンの描画処理
+	// 2. ? すべてのパンの描画処理
 	for (auto* bread : breadList)
 	{
 		bread->Draw(cameraX, cameraY);
 	}
 
-	// �G�̒e��`��
+	//すべての敵弾の描画処理
 	for (size_t i = 0; i < enemyBullets.size(); i++)
 	{
 		if (enemyBullets[i] != nullptr)

@@ -21,9 +21,9 @@ void BulletST1A::Update(void)
 
 	if (velocity.x != 0.0f)
 	{
-		float waveAmplitude = 4.0f; // —h‚ê‚ÌU•
+		float waveAmplitude = 5.0f; // —h‚ê‚ÌU•
 
-		float waveSpeed = 0.1f; // —h‚ê‚Ì‘¬“x
+		float waveSpeed = 0.2f; // —h‚ê‚Ì‘¬“x
 
 		pos.y += sinf(static_cast<float>(waveTimer) * waveSpeed) * waveAmplitude;
 	}
