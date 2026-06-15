@@ -1,36 +1,35 @@
-#if 0
-
-
-
 #include "GameOverScene.h"
 #include "SceneManager.h"
 #include <DxLib.h>
 #include <string>
-
 #include "Application.h"
+#include "InputManager.h"
 
-void GameClearScene::Initialize()
+void GameOverScene::Initialize()
 {
-    gameOverImage = LoadGraph("image/GamOver.png");
+    gameOverImage = LoadGraph("image/GameOver.png");
 
 }
 
-void GameClearScene::Update()
+void GameOverScene::Update()
 {
 
-    if (CheckHitKey(KEY_INPUT_SPACE))
+    if (InputManager::GetInstance().IsTrgDown(KEY_INPUT_SPACE))
     {
-        sceneManager->ChangeScene(SCENE_TITLE);
+        if (sceneManager != nullptr)
+        {
+            sceneManager->ChangeScene(SCENE_TITLE);
+        }
     }
 }
 
-void GameClearScene::Draw(void)
+void GameOverScene::Draw(void)
 {
 
 
-    if (gameClearImage != -1)
+    if (gameOverImage != -1)
     {
-        DrawExtendGraph(0, 0, Application::SCREEN_SIZE_WID, Application::SCREEN_SIZE_HIG, gameClearImage, true);
+        DrawExtendGraph(0, 0, Application::SCREEN_SIZE_WID, Application::SCREEN_SIZE_HIG, gameOverImage, true);
     }
     //else
     //{
@@ -39,7 +38,7 @@ void GameClearScene::Draw(void)
     //DrawBox(0, 0, 640, 480, 0xffffff, TRUE);PRESS SPACE TO START
 
 
-
+#if 0
     static int blinkTimer = 0;
     blinkTimer++;
     if ((blinkTimer / 30) % 2 == 0)
@@ -49,9 +48,10 @@ void GameClearScene::Draw(void)
 
 
     }
+#endif
 }
 
-bool GameClearScene::Release(void)
+bool GameOverScene::Release(void)
 {
 
     if (gameOverImage != -1)
@@ -61,4 +61,3 @@ bool GameClearScene::Release(void)
 
     return false;
 }
-#endif
