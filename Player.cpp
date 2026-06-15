@@ -54,9 +54,9 @@ void Player::Update()
 	playerPosy += vy; // 座標を更新
 
 	// 地面に衝突したら止まる
-	if (playerPosy > 1200.0f)
+	if (playerPosy > 1225.0f)
 	{
-		playerPosy = 1200.0f;
+		playerPosy = 1225.0f;
 		vy = 0.0f;
 		Jump();
 	}

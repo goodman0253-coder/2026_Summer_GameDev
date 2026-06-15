@@ -74,5 +74,6 @@ void BreadBase::Draw(float cameraX, float cameraY)
         // 画像がない場合の仮描画（黄色い丸）
         DrawCircle(drawX + width / 2, drawY + height / 2, width / 2, GetColor(255, 255, 0), TRUE);
     }
-    
+	// 当たり判定の可視化（デバッグ用）
+	DrawBox(drawX, drawY, drawX + width, drawY + height, GetColor(255, 0, 0), FALSE);
 }

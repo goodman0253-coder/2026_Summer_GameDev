@@ -52,6 +52,9 @@ public:
 	// 敵にダメージを与える
 	void SetDamage(int dp);
 	
+	// 無敵中かどうかを判定する関数（タイマーが0より大きければ無敵）
+	bool IsInvincible() const { return invincibleTimer > 0; }
+
 	// 敵の画像サイズ
 	Vector2 size;
 protected:
@@ -66,6 +69,7 @@ protected:
 	int hp; // ヒットポイント
 	int hpMax; // ヒットポイント最大値
 	bool aliveFlg; // 生存フラグ
+	int invincibleTimer; // 無敵時間タイマー（フレーム単位）
 
 	// 敵の画像ファイル名
 	std::string imgFName;

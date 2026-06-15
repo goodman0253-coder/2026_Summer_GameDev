@@ -86,6 +86,31 @@ void GameScene::AddEnemyBullet(EnemyBulletBase* newBullet, Vector2F spawnPos, Ve
 	}
 }
 
+void GameScene::CollisionCheckPB()
+{
+	PX = player->GetX();
+	PY = player->GetY();
+
+	for (size_t i = 0; i < enemyBullets.size(); i++)
+	{
+		if (enemyBullets[i] != nullptr)
+		{
+			Vector2F pos = enemyBullets[i]->GetPos(); // EnemyBulletBase のインスタンスから取得
+			BX = (int)pos.x;
+			BY = (int)pos.y;
+
+			if (PX + 23 < BX + (enemyBullets[i]->GetSize().x / 2) && // プレイヤーの右端が敵の弾の左端より左にある場合
+				PX + Player::PLAYER_WID - 23 > BX - (enemyBullets[i]->GetSize().x / 2) && // プレイヤーの左端が敵の弾の右端より右にある場合
+				PY < BY + (enemyBullets[i]->GetSize().y / 2) && // プレイヤーの下端が敵の弾の上端より下にある場合
+				PY + Player::PLAYER_HIG > BY - (enemyBullets[i]->GetSize().y / 2)) // プレイヤーの上端が敵の弾の下端より上にある場合
+			{
+				player->ApplyDamage(); // プレイヤーにダメージを与える関数を呼び出す
+				enemyBullets[i]->SetAlive(false); // 当たった弾は消えるようにする
+			}
+		}
+	}
+}
+
 void GameScene::CollisionCheckPE()
 {
 	PX = player->GetX();
@@ -105,7 +130,36 @@ void GameScene::CollisionCheckPE()
 				PY + Player::PLAYER_HIG > EY - (enemys[i]->GetEnemySize().y / 2)) // プレイヤーの上端が敵の下端より上にある場合
 			{
 				player->ApplyDamage(); // プレイヤーにダメージを与える関数を呼び出す
-				//player->invincibleTimer = 120; // 無敵時間を120フレーム（約2秒）に設定
+				enemys[i]->SetDamage(1); // 敵にダメージを与える関数を呼び出す
+			}
+		}
+	}
+}
+
+//　プレイヤーのパンと敵の当たり判定
+void GameScene::CollisionCheckEB()
+{
+	for (int i= 0; i < enemys.size(); i++)
+	{
+		if (enemys[i] != nullptr)
+		{
+			Vector2F enemyPos = enemys[i]->GetEnemyPos();
+			Vector2 enemySize = enemys[i]->GetEnemySize();
+			for (auto* bread : breadList)
+			{
+				if (bread->IsAlive())
+				{
+					Vector2F breadPos = { bread->x, bread->y };
+					Vector2 breadSize = { bread->width, bread->height };
+					if (breadPos.x < enemyPos.x + (enemySize.x / 2) &&
+						breadPos.x + breadSize.x > enemyPos.x - (enemySize.x / 2) &&
+						breadPos.y < enemyPos.y + (enemySize.y / 2) &&
+						breadPos.y + breadSize.y > enemyPos.y - (enemySize.y / 2))
+					{
+						enemys[i]->SetDamage(1); // 敵にダメージを与える関数を呼び出す
+						bread->Kill(); // 当たったパンは消えるようにする
+					}
+				}
 			}
 		}
 	}
@@ -239,6 +293,8 @@ void GameScene::Update(void)
 		}
 	}
 	CollisionCheckPE(); // プレイヤーと敵の当たり判定を行う関数
+	CollisionCheckPB(); // プレイヤーと敵の弾の当たり判定を行う関数
+	CollisionCheckEB(); // 敵の弾とパンの当たり判定を行う関数
 
 }
 

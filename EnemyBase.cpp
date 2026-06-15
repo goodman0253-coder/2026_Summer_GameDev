@@ -44,9 +44,11 @@ void EnemyBase::GameInit(Vector2F spawnPos) // ƒQ[ƒ€‹N“®EÄŠJ‚É•K‚¸ŒÄ‚Ño‚·
 
 void EnemyBase::Update(void) // XVˆ—
 {
-	// €‚ñ‚Å‚¢‚é‚Æ‚«‚ÍXV‚µ‚È‚¢
-	if (hp <= 0) return;
-
+	// €‚ñ‚Å‚¢‚é‚Æ‚«‚ÍÁ‚µ‚ÄXV‚µ‚È‚¢
+	if (hp <= 0 && aliveFlg == false) 
+	{
+		return;
+	}
 	// ƒAƒjƒ[ƒVƒ‡ƒ“ƒJƒEƒ“ƒ^‚Ìis
 	animCounter++;
 	animNo = (animCounter / ANIM_INTERVAL) % ANIM_NUMS; //Œ»İ•\¦‚µ‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“”Ô†
@@ -65,12 +67,31 @@ void EnemyBase::Update(void) // XVˆ—
 	else
 	{
 		// ƒJƒƒ‰‚Ì’†‚É‚¢‚é‚Æ‚«‚ÍXVˆ—‚ğs‚¤
-		aliveFlg = true;
+		if (hp > 0)
+		{
+			aliveFlg = true;
+		}
+	}
+
+	if (invincibleTimer > 0)
+	{
+		invincibleTimer--; // 1ƒtƒŒ[ƒ€‚²‚Æ‚É1Œ¸‚ç‚·i60ƒtƒŒ[ƒ€ = 1•bj
 	}
 }
 
 void EnemyBase::Draw(void) // •`‰æˆ—
 {
+	// €‚ñ‚Å‚¢‚é‚Æ‚«‚ÍÁ‚µ‚Ä•`‰æ‚µ‚È‚¢
+	if (!aliveFlg)return;
+
+	if (IsInvincible())
+	{
+		if ((invincibleTimer / 4) % 2 == 0)
+		{
+			return; // ‚±‚ÌƒtƒŒ[ƒ€‚Í•`‰æ‚ğƒXƒLƒbƒvi”ñ•\¦‚É‚µ‚Ä“_–Å‚ğ•\Œ»j
+		}
+	}
+
 	float stposX = gInst->GetCameraX();	//ƒJƒƒ‰À•WX
 	float stposY = gInst->GetCameraY();	//ƒJƒƒ‰À•WY
 
@@ -82,6 +103,10 @@ void EnemyBase::Draw(void) // •`‰æˆ—
 	DrawBox(pos.x - 16 - stposX, pos.y - size.y / 2 - stposY,
 		pos.x + 16 - stposX, pos.y + size.y / 2 - stposY,
 		GetColor(255, 0, 0), FALSE);
+	// “G‚Ì‚Ì‚±‚èHP‚ğ•\¦‚·‚éiƒfƒoƒbƒO—pj
+	DrawFormatString(pos.x - stposX, pos.y - size.y / 2 - 20 - stposY, GetColor(255, 255, 255), "HP: %d", hp);
+	// ¶€‚ğ•\¦
+	DrawFormatString(pos.x - stposX, pos.y + size.y / 2 + 5 - stposY, GetColor(255, 255, 255), "Alive: %s", aliveFlg ? "True" : "False");
 }
 
 bool EnemyBase::Release(void) // ‰ğ•úˆ—(ÅŒã‚Ì‚P‰ñ‚Ì‚İÀs)
@@ -111,10 +136,20 @@ void EnemyBase::SetEnemyParam(void) // “GƒLƒƒƒ‰ŒÂ•Ê‚Ìƒpƒ‰ƒ[ƒ^İ’èˆ—
 // “G‚Éƒ_ƒ[ƒW‚ğ—^‚¦‚é
 void EnemyBase::SetDamage(int dp)
 {
+	if (IsInvincible()) {
+		return; // –³“G’†‚Íƒ_ƒ[ƒW‚ğó‚¯‚È‚¢
+	}
+
 	hp -= dp;
 	if (hp <= 0) {
 		hp = 0;
 		aliveFlg = false;
+	}
+
+	if (hp > 0)
+	{
+		// ‚Ü‚¾¶‚«‚Ä‚¢‚ê‚Î1•bŠÔi60ƒtƒŒ[ƒ€~160ƒtƒŒ[ƒ€j‚Ì–³“G‚ğ‚Â‚¯‚é
+		invincibleTimer = 60;
 	}
 }
 

@@ -5,17 +5,19 @@
 class BreadBase
 {
 protected:
-    float x, y;       // 座標
+    
     float speedX;     // 移動速度
     bool isAlive;     // 生存フラグ（falseになったら消滅）
     int imageHandle;  // 画像用ハンドル
-    int width, height;// パンのサイズ
+    
 
     AsoUtility::DIR dir;
 
     int lifeTimer;
 
 public:
+    float x, y;       // 座標
+    int width, height;// パンのサイズ
     BreadBase(float startX, float startY, AsoUtility::DIR direction);
     virtual ~BreadBase();
 
