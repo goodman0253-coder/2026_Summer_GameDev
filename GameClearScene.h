@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseScene.h"
 class SceneManager;
+class InputManager;
 
 class GameClearScene :public BaseScene
 {

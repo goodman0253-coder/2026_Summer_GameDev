@@ -2,8 +2,8 @@
 #include "SceneManager.h"
 #include <DxLib.h>
 #include <string>
-
 #include "Application.h"
+#include "InputManager.h"
 
 void GameClearScene::Initialize()
 {
@@ -14,9 +14,12 @@ void GameClearScene::Initialize()
 void GameClearScene::Update()
 {
 
-    if (CheckHitKey(KEY_INPUT_SPACE))
+    if (InputManager::GetInstance().IsTrgDown(KEY_INPUT_SPACE))
     {
-        sceneManager->ChangeScene(SCENE_TITLE);
+        if (sceneManager != nullptr)
+        {
+            sceneManager->ChangeScene(SCENE_TITLE);
+        }
     }
 }
 

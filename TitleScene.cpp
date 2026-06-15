@@ -3,6 +3,7 @@
 #include "TitleScene.h"
 #include "Application.h"
 #include "SceneManager.h"
+#include "InputManager.h"
 
 void TitleScene::Initialize()
 {
@@ -13,9 +14,12 @@ void TitleScene::Initialize()
 void TitleScene::Update()
 {
 
-    if (CheckHitKey(KEY_INPUT_SPACE))
+    if (InputManager::GetInstance().IsTrgDown(KEY_INPUT_SPACE))
     {
-        sceneManager->ChangeScene(SCENE_GAME);
+        if (sceneManager != nullptr)
+        {
+            sceneManager->ChangeScene(SCENE_GAME);
+        }
     }
 }
 

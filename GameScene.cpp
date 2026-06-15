@@ -78,9 +78,9 @@ void GameScene::AddEnemyBullet(EnemyBulletBase* newBullet, Vector2F spawnPos, Ve
 	{
 		if (newBullet != nullptr)
 		{
-			newBullet->SystemInit(this); // �G�e�̉摜��ǂݍ���
-			newBullet->GameInit(spawnPos, vel); // �G�e�̏����ʒu�Ƒ��x��ݒ�
-			enemyBullets.push_back(newBullet); // GamwScene�̃��X�g�ɒǉ�
+			newBullet->SystemInit(this); // 
+			newBullet->GameInit(spawnPos, vel); // 
+			enemyBullets.push_back(newBullet); // 
 		}
 	}
 }
@@ -131,7 +131,7 @@ void GameScene::Update(void)
 			enemyBullets[i]->Update();
 		}
 	}
-	// �������Ă��Ȃ��G�e�����X�g����폜����
+	// 
 	auto bitr = enemyBullets.begin();
 	while (bitr != enemyBullets.end())
 	{
