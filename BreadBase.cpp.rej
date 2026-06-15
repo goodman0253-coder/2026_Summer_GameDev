@@ -1,0 +1,10 @@
+diff a/BreadBase.cpp b/BreadBase.cpp	(rejected hunks)
+@@ -1,6 +0,6 @@
+-﻿#include "BreadBase.h"
++#include "BreadBase.h"
+ #include "DxLib.h"
+-#include "Application.h" // 画面サイズ等の定数があれば
++#include "Application.h" // ��ʃT�C�Y���̒萔�������
+ 
+ BreadBase::BreadBase(float startX, float startY, AsoUtility::DIR direction)
+ {
