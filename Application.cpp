@@ -1,6 +1,7 @@
 #include <DxLib.h>
 #include "Application.h"
 #include "SceneManager.h"
+#include "InputManager.h"
 
 Application::Application()
 {
@@ -26,6 +27,7 @@ bool Application::SystemInit(void)
 
 bool Application::GameInit(void)
 {
+	InputManager::CreateInstance();
 	sceneManager = new SceneManager();
 	sceneManager->ChangeScene(SCENE_TITLE);
 
@@ -50,6 +52,8 @@ bool Application::Release(void)
 
 void Application::Update(void)
 {
+	InputManager::GetInstance().Update();
+
 	if (sceneManager != nullptr)
 	{
 		sceneManager->Update();

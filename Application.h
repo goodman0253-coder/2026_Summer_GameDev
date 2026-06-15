@@ -6,6 +6,7 @@ class StageSelectScene;
 class GameClearScene;
 class GameOverScene;
 class SceneManager;
+class InputManager;
 
 class Application
 {

@@ -9,14 +9,10 @@
 #include "GameScene.h"
 #include "Stage.h"
 
-
 Player::Player() 
 {
 
-
-
 	LoadDivGraph("image/playerV2.png", PLAYER_ANIM_MAX, PLAYER_ANIM_XNUM, PLAYER_ANIM_YNUM, PLAYER_WID, PLAYER_HIG, playerImageArray);
-
 
 }
 
@@ -90,7 +86,7 @@ void Player::Update()
 		float spawnX = playerPosx;
 		float spawnY = playerPosy;
 
-		// ? 基本のパン（Bread）のインスタンスを作成
+		// 基本のパン（Bread）のインスタンスを作成
 		Bread* newBread = new Bread(spawnX, spawnY, playerDir);
 
 		if (gameScene != nullptr)
@@ -209,7 +205,7 @@ void Player::ApplyDamage()
 
 	if (hp > 0)
 	{
-		// ? まだ生きていれば2秒間（60フレーム×2＝120フレーム）の無敵をつける
+		// まだ生きていれば2秒間（60フレーム×2＝120フレーム）の無敵をつける
 		invincibleTimer = 120;
 	}
 }

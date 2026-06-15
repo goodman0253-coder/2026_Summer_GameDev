@@ -53,7 +53,9 @@ public:
 
     float GetX() const { return playerPosx; }
     float GetY() const { return playerPosy; }
+
     void SetGameScene(GameScene* scene) { gameScene = scene; };
+
 private:
     float vy;
     int image;
