@@ -87,6 +87,31 @@ void GameScene::AddEnemyBullet(EnemyBulletBase* newBullet, Vector2F spawnPos, Ve
 	}
 }
 
+void GameScene::CollisionCheckPB()
+{
+	PX = player->GetX();
+	PY = player->GetY();
+
+	for (size_t i = 0; i < enemyBullets.size(); i++)
+	{
+		if (enemyBullets[i] != nullptr)
+		{
+			Vector2F pos = enemyBullets[i]->GetPos(); // EnemyBulletBase から弾の座標を得る
+			BX = (int)pos.x;
+			BY = (int)pos.y;
+
+			if (PX + 23 < BX + (enemyBullets[i]->GetSize().x / 2) && // �v���C���[�̉E�[���G�̒e�̍��[��荶�ɂ���ꍇ
+				PX + Player::PLAYER_WID - 23 > BX - (enemyBullets[i]->GetSize().x / 2) && // �v���C���[�̍��[���G�̒e�̉E�[���E�ɂ���ꍇ
+				PY < BY + (enemyBullets[i]->GetSize().y / 2) && // �v���C���[�̉��[���G�̒e�̏�[��艺�ɂ���ꍇ
+				PY + Player::PLAYER_HIG > BY - (enemyBullets[i]->GetSize().y / 2)) // �v���C���[�̏�[���G�̒e�̉��[����ɂ���ꍇ
+			{
+				player->ApplyDamage(); // プレイヤーにダメージを与える
+				enemyBullets[i]->SetAlive(false); // 敵の弾を消す
+			}
+		}
+	}
+}
+
 void GameScene::CollisionCheckPE()
 {
 	PX = player->GetX();
@@ -105,10 +130,38 @@ void GameScene::CollisionCheckPE()
 				PY < EY + (enemys[i]->GetEnemySize().y / 2) && // プレイヤーの下端が敵の上端より下にある場合
 				PY + Player::PLAYER_HIG > EY - (enemys[i]->GetEnemySize().y / 2)) // プレイヤーの上端が敵の下端より上にある場合
 			{
-				player->ApplyDamage(); // プレイヤーにダメージを与える関数を呼び出す
-				//player->invincibleTimer = 120; // 無敵時間を120フレーム（約2秒）に設定
+				player->ApplyDamage(); // プレイヤーにダメージを与える
+				enemys[i]->SetDamage(1); // エネミーにダメージを与える
 			}
+		}
+	}
+}
 
+//�@�v���C���[�̃p���ƓG�̓����蔻��
+void GameScene::CollisionCheckEB()
+{
+	for (int i= 0; i < enemys.size(); i++)
+	{
+		if (enemys[i] != nullptr)
+		{
+			Vector2F enemyPos = enemys[i]->GetEnemyPos();
+			Vector2 enemySize = enemys[i]->GetEnemySize();
+			for (auto* bread : breadList)
+			{
+				if (bread->IsAlive())
+				{
+					Vector2F breadPos = { bread->x, bread->y };
+					Vector2 breadSize = { bread->width, bread->height };
+					if (breadPos.x < enemyPos.x + (enemySize.x / 2) &&
+						breadPos.x + breadSize.x > enemyPos.x - (enemySize.x / 2) &&
+						breadPos.y < enemyPos.y + (enemySize.y / 2) &&
+						breadPos.y + breadSize.y > enemyPos.y - (enemySize.y / 2))
+					{
+						enemys[i]->SetDamage(1); // �G�Ƀ_���[�W��^����֐����Ăяo��
+						bread->Kill(); // ���������p���͏�����悤�ɂ���
+					}
+				}
+			}
 		}
 	}
 }
@@ -240,8 +293,10 @@ void GameScene::Update(void)
 
 		}
 	}
-	CollisionCheckPE(); // プレイヤーと敵の当たり判定を行う関数
 
+	CollisionCheckPE(); // �v���C���[�ƓG�̓����蔻����s���֐�
+	CollisionCheckPB(); // �v���C���[�ƓG�̒e�̓����蔻����s���֐�
+	CollisionCheckEB(); // �G�̒e�ƃp���̓����蔻����s���֐�
 }
 
 void GameScene::Draw(void)
