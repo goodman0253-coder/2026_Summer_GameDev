@@ -79,6 +79,7 @@ private:
     ANIM_STATE animState;
 
     GameScene* gameScene = nullptr;
+    SceneManager* sceneManager = nullptr;
 
 };
 

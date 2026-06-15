@@ -199,8 +199,10 @@ void Player::Jump()
 void Player::ApplyDamage()
 {
 	// すでに無敵状態、または体力が0ならダメージを通さない
-	if (IsInvincible() || hp <= 0) return;
-
+	if (IsInvincible() || hp <= 0)
+	{
+		return;
+	}
 	hp -= 1; // 体力を1減らす
 
 	if (hp > 0)

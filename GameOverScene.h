@@ -1,8 +1,7 @@
-#if 0
-
 #pragma once
 #include "BaseScene.h"
 class SceneManager;
+class InputManager;
 
 class GameOverScene :public BaseScene
 {
@@ -19,4 +18,3 @@ public:
     bool Release(void);
     void SetSceneManager(SceneManager* sm) { sceneManager = sm; }
 };
-#endif

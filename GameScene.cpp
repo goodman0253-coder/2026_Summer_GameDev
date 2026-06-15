@@ -12,15 +12,17 @@
 
 GameScene::GameScene()
 {
+#if 0
 	enemys.push_back(new Enemy1());
 	for (int i = 0; i < enemys.size();i++)
 	{
-		if (!enemys[i]->SystemInit(this))
-		{
-			printfDx("敵の初期化に失敗");
-		}
+		//if (!enemys[i]->SystemInit(this))
+		//{
+			//printfDx("敵の初期化に失敗");
+		//}
 		enemys[i]->GameInit();
 	}
+#endif
 }
 
 GameScene::~GameScene()
@@ -62,6 +64,19 @@ bool GameScene::GameInit(void)
 	stage = new Stage();
 	stage->Initialize();
 	 
+	EnemyBase* newEnemy = new Enemy1();
+	if (newEnemy != nullptr)
+	{
+		// this (GameScene) を敵に確実に渡す！
+		newEnemy->SystemInit(this);
+
+		// GameInitを呼ぶ（初期位置を設定）
+		newEnemy->GameInit();
+
+		// 準備完了した敵をリストに登録
+		enemys.push_back(newEnemy);
+	}
+
 	//仮のクリア
 	isClearTriggered = false;
 	clearTimer = 0;

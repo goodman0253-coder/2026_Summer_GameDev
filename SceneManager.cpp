@@ -54,7 +54,6 @@ void SceneManager::ProcChangeScene()
         currentScene = tScene;
         break;
     }
-
     case SCENE_GAME:
     {
         
@@ -67,20 +66,20 @@ void SceneManager::ProcChangeScene()
         currentScene = gScene;
         break;
     }
-
     case SCENE_STAGESELECT:
         break;
-
     case SCENE_GAMECLEAR:
     {
-        // ⭕ ゲームクリアシーンも同様に安全に生成します
+        // ゲームクリアシーン
         GameClearScene* cScene = new GameClearScene();
         cScene->SetSceneManager(this);
         currentScene = cScene;
         break;
     }
-
     case SCENE_GAMEOVER:
+        GameOverScene* oScene = new GameOverScene();
+        oScene->SetSceneManager(this);
+        currentScene = oScene;
         break;
     }
 
