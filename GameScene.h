@@ -43,7 +43,7 @@ public:
 
 	void CollisionCheckPB(); // プレイヤーと敵の弾の当たり判定を行う関数
 	void CollisionCheckPE(); // プレイヤーと敵の当たり判定を行う関数
-	void CollisionCheckEB(); // 敵の弾とパンの当たり判定を行う関数
+	void CollisionCheckEB(); // 敵とパンの当たり判定を行う関数
 private:
 
 	Player* player;
