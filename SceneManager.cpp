@@ -46,7 +46,6 @@ void SceneManager::ProcChangeScene()
     {
     case SCENE_TITLE:
     {
-        
         TitleScene* tScene = new TitleScene();
         tScene->SetSceneManager(this);
 
@@ -56,7 +55,6 @@ void SceneManager::ProcChangeScene()
     }
     case SCENE_GAME:
     {
-        
         GameScene* gScene = new GameScene();
 
         gScene->SetSceneManager(this);
@@ -77,6 +75,7 @@ void SceneManager::ProcChangeScene()
         break;
     }
     case SCENE_GAMEOVER:
+    
         GameOverScene* oScene = new GameOverScene();
         oScene->SetSceneManager(this);
         currentScene = oScene;

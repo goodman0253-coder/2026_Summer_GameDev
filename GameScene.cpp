@@ -18,7 +18,7 @@ GameScene::GameScene()
 	{
 		//if (!enemys[i]->SystemInit(this))
 		//{
-			//printfDx("“G‚Ì‰Šú‰»‚É¸”s");
+			//printfDx("æ•µã®åˆæœŸåŒ–ã«å¤±æ•—");
 		//}
 		enemys[i]->GameInit();
 	}
@@ -27,16 +27,8 @@ GameScene::GameScene()
 
 GameScene::~GameScene()
 {
-	if (player != nullptr) 
-	{
-		delete player;
-		player = nullptr;
-	}
-	if (stage != nullptr)
-	{
-		delete stage;
-		stage = nullptr;
-	}
+	if (player != nullptr) { delete player; player = nullptr; }
+	if (stage != nullptr) { delete stage;  stage = nullptr; }
 
 	for (size_t i = 0; i < enemys.size(); i++)
 	{
@@ -67,17 +59,17 @@ bool GameScene::GameInit(void)
 	EnemyBase* newEnemy = new Enemy1();
 	if (newEnemy != nullptr)
 	{
-		// this (GameScene) ‚ğ“G‚ÉŠmÀ‚É“n‚·I
+		// this (GameScene) ã‚’æ•µã«ç¢ºå®Ÿã«æ¸¡ã™ï¼
 		newEnemy->SystemInit(this);
 
-		// GameInit‚ğŒÄ‚Ôi‰ŠúˆÊ’u‚ğİ’èj
+		// GameInitã‚’å‘¼ã¶ï¼ˆåˆæœŸä½ç½®ã‚’è¨­å®šï¼‰
 		newEnemy->GameInit();
 
-		// €”õŠ®—¹‚µ‚½“G‚ğƒŠƒXƒg‚É“o˜^
+		// æº–å‚™å®Œäº†ã—ãŸæ•µã‚’ãƒªã‚¹ãƒˆã«ç™»éŒ²
 		enemys.push_back(newEnemy);
 	}
 
-	//‰¼‚ÌƒNƒŠƒA
+	//ä»®ã®ã‚¯ãƒªã‚¢
 	isClearTriggered = false;
 	clearTimer = 0;
 
@@ -95,33 +87,38 @@ void GameScene::AddEnemyBullet(EnemyBulletBase* newBullet, Vector2F spawnPos, Ve
 		if (newBullet != nullptr)
 		{
 
-			newBullet->SystemInit(this); // EnemyBulletBase‚ÌSystemInit()‚ÉGameScene‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ“n‚·
-			newBullet->GameInit(spawnPos, vel); // EnemyBulletBase‚ÌGameInit()‚É‰ŠúˆÊ’u‚Æ‘¬“x‚ğİ’è
-			enemyBullets.push_back(newBullet); // GameScene‚Ì“G’eƒŠƒXƒg‚É’Ç‰Á
+			newBullet->SystemInit(this); // EnemyBulletBaseã®SystemInit()ã«GameSceneã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’æ¸¡ã™
+			newBullet->GameInit(spawnPos, vel); // EnemyBulletBaseã®GameInit()ã«åˆæœŸä½ç½®ã¨é€Ÿåº¦ã‚’è¨­å®š
+			enemyBullets.push_back(newBullet); // GameSceneã®æ•µå¼¾ãƒªã‚¹ãƒˆã«è¿½åŠ 
 		}
 	}
 }
 
 void GameScene::CollisionCheckPB()
 {
-	PX = player->GetX();
-	PY = player->GetY();
-
-	for (size_t i = 0; i < enemyBullets.size(); i++)
+	if (player != nullptr)
 	{
-		if (enemyBullets[i] != nullptr)
-		{
-			Vector2F pos = enemyBullets[i]->GetPos(); // EnemyBulletBase ‚©‚ç’e‚ÌÀ•W‚ğ“¾‚é
-			BX = (int)pos.x;
-			BY = (int)pos.y;
+		PX = player->GetPosX();
+		PY = player->GetPosY();
 
-			if (PX + 23 < BX + (enemyBullets[i]->GetSize().x / 2) && // ƒvƒŒƒCƒ„[‚Ì‰E’[‚ª“G‚Ì’e‚Ì¶’[‚æ‚è¶‚É‚ ‚éê‡
-				PX + Player::PLAYER_WID - 23 > BX - (enemyBullets[i]->GetSize().x / 2) && // ƒvƒŒƒCƒ„[‚Ì¶’[‚ª“G‚Ì’e‚Ì‰E’[‚æ‚è‰E‚É‚ ‚éê‡
-				PY < BY + (enemyBullets[i]->GetSize().y / 2) && // ƒvƒŒƒCƒ„[‚Ì‰º’[‚ª“G‚Ì’e‚Ìã’[‚æ‚è‰º‚É‚ ‚éê‡
-				PY + Player::PLAYER_HIG > BY - (enemyBullets[i]->GetSize().y / 2)) // ƒvƒŒƒCƒ„[‚Ìã’[‚ª“G‚Ì’e‚Ì‰º’[‚æ‚èã‚É‚ ‚éê‡
+
+		for (size_t i = 0; i < enemyBullets.size(); i++)
+		{
+
+			if (enemyBullets[i] != nullptr)
 			{
-				player->ApplyDamage(); // ƒvƒŒƒCƒ„[‚Éƒ_ƒ[ƒW‚ğ—^‚¦‚é
-				enemyBullets[i]->SetAlive(false); // “G‚Ì’e‚ğÁ‚·
+				Vector2F pos = enemyBullets[i]->GetPos(); // EnemyBulletBase ã‹ã‚‰å¼¾ã®åº§æ¨™ã‚’å¾—ã‚‹
+				BX = (int)pos.x;
+				BY = (int)pos.y;
+
+				if (PX + 23 < BX + (enemyBullets[i]->GetSize().x / 2) && // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å³ç«¯ãŒæ•µã®å¼¾ã®å·¦ç«¯ã‚ˆã‚Šå·¦ã«ã‚ã‚‹å ´åˆ
+					PX + Player::PLAYER_WID - 23 > BX - (enemyBullets[i]->GetSize().x / 2) && // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å·¦ç«¯ãŒæ•µã®å¼¾ã®å³ç«¯ã‚ˆã‚Šå³ã«ã‚ã‚‹å ´åˆ
+					PY < BY + (enemyBullets[i]->GetSize().y / 2) && // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ä¸‹ç«¯ãŒæ•µã®å¼¾ã®ä¸Šç«¯ã‚ˆã‚Šä¸‹ã«ã‚ã‚‹å ´åˆ
+					PY + Player::PLAYER_HIG > BY - (enemyBullets[i]->GetSize().y / 2)) // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ä¸Šç«¯ãŒæ•µã®å¼¾ã®ä¸‹ç«¯ã‚ˆã‚Šä¸Šã«ã‚ã‚‹å ´åˆ
+				{
+					player->ApplyDamage(); // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹
+					enemyBullets[i]->SetAlive(false); // æ•µã®å¼¾ã‚’æ¶ˆã™
+				}
 			}
 		}
 	}
@@ -129,26 +126,28 @@ void GameScene::CollisionCheckPB()
 
 void GameScene::CollisionCheckPE()
 {
-	PX = player->GetX();
-	PY = player->GetY();
-
-	for(int i =0;i< enemys.size();i++)
+	clsDx();
+	player != nullptr ? printfDx("player is valid") : printfDx("player is not valid");
+	if (player != nullptr)
 	{
-		if (enemys[i] != nullptr)
+		PX = player->GetPosX();
+		PY = player->GetPosY();
+		for (int i = 0;i < enemys.size();i++)
 		{
-			Vector2F pos = enemys[i]->GetEnemyPos(); // EnemyBase ‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚©‚çæ“¾
-			EX = (int)pos.x;
-			EY = (int)pos.y;
-			
-			if (enemys[i]->GetAlive()== true)
+			if (enemys[i] != nullptr)
 			{
-				if (PX + 23 < EX + 16 && // ƒvƒŒƒCƒ„[‚Ì‰E’[‚ª“G‚Ì¶’[‚æ‚è¶‚É‚ ‚éê‡
-					PX + Player::PLAYER_WID - 23 > EX - 16 && // ƒvƒŒƒCƒ„[‚Ì¶’[‚ª“G‚Ì‰E’[‚æ‚è‰E‚É‚ ‚éê‡
-					PY < EY + (enemys[i]->GetEnemySize().y / 2) && // ƒvƒŒƒCƒ„[‚Ì‰º’[‚ª“G‚Ìã’[‚æ‚è‰º‚É‚ ‚éê‡
-					PY + Player::PLAYER_HIG > EY - (enemys[i]->GetEnemySize().y / 2)) // ƒvƒŒƒCƒ„[‚Ìã’[‚ª“G‚Ì‰º’[‚æ‚èã‚É‚ ‚éê‡
+				Vector2F pos = enemys[i]->GetEnemyPos(); // EnemyBase EnemyBase ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‹ã‚‰å–å¾—
+				EX = (int)pos.x;
+				EY = (int)pos.y;
+
+				if (PX + 23 < EX + 16 && // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å³ç«¯ãŒæ•µã®å·¦ç«¯ã‚ˆã‚Šå·¦ã«ã‚ã‚‹å ´åˆ
+					PX + Player::PLAYER_WID - 23 > EX - 16 && // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å·¦ç«¯ãŒæ•µã®å³ç«¯ã‚ˆã‚Šå³ã«ã‚ã‚‹å ´åˆ
+					PY < EY + (enemys[i]->GetEnemySize().y / 2) && // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ä¸‹ç«¯ãŒæ•µã®ä¸Šç«¯ã‚ˆã‚Šä¸‹ã«ã‚ã‚‹å ´åˆ
+					PY + Player::PLAYER_HIG > EY - (enemys[i]->GetEnemySize().y / 2)) //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ä¸Šç«¯ãŒæ•µã®ä¸‹ç«¯ã‚ˆã‚Šä¸Šã«ã‚ã‚‹å ´åˆ
 				{
-					player->ApplyDamage(); // ƒvƒŒƒCƒ„[‚Éƒ_ƒ[ƒW‚ğ—^‚¦‚é
-					enemys[i]->SetDamage(1); // ƒGƒlƒ~[‚Éƒ_ƒ[ƒW‚ğ—^‚¦‚é
+					player->ApplyDamage(); // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹
+					enemys[i]->SetDamage(1); // ã‚¨ãƒãƒŸãƒ¼ã«ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹
+
 				}
 			}
 			
@@ -175,8 +174,8 @@ void GameScene::CollisionCheckEB()
 						breadPos.y < enemyPos.y + (enemySize.y / 2) &&
 						breadPos.y + breadSize.y > enemyPos.y - (enemySize.y / 2))
 					{
-						enemys[i]->SetDamage(1); // ƒGƒlƒ~[‚Éƒ_ƒ[ƒW‚ğ—^‚¦‚é
-						bread->Kill(); // ƒpƒ“‚ğÁ‚·
+						enemys[i]->SetDamage(1); // ã‚¨ãƒãƒŸãƒ¼ã«ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹
+						bread->Kill(); // ãƒ‘ãƒ³ã‚’æ¶ˆã™
 					}
 				}
 			}
@@ -190,7 +189,7 @@ void GameScene::Update(void)
 	if (player != nullptr)
 	{
 		player->Update();
-		cameraY = player->GetY() - (SCREEN_HEIGHT / 2);
+		cameraY = player->GetPosY() - (SCREEN_HEIGHT / 2);
 	}
 
 	for (auto* bread : breadList)
@@ -203,14 +202,14 @@ void GameScene::Update(void)
 
 	for (auto it = breadList.begin(); it != breadList.end(); )
 	{
-		if (!(*it)->IsAlive()) // lifeTimer‚ª0‚É‚È‚Á‚ÄIsAlive‚ªfalse‚É‚È‚Á‚½‚ç
+		if (!(*it)->IsAlive()) // lifeTimerãŒ0ã«ãªã£ã¦IsAliveãŒfalseã«ãªã£ãŸã‚‰
 		{
-			delete (*it);              // ƒƒ‚ƒŠ‰ğ•ú
-			it = breadList.erase(it);  // ƒŠƒXƒg‚©‚çœŠO
+			delete (*it);              // ãƒ¡ãƒ¢ãƒªè§£æ”¾
+			it = breadList.erase(it);  // ãƒªã‚¹ãƒˆã‹ã‚‰é™¤å¤–
 		}
 		else
 		{
-			++it; // ¶‚«‚Ä‚¢‚ê‚ÎŸ‚Ö
+			++it; // ç”Ÿãã¦ã„ã‚Œã°æ¬¡ã¸
 		}
 	}
 
@@ -222,7 +221,7 @@ void GameScene::Update(void)
 		}
 	}
 
-	// ‚·‚×‚Ä‚Ì“G’e‚É‘Î‚µ‚ÄXVˆ—‚ğs‚¤
+	// ã™ã¹ã¦ã®æ•µå¼¾ã«å¯¾ã—ã¦æ›´æ–°å‡¦ç†ã‚’è¡Œã†
 	for (size_t i = 0; i < enemyBullets.size(); i++)
 	{
 		if (enemyBullets[i] != nullptr)
@@ -230,7 +229,7 @@ void GameScene::Update(void)
 			enemyBullets[i]->Update();
 		}
 	}
-	// ‰æ–ÊŠO‚Éo‚½“G’e‚ğíœ‚·‚éˆ—
+	// ç”»é¢å¤–ã«å‡ºãŸæ•µå¼¾ã‚’å‰Šé™¤ã™ã‚‹å‡¦ç†
 	auto bitr = enemyBullets.begin();
 	while (bitr != enemyBullets.end())
 	{
@@ -245,28 +244,31 @@ void GameScene::Update(void)
 			++bitr;
 		}
 	}
-	// ‚·‚×‚Ä‚Ì“G’e‚É‘Î‚µ‚ÄXVˆ—‚ğs‚¤
-	// ƒvƒŒƒCƒ„[‚ÌÀ•W(playerX, playerY)‚ª‰æ–Ê’†‰›‚É—ˆ‚é‚æ‚¤‚ÉƒJƒƒ‰‚ğ”z’u
+	// ã™ã¹ã¦ã®æ•µå¼¾ã«å¯¾ã—ã¦æ›´æ–°å‡¦ç†ã‚’è¡Œã†
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åº§æ¨™(playerX, playerY)ãŒç”»é¢ä¸­å¤®ã«æ¥ã‚‹ã‚ˆã†ã«ã‚«ãƒ¡ãƒ©ã‚’é…ç½®
 
-	if (cameraX != Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH)
+	if (player != nullptr)
 	{
-		cameraX = player->GetX() - (SCREEN_WIDTH / 2);
+		if (cameraX != Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH)
+		{
+			cameraX = player->GetPosX() - (SCREEN_WIDTH / 2);
+		}
+
+		if (cameraX <= 0)
+		{
+			cameraX = 0;
+		}
+		if (cameraX >= Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH)
+		{
+			cameraX = Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH;
+		}
 	}
 
-	if (cameraX <= 0)
-	{
-		cameraX = 0;
-	}
-	if (cameraX >= Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH)
-	{
 
-		cameraX = Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH;
-		
-	}
 
 	if (player != nullptr && !player->IsInvincible())
 	{
-		// ‚·‚×‚Ä‚ÌƒGƒlƒ~[‚É‘Î‚µ‚Ä“–‚½‚è”»’è‚ğƒ`ƒFƒbƒN
+		// ã™ã¹ã¦ã®ã‚¨ãƒãƒŸãƒ¼ã«å¯¾ã—ã¦å½“ãŸã‚Šåˆ¤å®šã‚’ãƒã‚§ãƒƒã‚¯
 		for (auto enemy : enemys)
 		{
 			if (enemy == nullptr) continue;
@@ -283,72 +285,74 @@ void GameScene::Update(void)
 			return;
 		}
 	}
-
-	//‰¼‚ÌƒNƒŠƒA
-	if (cameraX >= Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - (SCREEN_WIDTH * 1.5))
+	// ä»®ã®ã‚¯ãƒªã‚¢
+	if (player != nullptr) 
 	{
-		//‚±‚±
-		if (!isClearTriggered)
+		if (cameraX >= Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - (SCREEN_WIDTH * 1.5))
 		{
-			isClearTriggered = true;
-			clearTimer = 0; // ƒ^ƒCƒ}[‚ğƒŠƒZƒbƒg
-		}
-	}
-
-	if (isClearTriggered)
-	{
-		clearTimer++; // –ˆƒtƒŒ[ƒ€ 1 ‚¸‚Â‘‚â‚·
-
-		// 3•bi60ƒtƒŒ[ƒ€ ~ 10•b = 600ƒtƒŒ[ƒ€jŒo‚Á‚½‚çƒV[ƒ“‘JˆÚ
-		if (clearTimer >= 600)
-		{
-			if(sceneManager != nullptr)
+			if (!isClearTriggered)
 			{
-				
-				sceneManager->ChangeScene(SCENE_GAMECLEAR);// Œ»İ‚ÌƒV[ƒ“‚ğ•Û
-
+				isClearTriggered = true;
+				clearTimer = 0; // ã‚¿ã‚¤ãƒãƒ¼ã‚’ãƒªã‚»ãƒƒãƒˆ
 			}
 
 		}
 	}
+		
+	if (isClearTriggered)
+	{
+		clearTimer++; // æ¯ãƒ•ãƒ¬ãƒ¼ãƒ  1 ãšã¤å¢—ã‚„ã™
 
-	CollisionCheckPE(); 
-	CollisionCheckPB();
-	CollisionCheckEB();
+		// 3ç§’ï¼ˆ60ãƒ•ãƒ¬ãƒ¼ãƒ  Ã— 10ç§’ = 600ãƒ•ãƒ¬ãƒ¼ãƒ ï¼‰çµŒã£ãŸã‚‰ã‚·ãƒ¼ãƒ³é·ç§»
+		if (clearTimer >= 600)
+		{
+			if(sceneManager != nullptr)
+			{
+				sceneManager->ChangeScene(SCENE_GAMECLEAR);// ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã‚’ä¿æŒ
+				return;
+			}
+		}
+	}
+	if (player != nullptr)
+	{
+		CollisionCheckPE(); // ï¿½ï½½vï¿½ï½½ï¿½ï½½ï¿½ï½½Cï¿½ï½½ï¿½ï½½ï¿½ï½½[ï¿½ï½½ï¾†æ•µï¿½ï½½ï¾Œé›£ï½¿ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½é˜¡ï½»ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½sï¿½ï½½ï¿½ï½½ï¿½ï½½ï¾–æ’°ï½¿ï½½
+		CollisionCheckPB(); // ï¿½ï½½vï¿½ï½½ï¿½ï½½ï¿½ï½½Cï¿½ï½½ï¿½ï½½ï¿½ï½½[ï¿½ï½½ï¾†æ•µï¿½ï½½ï¾Œå¼¾ï¿½ï½½ï¾Œé›£ï½¿ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½é˜¡ï½»ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½sï¿½ï½½ï¿½ï½½ï¿½ï½½ï¾–æ’°ï½¿ï½½
+		CollisionCheckEB(); // ï¿½ï½½Gï¿½ï½½ï¾Œå¼¾ï¿½ï½½ï¾†ãƒ‘ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¾Œé›£ï½¿ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½é˜¡ï½»ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½sï¿½ï½½ï¿½ï½½ï¿½ï½½ï¾–æ’°ï½¿ï½½
+	}
 }
 
 void GameScene::Draw(void)
 {
 
-	if (stage != nullptr)
+	if (stage != nullptr && player != nullptr)
 	{
-		// ”wŒi‚ğ•`‚­
+		// èƒŒæ™¯ã‚’æã
 		stage->Draw(cameraX, cameraY, LAYER_BACKGROUND);
 
-		// ’†Œi‚ğ•`‚­
+		// ä¸­æ™¯ã‚’æã
 		stage->Draw(cameraX, cameraY, LAYER_MIDDLEGROUND);
 	}
 
-	// ƒvƒŒƒCƒ„[‚ğ•`‰æ
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’æç”»
 	if (player != nullptr)
 	{
 		player->Draw(cameraX, cameraY);
 	}
 
-	size_t size = enemys.size(); // “G‚Ìƒe[ƒuƒ‹‚Ì—v‘f”‚ğæ“¾
-	std::vector<EnemyBase*>::iterator eitr = enemys.begin(); // ƒCƒeƒŒ[ƒ^‚ğæ“¾
+	size_t size = enemys.size(); // æ•µã®ãƒ†ãƒ¼ãƒ–ãƒ«ã®è¦ç´ æ•°ã‚’å–å¾—
+	std::vector<EnemyBase*>::iterator eitr = enemys.begin(); // ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ã‚’å–å¾—
 	for (int ii = 0; ii < size; ii++) {
 		(*eitr)->Draw();
 		eitr++;
 	};        
 
-	// 2. ? ‚·‚×‚Ä‚Ìƒpƒ“‚Ì•`‰æˆ—
+	// 2. ? ã™ã¹ã¦ã®ãƒ‘ãƒ³ã®æç”»å‡¦ç†
 	for (auto* bread : breadList)
 	{
 		bread->Draw(cameraX, cameraY);
 	}
 
-	//‚·‚×‚Ä‚Ì“G’e‚Ì•`‰æˆ—
+	//ã™ã¹ã¦ã®æ•µå¼¾ã®æç”»å‡¦ç†
 	for (size_t i = 0; i < enemyBullets.size(); i++)
 	{
 		if (enemyBullets[i] != nullptr)
@@ -358,10 +362,10 @@ void GameScene::Draw(void)
 	}
 	if (stage != nullptr)
 	{
-		// ‘OŒi‚ğ•`‚­
+		// å‰æ™¯ã‚’æã
 		stage->Draw(cameraX, cameraY, LAYER_OBJECT);
 
-		// ‘OŒi‚ğ•`‚­
+		// å‰æ™¯ã‚’æã
 		stage->Draw(cameraX, cameraY, LAYER_FOREGROUND);
 	}
 
@@ -376,8 +380,8 @@ void GameScene::Draw(void)
 		}
 	}
 
-	// --- ‚±‚±‚©‚çƒeƒXƒg—pF’n–Ê‚ğ•`‚­ ---
-	// ‰æ–Ê‚Ì‰º‚Ì•û‚ÉA64ƒsƒNƒZƒ‹‚¨‚«‚Écü‚ğˆø‚­
+	// --- ã“ã“ã‹ã‚‰ãƒ†ã‚¹ãƒˆç”¨ï¼šåœ°é¢ã‚’æã ---
+	// ç”»é¢ã®ä¸‹ã®æ–¹ã«ã€64ãƒ”ã‚¯ã‚»ãƒ«ãŠãã«ç¸¦ç·šã‚’å¼•ã
 	for (int i = 0; i < 20000; i += 64) {
 		int x = (int)(i - cameraX);
 		DrawLine(x, 0, x, 3000, GetColor(100, 100, 100));
@@ -386,8 +390,6 @@ void GameScene::Draw(void)
 
 bool GameScene::Release(void)
 {
-	if (player != nullptr) { delete player; player = nullptr; }
-	if (stage != nullptr) { delete stage;  stage = nullptr; }
 	for (size_t i = 0; i < enemyBullets.size(); i++)
 	{
 		if (enemyBullets[i] != nullptr)
@@ -401,6 +403,6 @@ bool GameScene::Release(void)
 	{
 		delete bread;
 	}
-	breadList.clear(); // ƒŠƒXƒg©‘Ì‚Ì’†g‚à‹ó‚Á‚Û‚É‚·‚é
+	breadList.clear(); // ãƒªã‚¹ãƒˆè‡ªä½“ã®ä¸­èº«ã‚‚ç©ºã£ã½ã«ã™ã‚‹
 	return true;
 }
