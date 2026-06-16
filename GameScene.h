@@ -46,8 +46,8 @@ public:
 	void CollisionCheckEB(); // “G‚Ì’e‚Æƒpƒ“‚Ì“–‚½‚è”»’è‚ğs‚¤ŠÖ”
 private:
 
-	Player* player;
-	Stage* stage;
+	Player* player = nullptr;
+	Stage* stage = nullptr;
 	SceneManager* sceneManager = nullptr;
 	Application* application = nullptr;
 	std::vector<EnemyBase*> enemys;

@@ -27,16 +27,8 @@ GameScene::GameScene()
 
 GameScene::~GameScene()
 {
-	if (player != nullptr) 
-	{
-		delete player;
-		player = nullptr;
-	}
-	if (stage != nullptr)
-	{
-		delete stage;
-		stage = nullptr;
-	}
+	if (player != nullptr) { delete player; player = nullptr; }
+	if (stage != nullptr) { delete stage;  stage = nullptr; }
 
 	for (size_t i = 0; i < enemys.size(); i++)
 	{
@@ -104,24 +96,28 @@ void GameScene::AddEnemyBullet(EnemyBulletBase* newBullet, Vector2F spawnPos, Ve
 
 void GameScene::CollisionCheckPB()
 {
-	PX = player->GetX();
-	PY = player->GetY();
-
-	for (size_t i = 0; i < enemyBullets.size(); i++)
+	if (player != nullptr)
 	{
-		if (enemyBullets[i] != nullptr)
-		{
-			Vector2F pos = enemyBullets[i]->GetPos(); // EnemyBulletBase から弾の座標を得る
-			BX = (int)pos.x;
-			BY = (int)pos.y;
+		PX = player->GetPosX();
+		PY = player->GetPosY();
 
-			if (PX + 23 < BX + (enemyBullets[i]->GetSize().x / 2) && // �v���C���[�̉E�[���G�̒e�̍��[��荶�ɂ���ꍇ
-				PX + Player::PLAYER_WID - 23 > BX - (enemyBullets[i]->GetSize().x / 2) && // �v���C���[�̍��[���G�̒e�̉E�[���E�ɂ���ꍇ
-				PY < BY + (enemyBullets[i]->GetSize().y / 2) && // �v���C���[�̉��[���G�̒e�̏�[��艺�ɂ���ꍇ
-				PY + Player::PLAYER_HIG > BY - (enemyBullets[i]->GetSize().y / 2)) // �v���C���[�̏�[���G�̒e�̉��[����ɂ���ꍇ
+
+		for (size_t i = 0; i < enemyBullets.size(); i++)
+		{
+			if (enemyBullets[i] != nullptr)
 			{
-				player->ApplyDamage(); // プレイヤーにダメージを与える
-				enemyBullets[i]->SetAlive(false); // 敵の弾を消す
+				Vector2F pos = enemyBullets[i]->GetPos(); // EnemyBulletBase から弾の座標を得る
+				BX = (int)pos.x;
+				BY = (int)pos.y;
+
+				if (PX + 23 < BX + (enemyBullets[i]->GetSize().x / 2) && // �v���C���[�̉E�[���G�̒e�̍��[��荶�ɂ���ꍇ
+					PX + Player::PLAYER_WID - 23 > BX - (enemyBullets[i]->GetSize().x / 2) && // �v���C���[�̍��[���G�̒e�̉E�[���E�ɂ���ꍇ
+					PY < BY + (enemyBullets[i]->GetSize().y / 2) && // �v���C���[�̉��[���G�̒e�̏�[��艺�ɂ���ꍇ
+					PY + Player::PLAYER_HIG > BY - (enemyBullets[i]->GetSize().y / 2)) // �v���C���[�̏�[���G�̒e�̉��[����ɂ���ꍇ
+				{
+					player->ApplyDamage(); // プレイヤーにダメージを与える
+					enemyBullets[i]->SetAlive(false); // 敵の弾を消す
+				}
 			}
 		}
 	}
@@ -129,24 +125,28 @@ void GameScene::CollisionCheckPB()
 
 void GameScene::CollisionCheckPE()
 {
-	PX = player->GetX();
-	PY = player->GetY();
-
-	for(int i =0;i< enemys.size();i++)
+	clsDx();
+	player != nullptr ? printfDx("player is valid") : printfDx("player is not valid");
+	if (player != nullptr)
 	{
-		if (enemys[i] != nullptr)
+		PX = player->GetPosX();
+		PY = player->GetPosY();
+		for (int i = 0;i < enemys.size();i++)
 		{
-			Vector2F pos = enemys[i]->GetEnemyPos(); // EnemyBase のインスタンスから取得
-			EX = (int)pos.x;
-			EY = (int)pos.y;
-			
-			if (PX + 23 < EX + 16 && // プレイヤーの右端が敵の左端より左にある場合
-				PX + Player::PLAYER_WID - 23 > EX - 16 && // プレイヤーの左端が敵の右端より右にある場合
-				PY < EY + (enemys[i]->GetEnemySize().y / 2) && // プレイヤーの下端が敵の上端より下にある場合
-				PY + Player::PLAYER_HIG > EY - (enemys[i]->GetEnemySize().y / 2)) // プレイヤーの上端が敵の下端より上にある場合
+			if (enemys[i] != nullptr)
 			{
-				player->ApplyDamage(); // プレイヤーにダメージを与える
-				enemys[i]->SetDamage(1); // エネミーにダメージを与える
+				Vector2F pos = enemys[i]->GetEnemyPos(); // EnemyBase のインスタンスから取得
+				EX = (int)pos.x;
+				EY = (int)pos.y;
+
+				if (PX + 23 < EX + 16 && // プレイヤーの右端が敵の左端より左にある場合
+					PX + Player::PLAYER_WID - 23 > EX - 16 && // プレイヤーの左端が敵の右端より右にある場合
+					PY < EY + (enemys[i]->GetEnemySize().y / 2) && // プレイヤーの下端が敵の上端より下にある場合
+					PY + Player::PLAYER_HIG > EY - (enemys[i]->GetEnemySize().y / 2)) // プレイヤーの上端が敵の下端より上にある場合
+				{
+					player->ApplyDamage(); // プレイヤーにダメージを与える
+					enemys[i]->SetDamage(1); // エネミーにダメージを与える
+				}
 			}
 		}
 	}
@@ -187,7 +187,7 @@ void GameScene::Update(void)
 	if (player != nullptr)
 	{
 		player->Update();
-		cameraY = player->GetY() - (SCREEN_HEIGHT / 2);
+		cameraY = player->GetPosY() - (SCREEN_HEIGHT / 2);
 	}
 
 	for (auto* bread : breadList)
@@ -245,21 +245,24 @@ void GameScene::Update(void)
 	// すべての敵弾に対して更新処理を行う
 	// プレイヤーの座標(playerX, playerY)が画面中央に来るようにカメラを配置
 
-	if (cameraX != Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH)
+	if (player != nullptr)
 	{
-		cameraX = player->GetX() - (SCREEN_WIDTH / 2);
+		if (cameraX != Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH)
+		{
+			cameraX = player->GetPosX() - (SCREEN_WIDTH / 2);
+		}
+
+		if (cameraX <= 0)
+		{
+			cameraX = 0;
+		}
+		if (cameraX >= Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH)
+		{
+			cameraX = Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH;
+		}
 	}
 
-	if (cameraX <= 0)
-	{
-		cameraX = 0;
-	}
-	if (cameraX >= Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH)
-	{
 
-		cameraX = Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH;
-		
-	}
 
 	if (player != nullptr && !player->IsInvincible())
 	{
@@ -282,16 +285,19 @@ void GameScene::Update(void)
 	}
 
 	//仮のクリア
-	if (cameraX >= Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - (SCREEN_WIDTH * 1.5))
+	if (player != nullptr) 
 	{
-		//ここ
-		if (!isClearTriggered)
+		if (cameraX >= Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - (SCREEN_WIDTH * 1.5))
 		{
-			isClearTriggered = true;
-			clearTimer = 0; // タイマーをリセット
+			//ここ
+			if (!isClearTriggered)
+			{
+				isClearTriggered = true;
+				clearTimer = 0; // タイマーをリセット
+			}
 		}
 	}
-
+		
 	if (isClearTriggered)
 	{
 		clearTimer++; // 毎フレーム 1 ずつ増やす
@@ -303,21 +309,24 @@ void GameScene::Update(void)
 			{
 				
 				sceneManager->ChangeScene(SCENE_GAMECLEAR);// 現在のシーンを保持
-
+				return;
 			}
-
 		}
 	}
 
-	CollisionCheckPE(); // �v���C���[�ƓG�̓����蔻����s���֐�
-	CollisionCheckPB(); // �v���C���[�ƓG�̒e�̓����蔻����s���֐�
-	CollisionCheckEB(); // �G�̒e�ƃp���̓����蔻����s���֐�
+
+	if (player != nullptr)
+	{
+		CollisionCheckPE(); // �v���C���[�ƓG�̓����蔻����s���֐�
+		CollisionCheckPB(); // �v���C���[�ƓG�̒e�̓����蔻����s���֐�
+		CollisionCheckEB(); // �G�̒e�ƃp���̓����蔻����s���֐�
+	}
 }
 
 void GameScene::Draw(void)
 {
 
-	if (stage != nullptr)
+	if (stage != nullptr && player != nullptr)
 	{
 		// 背景を描く
 		stage->Draw(cameraX, cameraY, LAYER_BACKGROUND);
@@ -383,8 +392,6 @@ void GameScene::Draw(void)
 
 bool GameScene::Release(void)
 {
-	if (player != nullptr) { delete player; player = nullptr; }
-	if (stage != nullptr) { delete stage;  stage = nullptr; }
 	for (size_t i = 0; i < enemyBullets.size(); i++)
 	{
 		if (enemyBullets[i] != nullptr)

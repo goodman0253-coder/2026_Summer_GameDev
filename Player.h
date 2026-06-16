@@ -48,11 +48,11 @@ public:
         MAX
     };
 
-    float playerPosx ;
-    float playerPosy ;
+    float playerPosx;
+    float playerPosy;
 
-    float GetX() const { return playerPosx; }
-    float GetY() const { return playerPosy; }
+    float GetPosX() const { return playerPosx; }
+    float GetPosY() const { return playerPosy; }
 
     void SetGameScene(GameScene* scene) { gameScene = scene; };
 
@@ -80,6 +80,9 @@ private:
 
     GameScene* gameScene = nullptr;
     SceneManager* sceneManager = nullptr;
+
+    //float GetX() const { return playerPosx; }
+    //float GetY() const { return playerPosy; }
 
 };
 
