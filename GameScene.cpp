@@ -104,16 +104,17 @@ void GameScene::CollisionCheckPB()
 
 		for (size_t i = 0; i < enemyBullets.size(); i++)
 		{
+
 			if (enemyBullets[i] != nullptr)
 			{
 				Vector2F pos = enemyBullets[i]->GetPos(); // EnemyBulletBase から弾の座標を得る
 				BX = (int)pos.x;
 				BY = (int)pos.y;
 
-				if (PX + 23 < BX + (enemyBullets[i]->GetSize().x / 2) && // �v���C���[�̉E�[���G�̒e�̍��[��荶�ɂ���ꍇ
-					PX + Player::PLAYER_WID - 23 > BX - (enemyBullets[i]->GetSize().x / 2) && // �v���C���[�̍��[���G�̒e�̉E�[���E�ɂ���ꍇ
-					PY < BY + (enemyBullets[i]->GetSize().y / 2) && // �v���C���[�̉��[���G�̒e�̏�[��艺�ɂ���ꍇ
-					PY + Player::PLAYER_HIG > BY - (enemyBullets[i]->GetSize().y / 2)) // �v���C���[�̏�[���G�̒e�̉��[����ɂ���ꍇ
+				if (PX + 23 < BX + (enemyBullets[i]->GetSize().x / 2) && // プレイヤーの右端が敵の弾の左端より左にある場合
+					PX + Player::PLAYER_WID - 23 > BX - (enemyBullets[i]->GetSize().x / 2) && // プレイヤーの左端が敵の弾の右端より右にある場合
+					PY < BY + (enemyBullets[i]->GetSize().y / 2) && // プレイヤーの下端が敵の弾の上端より下にある場合
+					PY + Player::PLAYER_HIG > BY - (enemyBullets[i]->GetSize().y / 2)) // プレイヤーの上端が敵の弾の下端より上にある場合
 				{
 					player->ApplyDamage(); // プレイヤーにダメージを与える
 					enemyBullets[i]->SetAlive(false); // 敵の弾を消す
@@ -135,24 +136,25 @@ void GameScene::CollisionCheckPE()
 		{
 			if (enemys[i] != nullptr)
 			{
-				Vector2F pos = enemys[i]->GetEnemyPos(); // EnemyBase のインスタンスから取得
+				Vector2F pos = enemys[i]->GetEnemyPos(); // EnemyBase EnemyBase のインスタンスから取得
 				EX = (int)pos.x;
 				EY = (int)pos.y;
 
 				if (PX + 23 < EX + 16 && // プレイヤーの右端が敵の左端より左にある場合
-					PX + Player::PLAYER_WID - 23 > EX - 16 && // プレイヤーの左端が敵の右端より右にある場合
-					PY < EY + (enemys[i]->GetEnemySize().y / 2) && // プレイヤーの下端が敵の上端より下にある場合
-					PY + Player::PLAYER_HIG > EY - (enemys[i]->GetEnemySize().y / 2)) // プレイヤーの上端が敵の下端より上にある場合
+					PX + Player::PLAYER_WID - 23 > EX - 16 && // プレイヤーの左端が敵の右端より右にある場合
+					PY < EY + (enemys[i]->GetEnemySize().y / 2) && // プレイヤーの下端が敵の上端より下にある場合
+					PY + Player::PLAYER_HIG > EY - (enemys[i]->GetEnemySize().y / 2)) //プレイヤーの上端が敵の下端より上にある場合
 				{
 					player->ApplyDamage(); // プレイヤーにダメージを与える
 					enemys[i]->SetDamage(1); // エネミーにダメージを与える
+
 				}
 			}
+			
 		}
 	}
 }
 
-//�@�v���C���[�̃p���ƓG�̓����蔻��
 void GameScene::CollisionCheckEB()
 {
 	for (int i= 0; i < enemys.size(); i++)
@@ -163,7 +165,7 @@ void GameScene::CollisionCheckEB()
 			Vector2 enemySize = enemys[i]->GetEnemySize();
 			for (auto* bread : breadList)
 			{
-				if (bread->IsAlive())
+				if ( enemys[i] -> GetAlive()  && bread->IsAlive())
 				{
 					Vector2F breadPos = { bread->x, bread->y };
 					Vector2 breadSize = { bread->width, bread->height };
@@ -172,8 +174,8 @@ void GameScene::CollisionCheckEB()
 						breadPos.y < enemyPos.y + (enemySize.y / 2) &&
 						breadPos.y + breadSize.y > enemyPos.y - (enemySize.y / 2))
 					{
-						enemys[i]->SetDamage(1); // �G�Ƀ_���[�W��^����֐����Ăяo��
-						bread->Kill(); // ���������p���͏�����悤�ɂ���
+						enemys[i]->SetDamage(1); // エネミーにダメージを与える
+						bread->Kill(); // パンを消す
 					}
 				}
 			}
@@ -283,18 +285,17 @@ void GameScene::Update(void)
 			return;
 		}
 	}
-
-	//仮のクリア
+	// 仮のクリア
 	if (player != nullptr) 
 	{
 		if (cameraX >= Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - (SCREEN_WIDTH * 1.5))
 		{
-			//ここ
 			if (!isClearTriggered)
 			{
 				isClearTriggered = true;
 				clearTimer = 0; // タイマーをリセット
 			}
+
 		}
 	}
 		
@@ -307,19 +308,16 @@ void GameScene::Update(void)
 		{
 			if(sceneManager != nullptr)
 			{
-				
 				sceneManager->ChangeScene(SCENE_GAMECLEAR);// 現在のシーンを保持
 				return;
 			}
 		}
 	}
-
-
 	if (player != nullptr)
 	{
-		CollisionCheckPE(); // �v���C���[�ƓG�̓����蔻����s���֐�
-		CollisionCheckPB(); // �v���C���[�ƓG�̒e�̓����蔻����s���֐�
-		CollisionCheckEB(); // �G�̒e�ƃp���̓����蔻����s���֐�
+		CollisionCheckPE(); // �ｽv�ｽ�ｽ�ｽC�ｽ�ｽ�ｽ[�ｽﾆ敵�ｽﾌ難ｿｽ�ｽ�ｽ�ｽ阡ｻ�ｽ�ｽ�ｽ�ｽs�ｽ�ｽ�ｽﾖ撰ｿｽ
+		CollisionCheckPB(); // �ｽv�ｽ�ｽ�ｽC�ｽ�ｽ�ｽ[�ｽﾆ敵�ｽﾌ弾�ｽﾌ難ｿｽ�ｽ�ｽ�ｽ阡ｻ�ｽ�ｽ�ｽ�ｽs�ｽ�ｽ�ｽﾖ撰ｿｽ
+		CollisionCheckEB(); // �ｽG�ｽﾌ弾�ｽﾆパ�ｽ�ｽ�ｽﾌ難ｿｽ�ｽ�ｽ�ｽ阡ｻ�ｽ�ｽ�ｽ�ｽs�ｽ�ｽ�ｽﾖ撰ｿｽ
 	}
 }
 
