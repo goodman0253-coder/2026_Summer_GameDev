@@ -126,8 +126,7 @@ void GameScene::CollisionCheckPB()
 
 void GameScene::CollisionCheckPE()
 {
-	clsDx();
-	player != nullptr ? printfDx("player is valid") : printfDx("player is not valid");
+
 	if (player != nullptr)
 	{
 		PX = player->GetPosX();
