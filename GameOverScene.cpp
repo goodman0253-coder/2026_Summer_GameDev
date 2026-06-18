@@ -14,7 +14,7 @@ void GameOverScene::Initialize()
 void GameOverScene::Update()
 {
 
-    if (InputManager::GetInstance().IsTrgDown(KEY_INPUT_SPACE))
+    if (InputManager::GetInstance().IsTrgDown(KEY_INPUT_SPACE) || InputManager::GetInstance().IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
     {
         if (sceneManager != nullptr)
         {

@@ -32,7 +32,7 @@ bool Player::SystemInit()
 bool Player::GameInit()
 {
 	vy = 0.0f;
-	playerPosx = 2000;
+	playerPosx = 100;
 	playerPosy = 1200;
 	return true;
 }
@@ -80,7 +80,7 @@ void Player::Update()
 		shotCoolTime--;
 	}
 
-	if (CheckHitKey(KEY_INPUT_V) && shotCoolTime == 0)
+	if (InputManager::GetInstance().IsTrgDown(KEY_INPUT_V) || InputManager::GetInstance().IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::RIGHT) && shotCoolTime == 0)
 	{
 		// パンを生成する（プレイヤーの中心付近から発射）
 		float spawnX = playerPosx;
@@ -142,20 +142,20 @@ void Player::Run()
 	bool isMoving = false;
 	AsoUtility::DIR moveDir = AsoUtility::DIR::MAX; // 初期値として無効な値を設定
 
-	if (CheckHitKey(KEY_INPUT_UP))
+	if (InputManager::GetInstance().IsTrgDown(KEY_INPUT_UP) || InputManager::GetInstance().IsTrgDown(KEY_INPUT_W) || InputManager::GetInstance().IsPadAKeyLY(InputManager::JOYPAD_NO::PAD1) < -800)
 	{
 		moveDir = AsoUtility::DIR::UP;
 	}
-	else if (CheckHitKey(KEY_INPUT_DOWN))
+	else if (InputManager::GetInstance().IsTrgDown(KEY_INPUT_DOWN) || InputManager::GetInstance().IsTrgDown(KEY_INPUT_S) || InputManager::GetInstance().IsPadAKeyLY(InputManager::JOYPAD_NO::PAD1) > 800)
 	{
 		moveDir = AsoUtility::DIR::DOWN;
 	}
-	else if (CheckHitKey(KEY_INPUT_LEFT))
+	else if (InputManager::GetInstance().IsTrgDown(KEY_INPUT_LEFT) || InputManager::GetInstance().IsTrgDown(KEY_INPUT_A) || InputManager::GetInstance().IsPadAKeyLX(InputManager::JOYPAD_NO::PAD1) < -800)
 	{
 		moveDir = AsoUtility::DIR::LEFT;
 		isMoving = true;
 	}
-	else if (CheckHitKey(KEY_INPUT_RIGHT))
+	else if (InputManager::GetInstance().IsTrgDown(KEY_INPUT_RIGHT) || InputManager::GetInstance().IsTrgDown(KEY_INPUT_D) || InputManager::GetInstance().IsPadAKeyLX(InputManager::JOYPAD_NO::PAD1) > 800)
 	{
 		moveDir = AsoUtility::DIR::RIGHT;
 		isMoving = true;
@@ -190,9 +190,9 @@ void Player::Jump()
 {
 
 
-	if (CheckHitKey(KEY_INPUT_SPACE))
+	if (InputManager::GetInstance().IsTrgDown(KEY_INPUT_SPACE) || InputManager::GetInstance().IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
 	{
-			vy = -12.0f;
+			vy = -15.0f;
 	}
 }
 
@@ -211,3 +211,4 @@ void Player::ApplyDamage()
 		invincibleTimer = 120;
 	}
 }
+
