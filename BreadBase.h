@@ -31,3 +31,5 @@ public:
     virtual int GetCoolTime() const { return 180; }
 };
 
+
+

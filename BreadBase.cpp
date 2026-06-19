@@ -15,7 +15,7 @@ BreadBase::BreadBase(float startX, float startY, AsoUtility::DIR direction)
     height = 16;
 
 
-    lifeTimer = 300;                  
+    lifeTimer = 150;                  
 
     // 基本スピード
     float baseSpeed = 8.0f;
@@ -48,7 +48,7 @@ void BreadBase::Update()
     // 横に直進移動
     x += speedX;
 
-    // ? 2. 寿命タイマーを毎フレーム 1 減らす
+    // 2. 寿命タイマーを毎フレーム 1 減らす
     if (lifeTimer > 0)
     {
         lifeTimer--;
@@ -78,3 +78,4 @@ void BreadBase::Draw(float cameraX, float cameraY)
 	// 当たり判定の可視化（デバッグ用）
 	DrawBox(drawX, drawY, drawX + width, drawY + height, GetColor(255, 0, 0), FALSE);
 }
+

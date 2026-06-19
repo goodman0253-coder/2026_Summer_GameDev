@@ -52,8 +52,7 @@ public:
     enum class BREAD_TYPE
     {
         NORMAL,   // 通常のパン
-        //MELON,    // メロンパン（例：バウンドする？）
-        //CROISSANT,// クロワッサン（例：ブーメランみたいに戻る？）
+        MELONPAN,    // メロンパン
         MAX       // 種類の最大数（切り替えループ用）
     };
 
@@ -104,6 +103,7 @@ private:
     const int MAX_COOL_TIME[static_cast<int>(BREAD_TYPE::MAX)] = 
     {
         90,  // NORMAL のクールタイム
+        150, //Melonoanのクールタイム
     };
     int breadIdx; 
 
