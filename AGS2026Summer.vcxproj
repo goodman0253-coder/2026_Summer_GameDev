@@ -145,16 +145,15 @@
     <ClCompile Include="Enemy1.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="AsoUtility.cpp" />
-
     <ClCompile Include="GameClearScene.cpp" />
-
     <ClCompile Include="EnemyBulletBase.cpp" />
-
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Melonpan.cpp" />
+    <ClCompile Include="MiniMelonpan.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Stage.cpp" />
@@ -172,15 +171,14 @@
     <ClInclude Include="BreadBase.h" />
     <ClInclude Include="Enemy1.h" />
     <ClInclude Include="EnemyBase.h" />
-
     <ClInclude Include="GameClearScene.h" />
-
     <ClInclude Include="EnemyBulletBase.h" />
-
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="Melonpan.h" />
+    <ClInclude Include="MiniMelonpan.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Stage.h" />

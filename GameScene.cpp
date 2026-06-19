@@ -8,6 +8,7 @@
 #include "Enemy1.h"
 #include "BreadBase.h"
 #include "Bread.h"
+#include "Melonpan.h"
 
 
 GameScene::GameScene()
@@ -174,7 +175,19 @@ void GameScene::CollisionCheckEB()
 						breadPos.y + breadSize.y > enemyPos.y - (enemySize.y / 2))
 					{
 						enemys[i]->SetDamage(1); // エネミーにダメージを与える
-						bread->Kill(); // パンを消す
+
+						Melonpan* melon = dynamic_cast<Melonpan*>(bread);
+						if (melon != nullptr)
+						{
+							// メロンパンだった場合は破裂させる（内部で小さなパンが生成され、自身は死亡する）
+							melon->Explode();
+						}
+						else
+						{
+							// 通常のパンだった場合はそのまま消す
+							bread->Kill();
+						}
+						
 					}
 				}
 			}

@@ -67,6 +67,12 @@
     <Filter Include="GameObject\Bread\Bread">
       <UniqueIdentifier>{d8e16bdd-99b7-4bd2-9cf9-4eac64f72480}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Bread\Melonpan">
+      <UniqueIdentifier>{6f8e9f7f-7563-4d58-bb27-b8fb55434eea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Bread\Melonpan\MiniMelonpan">
+      <UniqueIdentifier>{da24c557-7559-46b6-b99e-1def7fe6eaf7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -135,6 +141,12 @@
     <ClCompile Include="StageSelectScene.cpp">
       <Filter>SceneManager\Scene\StageSlectScene</Filter>
     </ClCompile>
+    <ClCompile Include="Melonpan.cpp">
+      <Filter>GameObject\Bread\Melonpan</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniMelonpan.cpp">
+      <Filter>GameObject\Bread\Melonpan\MiniMelonpan</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -202,6 +214,12 @@
     </ClInclude>
     <ClInclude Include="StageSelectScene.h">
       <Filter>SceneManager\Scene\StageSlectScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Melonpan.h">
+      <Filter>GameObject\Bread\Melonpan</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniMelonpan.h">
+      <Filter>GameObject\Bread\Melonpan\MiniMelonpan</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

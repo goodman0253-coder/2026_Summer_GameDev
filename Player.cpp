@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "BreadBase.h"
 #include "Bread.h"
+#include "Melonpan.h"
 #include "GameScene.h"
 #include "Stage.h"
 
@@ -72,7 +73,6 @@ void Player::Update()
 	if (playerPosx < 0)
 	{
 		playerPosx = 0;
-
 	}	
 	if (gameScene->GetCameraX() == Stage::TILE_SIZE * Stage::MAP_WIDTH - PLAYER_WID - gameScene->GetScreenW())
 	{
@@ -129,7 +129,13 @@ void Player::Update()
 			newBread = new Bread(spawnX, spawnY, playerDir); // 通常のパン
 			shotBreadTimers[breadIdx] = MAX_COOL_TIME[breadIdx];
 		}
-			break;
+		break;
+		case BREAD_TYPE::MELONPAN:
+		{
+			newBread = new Melonpan(spawnX, spawnY, playerDir, gameScene);
+			shotBreadTimers[breadIdx] = MAX_COOL_TIME[breadIdx];
+		}
+		break;
 		}
 
 		// 安全にGameSceneの管理リストに追加する
@@ -198,9 +204,13 @@ void Player::Draw(float camX,float camY)
 	int drawX = (int)(playerPosx - camX);
 	int drawY = (int)(playerPosy - camY);
 
-	if (isMoving = true)
+	if (isMoving == true)
 	{
 		animState = ANIM_STATE::RUN;
+	}
+	else
+	{
+		animState = ANIM_STATE::IDLE;
 	}
 	if (breadThrowPoseFlg == true)
 	{
@@ -311,7 +321,7 @@ void Player::Draw(float camX,float camY)
 
 
 	const char* breadName = "NORMAL";
-	//if (currentBreadType == BREAD_TYPE::MELON)      breadName = "MELON";
+	if (currentBreadType == BREAD_TYPE::MELONPAN)      breadName = "MELONOAN";
 	//if (currentBreadType == BREAD_TYPE::CROISSANT) breadName = "CROISSANT";
 
 	// プレイヤーの少し上に現在の選択を表示
