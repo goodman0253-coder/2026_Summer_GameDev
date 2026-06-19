@@ -13,6 +13,7 @@ protected:
 
     AsoUtility::DIR dir;
 
+    int shotBreadTimer;
     int lifeTimer;
 
 public:

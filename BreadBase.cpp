@@ -14,6 +14,7 @@ BreadBase::BreadBase(float startX, float startY, AsoUtility::DIR direction)
     width = 16;   // デフォルトサイズ
     height = 16;
 
+
     lifeTimer = 300;                  
 
     // 基本スピード
