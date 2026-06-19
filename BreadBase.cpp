@@ -1,6 +1,6 @@
 #include "BreadBase.h"
 #include "DxLib.h"
-#include "Application.h" // ‰æ–ÊƒTƒCƒY“™‚Ì’è”‚ª‚ ‚ê‚Î
+#include "Application.h" // ç”»é¢ã‚µã‚¤ã‚ºç­‰ã®å®šæ•°ãŒã‚ã‚Œã°
 
 BreadBase::BreadBase(float startX, float startY, AsoUtility::DIR direction)
 {
@@ -11,26 +11,26 @@ BreadBase::BreadBase(float startX, float startY, AsoUtility::DIR direction)
 
     isAlive = true;
     imageHandle = -1;
-    width = 16;   // ƒfƒtƒHƒ‹ƒgƒTƒCƒY
+    width = 16;   // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚µã‚¤ã‚º
     height = 16;
 
 
     lifeTimer = 150;                  
 
-    // Šî–{ƒXƒs[ƒh
+    // åŸºæœ¬ã‚¹ãƒ”ãƒ¼ãƒ‰
     float baseSpeed = 8.0f;
 
     if (dir == AsoUtility::DIR::RIGHT)
     {
-        speedX = baseSpeed;       // ‰E‚Éi‚Şiƒvƒ‰ƒXj
+        speedX = baseSpeed;       // å³ã«é€²ã‚€ï¼ˆãƒ—ãƒ©ã‚¹ï¼‰
     }
     else if (dir == AsoUtility::DIR::LEFT)
     {
-        speedX = -baseSpeed;      // ¶‚Éi‚Şiƒ}ƒCƒiƒXj
+        speedX = -baseSpeed;      // å·¦ã«é€²ã‚€ï¼ˆãƒã‚¤ãƒŠã‚¹ï¼‰
     }
     else
     {
-        speedX = baseSpeed;            // ã‰º‚ğŒü‚¢‚Ä‚¢‚é‚Í‚Æ‚è‚ ‚¦‚¸‰¡‚É‚Í“®‚©‚³‚È‚¢
+        speedX = baseSpeed;            // ä¸Šä¸‹ã‚’å‘ã„ã¦ã„ã‚‹æ™‚ã¯ã¨ã‚Šã‚ãˆãšæ¨ªã«ã¯å‹•ã‹ã•ãªã„
     }
 
 
@@ -38,17 +38,17 @@ BreadBase::BreadBase(float startX, float startY, AsoUtility::DIR direction)
 
 BreadBase::~BreadBase()
 {
-    // ‰æ‘œƒnƒ“ƒhƒ‹‚Í‹¤’Ê‚ÅŠÇ—‚·‚é‚±‚Æ‚ª‘½‚¢‚½‚ßA‚±‚±‚Å‚ÍDeleteGraph‚µ‚È‚¢i‚Ü‚½‚ÍGameInit“™‚ÅˆêŠ‡ŠÇ—j
+    // ç”»åƒãƒãƒ³ãƒ‰ãƒ«ã¯å…±é€šã§ç®¡ç†ã™ã‚‹ã“ã¨ãŒå¤šã„ãŸã‚ã€ã“ã“ã§ã¯DeleteGraphã—ãªã„ï¼ˆã¾ãŸã¯GameInitç­‰ã§ä¸€æ‹¬ç®¡ç†ï¼‰
 }
 
 void BreadBase::Update()
 {
     if (!isAlive) return;
 
-    // ‰¡‚É’¼iˆÚ“®
+    // æ¨ªã«ç›´é€²ç§»å‹•
     x += speedX;
 
-    // 2. õ–½ƒ^ƒCƒ}[‚ğ–ˆƒtƒŒ[ƒ€ 1 Œ¸‚ç‚·
+    // 2. å¯¿å‘½ã‚¿ã‚¤ãƒãƒ¼ã‚’æ¯ãƒ•ãƒ¬ãƒ¼ãƒ  1 æ¸›ã‚‰ã™
     if (lifeTimer > 0)
     {
         lifeTimer--;
@@ -72,10 +72,8 @@ void BreadBase::Draw(float cameraX, float cameraY)
     }
     else
     {
-        // ‰æ‘œ‚ª‚È‚¢ê‡‚Ì‰¼•`‰æi‰©F‚¢ŠÛj
+        // ç”»åƒãŒãªã„å ´åˆã®ä»®æç”»ï¼ˆé»„è‰²ã„ä¸¸ï¼‰
         DrawCircle(drawX + width / 2, drawY + height / 2, width / 2, GetColor(255, 255, 0), TRUE);
     }
-	// “–‚½‚è”»’è‚Ì‰Â‹‰»iƒfƒoƒbƒO—pj
-	DrawBox(drawX, drawY, drawX + width, drawY + height, GetColor(255, 0, 0), FALSE);
-}
 
+}

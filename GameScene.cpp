@@ -6,6 +6,7 @@
 #include "EnemyBase.h"
 #include "EnemyBulletBase.h"
 #include "Enemy1.h"
+#include "Boss1.h"
 #include "BreadBase.h"
 #include "Bread.h"
 #include "Melonpan.h"
@@ -14,12 +15,12 @@
 GameScene::GameScene()
 {
 #if 0
-	enemys.push_back(new Enemy1());
+	enemys.push_back(new Enemy1, new Boss1()); // �G�̃C���X�^���X���쐬���ă��X�g�ɒǉ�
 	for (int i = 0; i < enemys.size();i++)
 	{
 		//if (!enemys[i]->SystemInit(this))
 		//{
-			//printfDx("敵の初期化に失敗");
+			//printfDx("�G�̏������Ɏ��s");
 		//}
 		enemys[i]->GameInit();
 	}
@@ -60,17 +61,29 @@ bool GameScene::GameInit(void)
 	EnemyBase* newEnemy = new Enemy1();
 	if (newEnemy != nullptr)
 	{
-		// this (GameScene) を敵に確実に渡す！
+		// this (GameScene) ��G�Ɋm���ɓn���I
 		newEnemy->SystemInit(this);
 
-		// GameInitを呼ぶ（初期位置を設定）
+		// GameInit���Ăԁi�����ʒu��ݒ�j
 		newEnemy->GameInit();
 
-		// 準備完了した敵をリストに登録
+		// �������������G�����X�g�ɓo�^
 		enemys.push_back(newEnemy);
 	}
 
-	//仮のクリア
+	EnemyBase* newEnemy2 = new Boss1();
+	if (newEnemy2 != nullptr)
+	{
+		// this (GameScene) ��G�Ɋm���ɓn���I
+		newEnemy2->SystemInit(this);
+		// GameInit���Ăԁi�����ʒu��ݒ�j
+		newEnemy2->GameInit();
+		static_cast<Boss1*>(newEnemy2)->SetPlayer(player);
+		// �������������G�����X�g�ɓo�^
+		enemys.push_back(newEnemy2);
+	}
+
+	//���̃N���A
 	isClearTriggered = false;
 	clearTimer = 0;
 
@@ -88,9 +101,9 @@ void GameScene::AddEnemyBullet(EnemyBulletBase* newBullet, Vector2F spawnPos, Ve
 		if (newBullet != nullptr)
 		{
 
-			newBullet->SystemInit(this); // EnemyBulletBaseのSystemInit()にGameSceneのインスタンスを渡す
-			newBullet->GameInit(spawnPos, vel); // EnemyBulletBaseのGameInit()に初期位置と速度を設定
-			enemyBullets.push_back(newBullet); // GameSceneの敵弾リストに追加
+			newBullet->SystemInit(this); // EnemyBulletBase��SystemInit()��GameScene�̃C���X�^���X��n��
+			newBullet->GameInit(spawnPos, vel); // EnemyBulletBase��GameInit()�ɏ����ʒu�Ƒ��x��ݒ�
+			enemyBullets.push_back(newBullet); // GameScene�̓G�e���X�g�ɒǉ�
 		}
 	}
 }
@@ -108,17 +121,17 @@ void GameScene::CollisionCheckPB()
 
 			if (enemyBullets[i] != nullptr)
 			{
-				Vector2F pos = enemyBullets[i]->GetPos(); // EnemyBulletBase から弾の座標を得る
+				Vector2F pos = enemyBullets[i]->GetPos(); // EnemyBulletBase ����e�̍��W�𓾂�
 				BX = (int)pos.x;
 				BY = (int)pos.y;
 
-				if (PX + 23 < BX + (enemyBullets[i]->GetSize().x / 2) && // プレイヤーの右端が敵の弾の左端より左にある場合
-					PX + Player::PLAYER_WID - 23 > BX - (enemyBullets[i]->GetSize().x / 2) && // プレイヤーの左端が敵の弾の右端より右にある場合
-					PY < BY + (enemyBullets[i]->GetSize().y / 2) && // プレイヤーの下端が敵の弾の上端より下にある場合
-					PY + Player::PLAYER_HIG > BY - (enemyBullets[i]->GetSize().y / 2)) // プレイヤーの上端が敵の弾の下端より上にある場合
+				if (PX + 23 < BX + (enemyBullets[i]->GetSize().x / 2) && // �v���C���[�̉E�[���G�̒e�̍��[��荶�ɂ���ꍇ
+					PX + Player::PLAYER_WID - 23 > BX - (enemyBullets[i]->GetSize().x / 2) && // �v���C���[�̍��[���G�̒e�̉E�[���E�ɂ���ꍇ
+					PY < BY + (enemyBullets[i]->GetSize().y / 2) && // �v���C���[�̉��[���G�̒e�̏�[��艺�ɂ���ꍇ
+					PY + Player::PLAYER_HIG > BY - (enemyBullets[i]->GetSize().y / 2)) // �v���C���[�̏�[���G�̒e�̉��[����ɂ���ꍇ
 				{
-					player->ApplyDamage(); // プレイヤーにダメージを与える
-					enemyBullets[i]->SetAlive(false); // 敵の弾を消す
+					player->ApplyDamage(); // �v���C���[�Ƀ_���[�W��^����
+					enemyBullets[i]->SetAlive(false); // �G�̒e������
 				}
 			}
 		}
@@ -127,6 +140,7 @@ void GameScene::CollisionCheckPB()
 
 void GameScene::CollisionCheckPE()
 {
+	clsDx();
 
 	if (player != nullptr)
 	{
@@ -134,20 +148,34 @@ void GameScene::CollisionCheckPE()
 		PY = player->GetPosY();
 		for (int i = 0;i < enemys.size();i++)
 		{
-			if (enemys[i] != nullptr)
+			if (enemys[i]->GetAlive() == true)
 			{
-				Vector2F pos = enemys[i]->GetEnemyPos(); // EnemyBase EnemyBase のインスタンスから取得
-				EX = (int)pos.x;
-				EY = (int)pos.y;
-
-				if (PX + 23 < EX + 16 && // プレイヤーの右端が敵の左端より左にある場合
-					PX + Player::PLAYER_WID - 23 > EX - 16 && // プレイヤーの左端が敵の右端より右にある場合
-					PY < EY + (enemys[i]->GetEnemySize().y / 2) && // プレイヤーの下端が敵の上端より下にある場合
-					PY + Player::PLAYER_HIG > EY - (enemys[i]->GetEnemySize().y / 2)) //プレイヤーの上端が敵の下端より上にある場合
+				if (enemys[i] != nullptr)
 				{
-					player->ApplyDamage(); // プレイヤーにダメージを与える
-					enemys[i]->SetDamage(1); // エネミーにダメージを与える
-
+					Vector2F pos = enemys[i]->GetEnemyPos(); // EnemyBase EnemyBase �̃C���X�^���X����擾
+					EX = (int)pos.x;
+					EY = (int)pos.y;
+					if (enemys[i]->EoB != 10)
+					{
+						if (PX + 23 < EX + 16 && // �v���C���[�̉E�[���G�̍��[��荶�ɂ���ꍇ
+							PX + Player::PLAYER_WID - 23 > EX - 16 && // �v���C���[�̍��[���G�̉E�[���E�ɂ���ꍇ
+							PY < EY + (enemys[i]->GetEnemySize().y / 2) && // �v���C���[�̉��[���G�̏�[��艺�ɂ���ꍇ
+							PY + Player::PLAYER_HIG > EY - (enemys[i]->GetEnemySize().y / 2)) //�v���C���[�̏�[���G�̉��[����ɂ���ꍇ
+						{
+							player->ApplyDamage(); // �v���C���[�Ƀ_���[�W��^����
+							enemys[i]->SetDamage(1); // �G�l�~�[�Ƀ_���[�W��^����
+						}
+					}
+					else
+					{
+						if (PX + 23 < EX + (enemys[i]->GetEnemySize().x / 2) && // �v���C���[�̉E�[���G�̍��[��荶�ɂ���ꍇ
+							PX + Player::PLAYER_WID - 23 > EX - (enemys[i]->GetEnemySize().x / 2) && // �v���C���[�̍��[���G�̉E�[���E�ɂ���ꍇ
+							PY < EY + (enemys[i]->GetEnemySize().y / 2) && // �v���C���[�̉��[���G�̏�[��艺�ɂ���ꍇ
+							PY + Player::PLAYER_HIG > EY - (enemys[i]->GetEnemySize().y / 2)) //�v���C���[�̏�[���G�̉��[����ɂ���ꍇ
+						{
+							player->ApplyDamage(); // �v���C���[�Ƀ_���[�W��^����
+						}
+					}
 				}
 			}
 			
@@ -161,33 +189,36 @@ void GameScene::CollisionCheckEB()
 	{
 		if (enemys[i] != nullptr)
 		{
-			Vector2F enemyPos = enemys[i]->GetEnemyPos();
-			Vector2 enemySize = enemys[i]->GetEnemySize();
-			for (auto* bread : breadList)
+			if (enemys[i]->GetAlive() == true)
 			{
-				if ( enemys[i] -> GetAlive()  && bread->IsAlive())
+				Vector2F enemyPos = enemys[i]->GetEnemyPos();
+				Vector2 enemySize = enemys[i]->GetEnemySize();
+				for (auto* bread : breadList)
 				{
-					Vector2F breadPos = { bread->x, bread->y };
-					Vector2 breadSize = { bread->width, bread->height };
-					if (breadPos.x < enemyPos.x + (enemySize.x / 2) &&
-						breadPos.x + breadSize.x > enemyPos.x - (enemySize.x / 2) &&
-						breadPos.y < enemyPos.y + (enemySize.y / 2) &&
-						breadPos.y + breadSize.y > enemyPos.y - (enemySize.y / 2))
+					if (enemys[i]->GetAlive() && bread->IsAlive())
 					{
-						enemys[i]->SetDamage(1); // エネミーにダメージを与える
 
-						Melonpan* melon = dynamic_cast<Melonpan*>(bread);
-						if (melon != nullptr)
+						Vector2F breadPos = { bread->x, bread->y };
+						Vector2 breadSize = { bread->width, bread->height };
+						if (breadPos.x < enemyPos.x + (enemySize.x / 2) &&
+							breadPos.x + breadSize.x > enemyPos.x - (enemySize.x / 2) &&
+							breadPos.y < enemyPos.y + (enemySize.y / 2) &&
+							breadPos.y + breadSize.y > enemyPos.y - (enemySize.y / 2))
 						{
-							// メロンパンだった場合は破裂させる（内部で小さなパンが生成され、自身は死亡する）
-							melon->Explode();
+							enemys[i]->SetDamage(1); // エネミーにダメージを与える
+
+						  Melonpan* melon = dynamic_cast<Melonpan*>(bread);
+						  if (melon != nullptr)
+						  {
+						  	// メロンパンだった場合は破裂させる（内部で小さなパンが生成され、自身は死亡する）
+						  	melon->Explode();
+						  }
+						  else
+						  {
+						  	// 通常のパンだった場合はそのまま消す
+						  	bread->Kill();
+						  }
 						}
-						else
-						{
-							// 通常のパンだった場合はそのまま消す
-							bread->Kill();
-						}
-						
 					}
 				}
 			}
@@ -214,14 +245,14 @@ void GameScene::Update(void)
 
 	for (auto it = breadList.begin(); it != breadList.end(); )
 	{
-		if (!(*it)->IsAlive()) // lifeTimerが0になってIsAliveがfalseになったら
+		if (!(*it)->IsAlive()) // lifeTimer��0�ɂȂ���IsAlive��false�ɂȂ�����
 		{
-			delete (*it);              // メモリ解放
-			it = breadList.erase(it);  // リストから除外
+			delete (*it);              // ���������
+			it = breadList.erase(it);  // ���X�g���珜�O
 		}
 		else
 		{
-			++it; // 生きていれば次へ
+			++it; // �����Ă���Ύ���
 		}
 	}
 
@@ -233,7 +264,7 @@ void GameScene::Update(void)
 		}
 	}
 
-	// すべての敵弾に対して更新処理を行う
+	// ���ׂĂ̓G�e�ɑ΂��čX�V�������s��
 	for (size_t i = 0; i < enemyBullets.size(); i++)
 	{
 		if (enemyBullets[i] != nullptr)
@@ -241,7 +272,8 @@ void GameScene::Update(void)
 			enemyBullets[i]->Update();
 		}
 	}
-	// 画面外に出た敵弾を削除する処理
+
+	// ��ʊO�ɏo���G�e���폜���鏈��
 	auto bitr = enemyBullets.begin();
 	while (bitr != enemyBullets.end())
 	{
@@ -256,8 +288,8 @@ void GameScene::Update(void)
 			++bitr;
 		}
 	}
-	// すべての敵弾に対して更新処理を行う
-	// プレイヤーの座標(playerX, playerY)が画面中央に来るようにカメラを配置
+	// ���ׂĂ̓G�e�ɑ΂��čX�V�������s��
+	// �v���C���[�̍��W(playerX, playerY)����ʒ����ɗ���悤�ɃJ������z�u
 
 	if (player != nullptr)
 	{
@@ -280,7 +312,7 @@ void GameScene::Update(void)
 
 	if (player != nullptr && !player->IsInvincible())
 	{
-		// すべてのエネミーに対して当たり判定をチェック
+		// ���ׂẴG�l�~�[�ɑ΂��ē����蔻����`�F�b�N
 		for (auto enemy : enemys)
 		{
 			if (enemy == nullptr) continue;
@@ -297,39 +329,37 @@ void GameScene::Update(void)
 			return;
 		}
 	}
-	// 仮のクリア
+	// ���̃N���A
 	if (player != nullptr) 
 	{
-		if (cameraX >= Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - (SCREEN_WIDTH * 1.5))
+		for (int i = 0;i < enemys.size();i++)
 		{
-			if (!isClearTriggered)
+			if (enemys[i]->GetAlive() == false && enemys[i]->hp < 1)
 			{
-				isClearTriggered = true;
-				clearTimer = 0; // タイマーをリセット
-			}
 
+				if (enemys[i]->EoB >0)
+				{
+					isClearTriggered = true;
+				}
+			}
 		}
 	}
 		
 	if (isClearTriggered)
 	{
-		clearTimer++; // 毎フレーム 1 ずつ増やす
-
-		// 3秒（60フレーム × 10秒 = 600フレーム）経ったらシーン遷移
-		if (clearTimer >= 600)
+	
+		if(sceneManager != nullptr)
 		{
-			if(sceneManager != nullptr)
-			{
-				sceneManager->ChangeScene(SCENE_GAMECLEAR);// 現在のシーンを保持
-				return;
-			}
+			sceneManager->ChangeScene(SCENE_GAMECLEAR);// ���݂̃V�[����ێ�
+			return;
 		}
+	
 	}
 	if (player != nullptr)
 	{
-		CollisionCheckPE(); // �ｽv�ｽ�ｽ�ｽC�ｽ�ｽ�ｽ[�ｽﾆ敵�ｽﾌ難ｿｽ�ｽ�ｽ�ｽ阡ｻ�ｽ�ｽ�ｽ�ｽs�ｽ�ｽ�ｽﾖ撰ｿｽ
-		CollisionCheckPB(); // �ｽv�ｽ�ｽ�ｽC�ｽ�ｽ�ｽ[�ｽﾆ敵�ｽﾌ弾�ｽﾌ難ｿｽ�ｽ�ｽ�ｽ阡ｻ�ｽ�ｽ�ｽ�ｽs�ｽ�ｽ�ｽﾖ撰ｿｽ
-		CollisionCheckEB(); // �ｽG�ｽﾌ弾�ｽﾆパ�ｽ�ｽ�ｽﾌ難ｿｽ�ｽ�ｽ�ｽ阡ｻ�ｽ�ｽ�ｽ�ｽs�ｽ�ｽ�ｽﾖ撰ｿｽ
+		CollisionCheckPE(); // 
+		CollisionCheckPB(); // ?�v?�?�?�C?�?�?�[?�ƓG?�̒e?�̓�?�?�?�蔻?�?�?�?�s?�?�?�֐�
+		CollisionCheckEB(); // ?�G?�̒e?�ƃp?�?�?�̓�?�?�?�蔻?�?�?�?�s?�?�?�֐�
 	}
 }
 
@@ -338,33 +368,33 @@ void GameScene::Draw(void)
 
 	if (stage != nullptr && player != nullptr)
 	{
-		// 背景を描く
+		// �w�i��`��
 		stage->Draw(cameraX, cameraY, LAYER_BACKGROUND);
 
-		// 中景を描く
+		// ���i��`��
 		stage->Draw(cameraX, cameraY, LAYER_MIDDLEGROUND);
 	}
 
-	// プレイヤーを描画
+	// �v���C���[��`��
 	if (player != nullptr)
 	{
 		player->Draw(cameraX, cameraY);
 	}
 
-	size_t size = enemys.size(); // 敵のテーブルの要素数を取得
-	std::vector<EnemyBase*>::iterator eitr = enemys.begin(); // イテレータを取得
+	size_t size = enemys.size(); // �G�̃e�[�u���̗v�f�����擾
+	std::vector<EnemyBase*>::iterator eitr = enemys.begin(); // �C�e���[�^���擾
 	for (int ii = 0; ii < size; ii++) {
 		(*eitr)->Draw();
 		eitr++;
 	};        
 
-	// 2. ? すべてのパンの描画処理
+	// 2.���ׂẴp���̕`�揈��
 	for (auto* bread : breadList)
 	{
 		bread->Draw(cameraX, cameraY);
 	}
 
-	//すべての敵弾の描画処理
+	//���ׂĂ̓G�e�̕`�揈��
 	for (size_t i = 0; i < enemyBullets.size(); i++)
 	{
 		if (enemyBullets[i] != nullptr)
@@ -374,10 +404,10 @@ void GameScene::Draw(void)
 	}
 	if (stage != nullptr)
 	{
-		// 前景を描く
+		// �O�i��`��
 		stage->Draw(cameraX, cameraY, LAYER_OBJECT);
 
-		// 前景を描く
+		// �O�i��`��
 		stage->Draw(cameraX, cameraY, LAYER_FOREGROUND);
 	}
 
@@ -392,8 +422,8 @@ void GameScene::Draw(void)
 		}
 	}
 
-	// --- ここからテスト用：地面を描く ---
-	// 画面の下の方に、64ピクセルおきに縦線を引く
+	// --- ��������e�X�g�p�F�n�ʂ�`�� ---
+	// ��ʂ̉��̕��ɁA64�s�N�Z�������ɏc��������
 	for (int i = 0; i < 20000; i += 64) {
 		int x = (int)(i - cameraX);
 		DrawLine(x, 0, x, 3000, GetColor(100, 100, 100));
@@ -402,6 +432,17 @@ void GameScene::Draw(void)
 
 bool GameScene::Release(void)
 {
+	// �G�̉��
+	for (size_t i = 0; i < enemys.size(); i++)
+	{
+		if (enemys[i] != nullptr)
+		{
+			enemys[i]->Release();
+			delete enemys[i];
+		}
+	}
+
+	// �G�̒e�̉��
 	for (size_t i = 0; i < enemyBullets.size(); i++)
 	{
 		if (enemyBullets[i] != nullptr)
@@ -410,11 +451,12 @@ bool GameScene::Release(void)
 			delete enemyBullets[i];
 		}
 	}
+	// �p���̉��
 	enemyBullets.clear();
 	for (auto* bread : breadList)
 	{
 		delete bread;
 	}
-	breadList.clear(); // リスト自体の中身も空っぽにする
+	breadList.clear(); // ���X�g���̂̒��g������ۂɂ���
 	return true;
 }

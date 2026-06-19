@@ -6,21 +6,29 @@
 
 EnemyBase::EnemyBase()
 {
+
 }
 
 EnemyBase::~EnemyBase(void)
-{}
+{
+
+}
 
 bool EnemyBase::SystemInit(GameScene* gs) // 初期化処理(最初の１回のみ実行)
 {
+	printfDx("一回目EnemyBaseSystemInit(): imgFName=%s size=%d,%d\n", imgFName.c_str(), size.x, size.y);
+
 	gInst = gs;
 	// 敵キャラ個別のパラメータ設定処理
 	SetEnemyParam();
 	std::string path = "image/";
 	path += imgFName;
+	printfDx("二回目EnemyBaseSystemInit(): imgFName=%s size=%d,%d\n", imgFName.c_str(), size.x, size.y);
 	int err = LoadDivGraph(path.c_str(), CHARA_MAX,
 		static_cast<int>(AsoUtility::DIR::MAX), ANIM_NUMS,
 		size.x, size.y, img[0]);
+
+	printfDx("三回目EnemyBaseSystemInit(): LoadDivGraph result=%d path=%s\n", err, path.c_str());
 	if (err == -1)return false;
 	dir = 0;
 	return true;
@@ -28,7 +36,9 @@ bool EnemyBase::SystemInit(GameScene* gs) // 初期化処理(最初の１回のみ実行)
 
 void EnemyBase::GameInit(void) // ゲーム起動・再開時に必ず呼び出す処理
 {
-
+	// 初期値は通常敵として設定
+	EoB = 0; 
+	
 	// 敵の初期位置を設定する(引数無しの場合デフォルト位置に呼び出し)
 	GameInit(Vector2F(500.0f, 1250.0f));
 
@@ -95,18 +105,32 @@ void EnemyBase::Draw(void) // 描画処理
 	float stposX = gInst->GetCameraX();	//カメラ座標X
 	float stposY = gInst->GetCameraY();	//カメラ座標Y
 
-	//printfDx("表示");
+	// printfDx("表示");
 	DrawGraph(pos.x - size.x / 2 - stposX,
 		pos.y - size.y / 2 - stposY,
 		img[dir][animNo], true);
-	// 当たり判定の可視化（デバッグ用）
-	DrawBox(pos.x - 16 - stposX, pos.y - size.y / 2 - stposY,
-		pos.x + 16 - stposX, pos.y + size.y / 2 - stposY,
-		GetColor(255, 0, 0), FALSE);
+
+	//// 当たり判定の可視化（デバッグ用）
+	//if (EoB == 0);
+	//{
+	//	DrawBox(pos.x - 16 - stposX, pos.y - size.y / 2 - stposY,
+	//		pos.x + 16 - stposX, pos.y + size.y / 2 - stposY,
+	//		GetColor(255, 0, 0), FALSE);
+	//}
+	//
+	//if (EoB > 0);
+	//{
+	//	DrawBox(pos.x - size.x / 2 - stposX, pos.y - size.y / 2 - stposY,
+	//		pos.x + size.x/2 - stposX, pos.y + size.y / 2 - stposY,
+	//		GetColor(255, 0, 0), FALSE);
+	//}
+	
+
 	// 敵ののこりHPを表示する（デバッグ用）
 	DrawFormatString(pos.x - stposX, pos.y - size.y / 2 - 20 - stposY, GetColor(255, 255, 255), "HP: %d", hp);
-	// 生死を表示
-	DrawFormatString(pos.x - stposX, pos.y + size.y / 2 + 5 - stposY, GetColor(255, 255, 255), "Alive: %s", aliveFlg ? "True" : "False");
+
+	// 生死を表示（デバッグ用）
+	 DrawFormatString(pos.x - stposX, pos.y + size.y / 2 + 5 - stposY, GetColor(255, 255, 255), "Alive: %s", aliveFlg ? "True" : "False");
 }
 
 bool EnemyBase::Release(void) // 解放処理(最後の１回のみ実行)
@@ -173,11 +197,11 @@ void EnemyBase::setMoveDirection(Vector2F dirVec)
 		// 左右
 		if (dirVec.x > 0.0f)
 		{
-			dir = static_cast<int> (AsoUtility::DIR::RIGHT);
+			dir = static_cast<int> (AsoUtility::DIR::LEFT);
 		}
 		else
 		{
-			dir = static_cast<int>(AsoUtility::DIR::LEFT);
+			dir = static_cast<int>(AsoUtility::DIR::RIGHT);
 		}
 	}
 }
