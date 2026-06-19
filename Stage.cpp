@@ -35,10 +35,10 @@ void Stage::Initialize()
     LoadDivGraph("Data/MAP-Office.png", xNum * yNum, xNum, yNum, TILE_SIZE, TILE_SIZE, tileImages);
 
     //マップCSVを読み込む
-    LoadMapCSV("Data/MAP02BACKV3.csv", LAYER_BACKGROUND); // 背景用CSV
-    LoadMapCSV("Data/MAP02MIDV3.csv", LAYER_MIDDLEGROUND); // 中景用CSV（今のメインマップ）
-    LoadMapCSV("Data/MAP02OBJV3.csv", LAYER_OBJECT); // 障害物用CSV
-    LoadMapCSV("Data/MAP02FOREV3.csv", LAYER_FOREGROUND); // 前景用CSV
+    LoadMapCSV("Data/MAP02BACKV4.csv", LAYER_BACKGROUND); // 背景用CSV
+    LoadMapCSV("Data/MAP02MIDV4.csv", LAYER_MIDDLEGROUND); // 中景用CSV（今のメインマップ）
+    LoadMapCSV("Data/MAP02OBJV4.csv", LAYER_OBJECT); // 障害物用CSV
+    LoadMapCSV("Data/MAP02FOREV4.csv", LAYER_FOREGROUND); // 前景用CSV
 
 }
 
