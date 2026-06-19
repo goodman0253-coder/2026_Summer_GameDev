@@ -115,6 +115,9 @@ public:
 	bool IsPadBtnTrgDown(JOYPAD_NO no, JOYPAD_BTN btn) const;
 	bool IsPadBtnTrgUp(JOYPAD_NO no, JOYPAD_BTN btn) const;
 
+	int IsPadAKeyLX(JOYPAD_NO no) const;
+	int IsPadAKeyLY(JOYPAD_NO no) const;
+
 private:
 
 	// ÉLÅ[èÓïÒ
@@ -188,3 +191,4 @@ private:
 	void SetJPadInState(JOYPAD_NO jpNo);
 
 };
+

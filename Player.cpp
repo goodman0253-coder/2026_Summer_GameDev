@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "BreadBase.h"
 #include "Bread.h"
+#include "Melonpan.h"
 #include "GameScene.h"
 #include "Stage.h"
 
@@ -32,8 +33,15 @@ bool Player::SystemInit()
 bool Player::GameInit()
 {
 	vy = 0.0f;
-	playerPosx = 6000;
+
+	playerPosx = 100;
 	playerPosy = 1200;
+
+	for (int i = 0; i < static_cast<int>(BREAD_TYPE::MAX); ++i)
+	{
+		shotBreadTimers[i] = 0;
+	}
+
 	return true;
 }
 
@@ -42,25 +50,30 @@ void Player::Update()
 
 	Run();
 	
-	vy += 0.5f; // d—Í
+	vy += 0.5f; // é‡åŠ›
 	if (vy > 5.0f)
 	{
 		vy = 5.0f;
 	}
-	playerPosy += vy; // À•W‚ğXV
+	playerPosy += vy; // åº§æ¨™ã‚’æ›´æ–°
 
-	// ’n–Ê‚ÉÕ“Ë‚µ‚½‚ç~‚Ü‚é
-	if (playerPosy > 1225.0f)
+	// åœ°é¢ã«è¡çªã—ãŸã‚‰æ­¢ã¾ã‚‹
+	if (playerPosy >= 1225.0f)
 	{
 		playerPosy = 1225.0f;
 		vy = 0.0f;
+		jumpableFlg = true;
+
+	}
+
+	if (jumpableFlg == true)
+	{
 		Jump();
 	}
 
 	if (playerPosx < 0)
 	{
 		playerPosx = 0;
-
 	}	
 	if (gameScene->GetCameraX() == Stage::TILE_SIZE * Stage::MAP_WIDTH - PLAYER_WID - gameScene->GetScreenW())
 	{
@@ -75,32 +88,101 @@ void Player::Update()
 
 	}
 
-	if (shotCoolTime > 0)
+	for (int i = 0; i < static_cast<int>(BREAD_TYPE::MAX); ++i)
 	{
-		shotCoolTime--;
+		if (shotBreadTimers[i] > 0)
+		{
+			shotBreadTimers[i]--; // å„ãƒ‘ãƒ³å€‹åˆ¥ã«1ãƒ•ãƒ¬ãƒ¼ãƒ ãšã¤æ¸›ã‚‰ã™
+		}
 	}
 
-	if (CheckHitKey(KEY_INPUT_V) && shotCoolTime == 0)
+
+	if (InputManager::GetInstance().IsTrgDown(KEY_INPUT_C) || InputManager::GetInstance().IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::L_TRIGGER))
 	{
-		// ƒpƒ“‚ğ¶¬‚·‚éiƒvƒŒƒCƒ„[‚Ì’†S•t‹ß‚©‚ç”­Ëj
+		// æ¬¡ã®ç¨®é¡ã«é€²ã‚ã‚‹
+		int nextType = static_cast<int>(currentBreadType) + 1;
+
+		// ã‚‚ã—æœ€å¤§æ•°ï¼ˆMAXï¼‰ã«é”ã—ãŸã‚‰ã€æœ€åˆã®ç¨®é¡ï¼ˆNORMALï¼‰ã«æˆ»ã™
+		if (nextType >= static_cast<int>(BREAD_TYPE::MAX))
+		{
+			nextType = 0;
+		}
+
+		currentBreadType = static_cast<BREAD_TYPE>(nextType);
+	}
+
+	breadIdx = static_cast<int>(currentBreadType);
+
+	if ((InputManager::GetInstance().IsTrgDown(KEY_INPUT_V) || InputManager::GetInstance().IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::RIGHT)) && shotBreadTimers[breadIdx] <= 0)
+	{
 		float spawnX = playerPosx;
 		float spawnY = playerPosy;
 
-		// Šî–{‚Ìƒpƒ“iBreadj‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğì¬
-		Bread* newBread = new Bread(spawnX, spawnY, playerDir);
+		BreadBase* newBread = nullptr;
 
-		if (gameScene != nullptr)
+
+		breadThrowPoseFlg = true;
+
+		switch (currentBreadType)
 		{
-			gameScene->AddBread(newBread);
+		case BREAD_TYPE::NORMAL:
+		{
+			newBread = new Bread(spawnX, spawnY, playerDir); // é€šå¸¸ã®ãƒ‘ãƒ³
+			shotBreadTimers[breadIdx] = MAX_COOL_TIME[breadIdx];
+		}
+		break;
+		case BREAD_TYPE::MELONPAN:
+		{
+			newBread = new Melonpan(spawnX, spawnY, playerDir, gameScene);
+			shotBreadTimers[breadIdx] = MAX_COOL_TIME[breadIdx];
+		}
+		break;
 		}
 
-		// ƒN[ƒ‹ƒ^ƒCƒ€‚ğ3•bi1•b=60ƒtƒŒ[ƒ€ ~ 3 = 180ƒtƒŒ[ƒ€j‚Éİ’è
-		shotCoolTime = 180;
+		// å®‰å…¨ã«GameSceneã®ç®¡ç†ãƒªã‚¹ãƒˆã«è¿½åŠ ã™ã‚‹
+		if (newBread != nullptr && gameScene != nullptr)
+		{
+			gameScene->AddBread(newBread);
+
+		}
+	}
+
+	if (breadThrowPoseFlg == true)
+	{
+		breadThrowPoseTime--;
+		if (breadThrowPoseTime <= 0)
+		{
+			breadThrowPoseFlg = false;
+		}
+
+	}
+	else if (breadThrowPoseFlg == false)
+	{
+		breadThrowPoseTime = 60;
+	}
+
+	if (isMoving == true)
+	{
+		animTimer++;
+		if (animTimer >= ANIM_SPEED)
+		{
+			
+			animTimer = 0;
+			animNoNow++;
+
+		}
+		if (animNoNow > ANIM_RUN_NO_MAX)
+		{
+
+			animNoNow = 1;
+
+		}
+
 	}
 
 	if (invincibleTimer > 0)
 	{
-		invincibleTimer--; // 1ƒtƒŒ[ƒ€‚²‚Æ‚É1Œ¸‚ç‚·i60ƒtƒŒ[ƒ€ = 1•bj
+		invincibleTimer--; // 1ãƒ•ãƒ¬ãƒ¼ãƒ ã”ã¨ã«1æ¸›ã‚‰ã™ï¼ˆ60ãƒ•ãƒ¬ãƒ¼ãƒ  = 1ç§’ï¼‰
 	}
 }
 
@@ -113,47 +195,162 @@ void Player::Draw(float camX,float camY)
 	{
 		if ((invincibleTimer / 4) % 2 == 0)
 		{
-			return; // ‚±‚ÌƒtƒŒ[ƒ€‚Í•`‰æ‚ğƒXƒLƒbƒvi”ñ•\¦‚É‚µ‚Ä“_–Å‚ğ•\Œ»j
+			return; // ã“ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã¯æç”»ã‚’ã‚¹ã‚­ãƒƒãƒ—ï¼ˆéè¡¨ç¤ºã«ã—ã¦ç‚¹æ»…ã‚’è¡¨ç¾ï¼‰
 		}
 	}
 
-	// •`‰æ‚·‚é‰æ–Êã‚ÌÀ•W‚ğŒvZ
+
+
+	// æç”»ã™ã‚‹ç”»é¢ä¸Šã®åº§æ¨™ã‚’è¨ˆç®—
 	int drawX = (int)(playerPosx - camX);
 	int drawY = (int)(playerPosy - camY);
 
-	// ? ƒvƒŒƒCƒ„[‚ÌŒü‚«‚ªu¶iLEFTjv‚Ì‚Æ‚«‚¾‚¯‰æ‘œ‚ğ¶‰E”½“]‚µ‚Ä•`‰æ‚·‚é
-	if (playerDir == AsoUtility::DIR::LEFT)
+	if (isMoving == true)
 	{
-		// DrawTurnGraph( xÀ•W, yÀ•W, ƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹, “§‰ßƒtƒ‰ƒO )
-		DrawTurnGraph(drawX, drawY, playerImageArray[0], TRUE);
+		animState = ANIM_STATE::RUN;
 	}
 	else
 	{
-		// ‰EŒü‚«A‚ ‚é‚¢‚Íã‰º‚ğŒü‚¢‚Ä‚¢‚é‚Æ‚«‚Í’Êí’Ê‚è•`‰æ
-		DrawGraph(drawX, drawY, playerImageArray[0], TRUE);
+		animState = ANIM_STATE::IDLE;
 	}
+	if (breadThrowPoseFlg == true)
+	{
+		animState = ANIM_STATE::THROW;
+	}
+	if (jumpableFlg == false && breadThrowPoseFlg == false)
+	{
+		animState = ANIM_STATE::JUMP;
+	}
+
+	switch (animState)
+	{
+	case ANIM_STATE::IDLE:
+	{
+		if (playerDir == AsoUtility::DIR::LEFT)
+		{
+			DrawTurnGraph(drawX, drawY, playerImageArray[0], TRUE);
+		}
+		else
+		{
+			DrawGraph(drawX, drawY, playerImageArray[0], TRUE);
+		}
+	}
+		break;
+	case ANIM_STATE::JUMP:
+	{
+		if (playerDir == AsoUtility::DIR::LEFT)
+		{
+			DrawTurnGraph(drawX, drawY, playerImageArray[2], TRUE);
+		}
+		else
+		{
+			DrawGraph(drawX, drawY, playerImageArray[2], TRUE);
+		}
+	}
+		break;
+	case ANIM_STATE::RUN:
+	{
+		if (playerDir == AsoUtility::DIR::LEFT)
+		{
+			if (animNoNow == 1)
+			{
+				DrawTurnGraph(drawX, drawY, playerImageArray[0], TRUE);
+			}
+			if (animNoNow == 2)
+			{
+				DrawTurnGraph(drawX, drawY, playerImageArray[1], TRUE);
+			}
+		}
+		else
+		{
+			if (animNoNow == 1)
+			{
+				DrawGraph(drawX, drawY, playerImageArray[0], TRUE);
+			}
+			if (animNoNow == 2)
+			{
+				DrawGraph(drawX, drawY, playerImageArray[1], TRUE);
+			}
+		}
+	}
+	break;
+	case ANIM_STATE::THROW:
+	{
+		if (playerDir == AsoUtility::DIR::LEFT)
+		{
+			DrawTurnGraph(drawX, drawY, playerImageArray[3], TRUE);
+		}
+		else
+		{
+			DrawGraph(drawX, drawY, playerImageArray[3], TRUE);
+		}
+	}
+		break;
+
+	}
+
+#if 0
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å‘ããŒã€Œå·¦ï¼ˆLEFTï¼‰ã€ã®ã¨ãã ã‘ç”»åƒã‚’å·¦å³åè»¢ã—ã¦æç”»ã™ã‚‹
+	if (playerDir == AsoUtility::DIR::LEFT)
+	{
+		// DrawTurnGraph( xåº§æ¨™, yåº§æ¨™, ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒãƒ³ãƒ‰ãƒ«, é€éãƒ•ãƒ©ã‚° )
+		DrawTurnGraph(drawX, drawY, playerImageArray[0], TRUE);
+		if (breadThrowPoseFlg == true)
+		{
+			DrawTurnGraph(drawX, drawY, playerImageArray[3], TRUE);
+		}
+		if (jumpableFlg == false && breadThrowPoseFlg == false)
+		{
+			DrawTurnGraph(drawX, drawY, playerImageArray[2], TRUE);
+		}
+	}
+	else
+	{
+		// å³å‘ãã€ã‚ã‚‹ã„ã¯ä¸Šä¸‹ã‚’å‘ã„ã¦ã„ã‚‹ã¨ãã¯é€šå¸¸é€šã‚Šæç”»
+		DrawGraph(drawX, drawY, playerImageArray[0], TRUE);
+		if (breadThrowPoseFlg == true)
+		{
+			DrawGraph(drawX, drawY, playerImageArray[3], TRUE);
+		}
+		if (jumpableFlg == false && breadThrowPoseFlg == false)
+		{
+			DrawGraph(drawX, drawY, playerImageArray[2], TRUE);
+		}
+
+	}
+
+#endif
+
+
+	const char* breadName = "NORMAL";
+	if (currentBreadType == BREAD_TYPE::MELONPAN)      breadName = "MELONOAN";
+	//if (currentBreadType == BREAD_TYPE::CROISSANT) breadName = "CROISSANT";
+
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å°‘ã—ä¸Šã«ç¾åœ¨ã®é¸æŠã‚’è¡¨ç¤º
+	DrawFormatString(drawX, drawY - 20, GetColor(0, 255, 255), "[%s,%d]", breadName ,shotBreadTimers[breadIdx]);
+
 
 }
 
 void Player::Run()
 {
-	bool isMoving = false;
-	AsoUtility::DIR moveDir = AsoUtility::DIR::MAX; // ‰Šú’l‚Æ‚µ‚Ä–³Œø‚È’l‚ğİ’è
+	isMoving = false;
+	AsoUtility::DIR moveDir = AsoUtility::DIR::MAX; // åˆæœŸå€¤ã¨ã—ã¦ç„¡åŠ¹ãªå€¤ã‚’è¨­å®š
 
-	if (CheckHitKey(KEY_INPUT_UP))
+	if (InputManager::GetInstance().IsNew(KEY_INPUT_UP) || InputManager::GetInstance().IsNew(KEY_INPUT_W) || InputManager::GetInstance().IsPadAKeyLY(InputManager::JOYPAD_NO::PAD1) < -800)
 	{
 		moveDir = AsoUtility::DIR::UP;
 	}
-	else if (CheckHitKey(KEY_INPUT_DOWN))
+	else if (InputManager::GetInstance().IsNew(KEY_INPUT_DOWN) || InputManager::GetInstance().IsNew(KEY_INPUT_S) || InputManager::GetInstance().IsPadAKeyLY(InputManager::JOYPAD_NO::PAD1) > 800)
 	{
 		moveDir = AsoUtility::DIR::DOWN;
 	}
-	else if (CheckHitKey(KEY_INPUT_LEFT))
+	else if (InputManager::GetInstance().IsNew(KEY_INPUT_LEFT) || InputManager::GetInstance().IsNew(KEY_INPUT_A) || InputManager::GetInstance().IsPadAKeyLX(InputManager::JOYPAD_NO::PAD1) < -800)
 	{
 		moveDir = AsoUtility::DIR::LEFT;
 		isMoving = true;
 	}
-	else if (CheckHitKey(KEY_INPUT_RIGHT))
+	else if (InputManager::GetInstance().IsNew(KEY_INPUT_RIGHT) || InputManager::GetInstance().IsNew(KEY_INPUT_D) || InputManager::GetInstance().IsPadAKeyLX(InputManager::JOYPAD_NO::PAD1) > 800)
 	{
 		moveDir = AsoUtility::DIR::RIGHT;
 		isMoving = true;
@@ -188,24 +385,26 @@ void Player::Jump()
 {
 
 
-	if (CheckHitKey(KEY_INPUT_SPACE))
+	if (InputManager::GetInstance().IsTrgDown(KEY_INPUT_SPACE) || InputManager::GetInstance().IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
 	{
-			vy = -12.0f;
+			vy = -15.0f;
+			jumpableFlg = false;
 	}
 }
 
 void Player::ApplyDamage()
 {
-	// ‚·‚Å‚É–³“Gó‘ÔA‚Ü‚½‚Í‘Ì—Í‚ª0‚È‚çƒ_ƒ[ƒW‚ğ’Ê‚³‚È‚¢
+	// ã™ã§ã«ç„¡æ•µçŠ¶æ…‹ã€ã¾ãŸã¯ä½“åŠ›ãŒ0ãªã‚‰ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’é€šã•ãªã„
 	if (IsInvincible() || hp <= 0)
 	{
 		return;
 	}
-	hp -= 1; // ‘Ì—Í‚ğ1Œ¸‚ç‚·
+	hp -= 1; // ä½“åŠ›ã‚’1æ¸›ã‚‰ã™
 
 	if (hp > 0)
 	{
-		// ‚Ü‚¾¶‚«‚Ä‚¢‚ê‚Î2•bŠÔi60ƒtƒŒ[ƒ€~2120ƒtƒŒ[ƒ€j‚Ì–³“G‚ğ‚Â‚¯‚é
+		// ã¾ã ç”Ÿãã¦ã„ã‚Œã°2ç§’é–“ï¼ˆ60ãƒ•ãƒ¬ãƒ¼ãƒ Ã—2ï¼120ãƒ•ãƒ¬ãƒ¼ãƒ ï¼‰ã®ç„¡æ•µã‚’ã¤ã‘ã‚‹
 		invincibleTimer = 120;
 	}
 }
+

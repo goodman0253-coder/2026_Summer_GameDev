@@ -48,6 +48,15 @@ public:
         MAX
     };
 
+    //パン
+    enum class BREAD_TYPE
+    {
+        NORMAL,   // 通常のパン
+        MELONPAN,    // メロンパン
+        MAX       // 種類の最大数（切り替えループ用）
+    };
+
+
     float playerPosx;
     float playerPosy;
 
@@ -64,6 +73,10 @@ private:
     int hp = 5;                        // 現在の体力（初期値マックス5）
     static const int MAX_HP = 5;       // 最大体力
     int invincibleTimer = 0;           // 無敵時間タイマー（フレーム単位）
+    bool jumpableFlg = false;
+
+    int breadThrowPoseTime = 60;
+    bool breadThrowPoseFlg = false;
 
     int playerImageArray[PLAYER_ANIM_MAX];
 
@@ -71,15 +84,28 @@ private:
     AsoUtility::DIR playerDir;
 
     int animTimer = 0;
-    int animNoNow = 0;
+    int animNoNow = 1;
 
     const int ANIM_SPEED = 8;
+    const int ANIM_RUN_NO_MAX = 2;
+
+    bool isMoving = false;
     
     // アニメーション状態
     ANIM_STATE animState;
 
     GameScene* gameScene = nullptr;
     SceneManager* sceneManager = nullptr;
+
+    BREAD_TYPE currentBreadType = BREAD_TYPE::NORMAL;
+    int shotBreadTimers[static_cast<int>(BREAD_TYPE::MAX)] = { 0 };
+
+    const int MAX_COOL_TIME[static_cast<int>(BREAD_TYPE::MAX)] = 
+    {
+        90,  // NORMAL のクールタイム
+        150, //Melonoanのクールタイム
+    };
+    int breadIdx; 
 
     //float GetX() const { return playerPosx; }
     //float GetY() const { return playerPosy; }

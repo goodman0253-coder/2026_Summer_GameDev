@@ -38,6 +38,7 @@ void Application::Run()
 {
 
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
+
 	{
 		Update();
 		Draw();
@@ -56,6 +57,8 @@ void Application::Update(void)
 
 	if (sceneManager != nullptr)
 	{
+		clsDx();
+		printfDx("%d", InputManager::GetInstance().IsPadAKeyLX(InputManager::JOYPAD_NO::PAD1));
 		sceneManager->Update();
 	}
 #if 0;

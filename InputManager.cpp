@@ -32,6 +32,12 @@ void InputManager::Init(void)
 	InputManager::GetInstance().Add(KEY_INPUT_LEFT);
 	InputManager::GetInstance().Add(KEY_INPUT_RIGHT);
 	InputManager::GetInstance().Add(KEY_INPUT_M);
+	InputManager::GetInstance().Add(KEY_INPUT_V);
+	InputManager::GetInstance().Add(KEY_INPUT_C);
+	InputManager::GetInstance().Add(KEY_INPUT_W);
+	InputManager::GetInstance().Add(KEY_INPUT_A);
+	InputManager::GetInstance().Add(KEY_INPUT_S);
+	InputManager::GetInstance().Add(KEY_INPUT_D);
 
 	InputManager::MouseInfo info;
 
@@ -356,5 +362,16 @@ bool InputManager::IsPadBtnTrgUp(JOYPAD_NO no, JOYPAD_BTN btn) const
 {
 	return padInfos_[static_cast<int>(no)].IsTrgUp[static_cast<int>(btn)];
 }
+
+int InputManager::IsPadAKeyLX(JOYPAD_NO no) const
+{
+	return padInfos_[static_cast<int>(no)].AKeyLX;
+}
+
+int InputManager::IsPadAKeyLY(JOYPAD_NO no) const
+{
+	return padInfos_[static_cast<int>(no)].AKeyLY;
+}
+
 
 

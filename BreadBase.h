@@ -13,6 +13,7 @@ protected:
 
     AsoUtility::DIR dir;
 
+    int shotBreadTimer;
     int lifeTimer;
 
 public:
@@ -29,4 +30,6 @@ public:
 
     virtual int GetCoolTime() const { return 180; }
 };
+
+
 

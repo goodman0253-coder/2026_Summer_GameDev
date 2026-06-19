@@ -70,6 +70,12 @@
     <Filter Include="GameObject\Enemy\Boss">
       <UniqueIdentifier>{f2692827-8463-4cfa-bc24-d9fcf4c919b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Bread\Melonpan">
+      <UniqueIdentifier>{6f8e9f7f-7563-4d58-bb27-b8fb55434eea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Bread\Melonpan\MiniMelonpan">
+      <UniqueIdentifier>{da24c557-7559-46b6-b99e-1def7fe6eaf7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -141,6 +147,12 @@
     <ClCompile Include="Boss1.cpp">
       <Filter>GameObject\Enemy\Boss</Filter>
     </ClCompile>
+    <ClCompile Include="Melonpan.cpp">
+      <Filter>GameObject\Bread\Melonpan</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniMelonpan.cpp">
+      <Filter>GameObject\Bread\Melonpan\MiniMelonpan</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -211,6 +223,12 @@
     </ClInclude>
     <ClInclude Include="Boss1.h">
       <Filter>GameObject\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Melonpan.h">
+      <Filter>GameObject\Bread\Melonpan</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniMelonpan.h">
+      <Filter>GameObject\Bread\Melonpan\MiniMelonpan</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
