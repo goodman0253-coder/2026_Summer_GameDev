@@ -32,7 +32,7 @@ bool Player::SystemInit()
 bool Player::GameInit()
 {
 	vy = 0.0f;
-	playerPosx = 2000;
+	playerPosx = 6000;
 	playerPosy = 1200;
 	return true;
 }
@@ -132,8 +132,6 @@ void Player::Draw(float camX,float camY)
 		// 右向き、あるいは上下を向いているときは通常通り描画
 		DrawGraph(drawX, drawY, playerImageArray[0], TRUE);
 	}
-	// 当たり判定の可視化（デバッグ用）
-	DrawBox(drawX+23, drawY, drawX + PLAYER_WID-23, drawY + PLAYER_HIG, GetColor(255, 0, 0), FALSE);
 
 }
 

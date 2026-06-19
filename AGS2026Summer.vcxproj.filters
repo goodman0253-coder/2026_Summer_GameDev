@@ -67,6 +67,9 @@
     <Filter Include="GameObject\Bread\Bread">
       <UniqueIdentifier>{d8e16bdd-99b7-4bd2-9cf9-4eac64f72480}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Enemy\Boss">
+      <UniqueIdentifier>{f2692827-8463-4cfa-bc24-d9fcf4c919b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -135,6 +138,9 @@
     <ClCompile Include="StageSelectScene.cpp">
       <Filter>SceneManager\Scene\StageSlectScene</Filter>
     </ClCompile>
+    <ClCompile Include="Boss1.cpp">
+      <Filter>GameObject\Enemy\Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -202,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="StageSelectScene.h">
       <Filter>SceneManager\Scene\StageSlectScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss1.h">
+      <Filter>GameObject\Enemy\Boss</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

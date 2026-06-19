@@ -52,10 +52,6 @@ void EnemyBulletBase::Draw(void) // 描画処理
 	DrawGraph(static_cast<int>(pos.x - size.x / 2 - camX),
 				static_cast<int>(pos.y - size.y / 2 - camY),
 				imgHandle, true);
-	// 当たり判定の可視化（デバッグ用）
-	DrawBox(static_cast<int>(pos.x - size.x / 2 - camX), static_cast<int>(pos.y - size.y / 2 - camY),
-			static_cast<int>(pos.x + size.x / 2 - camX), static_cast<int>(pos.y + size.y / 2 - camY),
-		GetColor(255, 0, 0), FALSE);
 }
 
 bool EnemyBulletBase::Release(void) // 解放処理(最後の１回のみ実行)

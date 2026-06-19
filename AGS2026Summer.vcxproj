@@ -140,16 +140,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Boss1.cpp" />
     <ClCompile Include="Bread.cpp" />
     <ClCompile Include="BreadBase.cpp" />
     <ClCompile Include="Enemy1.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="AsoUtility.cpp" />
-
     <ClCompile Include="GameClearScene.cpp" />
-
     <ClCompile Include="EnemyBulletBase.cpp" />
-
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="GameScene.cpp" />
@@ -168,15 +166,13 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="AsoUtility.h" />
     <ClInclude Include="BaseScene.h" />
+    <ClInclude Include="Boss1.h" />
     <ClInclude Include="Bread.h" />
     <ClInclude Include="BreadBase.h" />
     <ClInclude Include="Enemy1.h" />
     <ClInclude Include="EnemyBase.h" />
-
     <ClInclude Include="GameClearScene.h" />
-
     <ClInclude Include="EnemyBulletBase.h" />
-
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="GameScene.h" />

@@ -13,13 +13,16 @@ public:
 	enum class ENEMY_TYPE //ENEMYの種類
 	{
 		E_TYPE_ST1_A,
+		E_TYPE_BOSS1,
 		
 		E_TYPE_MAX,
 	};
 	static constexpr int ANIM_NUMS = 2; // 表示するアニメーションの数
 	static constexpr int CHARA_MAX = ANIM_NUMS * static_cast<int>(AsoUtility::DIR::MAX);
 	static constexpr int ANIM_INTERVAL = 30; // アニメーションの更新間隔
+	int EoB; // 通常敵かボスか
 	int animNo; // 現在表示しているアニメーション番号
+	int hp; // ヒットポイント
 
 	EnemyBase();
 	~EnemyBase(void);
@@ -66,7 +69,7 @@ protected:
 	Vector2F pos; // 敵表示座標
 	int dir; // 敵が向いている方向
 	int animCounter; // アニメーションカウンター
-	int hp; // ヒットポイント
+	
 	int hpMax; // ヒットポイント最大値
 	bool aliveFlg; // 生存フラグ
 	int invincibleTimer; // 無敵時間タイマー（フレーム単位）
