@@ -144,6 +144,8 @@
     <ClCompile Include="Bread.cpp" />
     <ClCompile Include="BreadBase.cpp" />
     <ClCompile Include="Enemy1.cpp" />
+    <ClCompile Include="Enemy2.cpp" />
+    <ClCompile Include="Enemy3.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="AsoUtility.cpp" />
     <ClCompile Include="GameClearScene.cpp" />
@@ -161,6 +163,8 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="Stage1_EnemyA_Bullet.cpp" />
+    <ClCompile Include="Stage1_EnemyB_Bullet.cpp" />
+    <ClCompile Include="Stage1_EnemyC_Bullet.cpp" />
     <ClCompile Include="StageSelectScene.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="Vector2.cpp" />
@@ -174,6 +178,8 @@
     <ClInclude Include="Bread.h" />
     <ClInclude Include="BreadBase.h" />
     <ClInclude Include="Enemy1.h" />
+    <ClInclude Include="Enemy2.h" />
+    <ClInclude Include="Enemy3.h" />
     <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="GameClearScene.h" />
     <ClInclude Include="EnemyBulletBase.h" />
@@ -189,6 +195,8 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="Stage1_EnemyA_Bullet.h" />
+    <ClInclude Include="Stage1_EnemyB_Bullet.h" />
+    <ClInclude Include="Stage1_EnemyC_Bullet.h" />
     <ClInclude Include="StageSelectScene.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Vector2.h" />
