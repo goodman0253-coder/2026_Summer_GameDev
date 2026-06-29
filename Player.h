@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "AsoUtility.h"
 
+class SceneManager;
 class GameScene;
 class BreadBase;
 
@@ -65,6 +66,16 @@ public:
 
     void SetGameScene(GameScene* scene) { gameScene = scene; };
 
+    BREAD_TYPE GetCurrentBreadType() const { return currentBreadType; }
+    int GetShotBreadTimer(int idx) const { return shotBreadTimers[idx]; }
+    int GetMaxCoolTime(int idx) const { return MAX_COOL_TIME[idx]; }
+
+    // 指定した種類のパンを解放する関数
+    void UnlockBread(BREAD_TYPE type) { isBreadUnlocked[static_cast<int>(type)] = true; }
+
+    // 指定した種類のパンが解放されているか確認する関数
+    bool IsBreadUnlocked(BREAD_TYPE type) const { return isBreadUnlocked[static_cast<int>(type)]; }
+
 private:
     float vy;
     int image;
@@ -107,8 +118,7 @@ private:
     };
     int breadIdx; 
 
-    //float GetX() const { return playerPosx; }
-    //float GetY() const { return playerPosy; }
+    bool isBreadUnlocked[static_cast<int>(BREAD_TYPE::MAX)] = { true, false };
 
 };
 

@@ -156,8 +156,10 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Melonpan.cpp" />
+    <ClCompile Include="MelonpanRecipe.cpp" />
     <ClCompile Include="MiniMelonpan.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RecipeBase.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="Stage1_EnemyA_Bullet.cpp" />
@@ -186,8 +188,10 @@
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Melonpan.h" />
+    <ClInclude Include="MelonpanRecipe.h" />
     <ClInclude Include="MiniMelonpan.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="RecipeBase.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="Stage1_EnemyA_Bullet.h" />

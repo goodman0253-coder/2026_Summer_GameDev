@@ -68,11 +68,22 @@ void BreadBase::Draw(float cameraX, float cameraY)
 
     if (imageHandle != -1)
     {
-        DrawGraph(drawX, drawY, imageHandle, TRUE);
+        if (imageHandle == -1) return;
+
+        // 画面上の左上の座標を計算
+        int drawX1 = (int)(x - cameraX);
+        int drawY1 = (int)(y - cameraY);
+
+        // 右下の座標を width と height を足して計算する
+        int drawX2 = drawX1 + width;
+        int drawY2 = drawY1 + height;
+
+        // 修正後：左上(x1, y1) から 右下(x2, y2) のBoxサイズに合わせて引き伸ばし描画
+        DrawExtendGraph(drawX1, drawY1, drawX2, drawY2, imageHandle, TRUE);
     }
     else
     {
-        // 画像がない場合の仮描画（黄色い丸）
+        // 画像がない場合の仮描画　黄色い丸
         DrawCircle(drawX + width / 2, drawY + height / 2, width / 2, GetColor(255, 255, 0), TRUE);
     }
 

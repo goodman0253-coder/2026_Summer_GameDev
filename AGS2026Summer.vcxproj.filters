@@ -76,6 +76,12 @@
     <Filter Include="GameObject\Bread\Melonpan\MiniMelonpan">
       <UniqueIdentifier>{da24c557-7559-46b6-b99e-1def7fe6eaf7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Recipe">
+      <UniqueIdentifier>{65b3681e-cd5b-4e96-a5d1-fe626824e13f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Recipe\MelonpanRecipe">
+      <UniqueIdentifier>{c111bb8d-df57-4711-9fd6-692c48ab083b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -153,6 +159,11 @@
     <ClCompile Include="MiniMelonpan.cpp">
       <Filter>GameObject\Bread\Melonpan\MiniMelonpan</Filter>
     </ClCompile>
+    <ClCompile Include="RecipeBase.cpp">
+      <Filter>GameObject\Recipe</Filter>
+    </ClCompile>
+    <ClCompile Include="MelonpanRecipe.cpp">
+      <Filter>GameObject\Recipe\MelonpanRecipe</Filter>
     <ClCompile Include="Enemy2.cpp">
       <Filter>GameObject\Enemy</Filter>
     </ClCompile>
@@ -242,6 +253,11 @@
     <ClInclude Include="MiniMelonpan.h">
       <Filter>GameObject\Bread\Melonpan\MiniMelonpan</Filter>
     </ClInclude>
+    <ClInclude Include="RecipeBase.h">
+      <Filter>GameObject\Recipe</Filter>
+    </ClInclude>
+    <ClInclude Include="MelonpanRecipe.h">
+      <Filter>GameObject\Recipe\MelonpanRecipe</Filter
     <ClInclude Include="Enemy2.h">
       <Filter>GameObject\Enemy</Filter>
     </ClInclude>
@@ -252,7 +268,7 @@
       <Filter>GameObject\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Stage1_EnemyC_Bullet.h">
-      <Filter>GameObject\Bullet</Filter>
+      <Filter>GameObject\Bullet</Filter
     </ClInclude>
   </ItemGroup>
 </Project>
