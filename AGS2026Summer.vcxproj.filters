@@ -153,6 +153,18 @@
     <ClCompile Include="MiniMelonpan.cpp">
       <Filter>GameObject\Bread\Melonpan\MiniMelonpan</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy2.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1_EnemyB_Bullet.cpp">
+      <Filter>GameObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy3.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1_EnemyC_Bullet.cpp">
+      <Filter>GameObject\Bullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -229,6 +241,18 @@
     </ClInclude>
     <ClInclude Include="MiniMelonpan.h">
       <Filter>GameObject\Bread\Melonpan\MiniMelonpan</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy2.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1_EnemyB_Bullet.h">
+      <Filter>GameObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy3.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1_EnemyC_Bullet.h">
+      <Filter>GameObject\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
