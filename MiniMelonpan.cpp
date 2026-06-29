@@ -9,14 +9,13 @@ MiniMelonpan::MiniMelonpan(float startX, float startY, float vx, float vy)
     speedY = vy;
 
     // 小さいのでサイズを小さく設定
-    width = 16;
-    height = 16;
+    width = 32;
+    height = 32;
 
     // 小さいパンの寿命（1秒＝60フレームで消滅）
     lifeTimer = 60;
 
-    // 💡 もし小さなメロンパン用の画像があればここで読み込む（無ければ黄色い円になります）
-    imageHandle = LoadGraph("image/mini_melon.png");
+    imageHandle = LoadGraph("image/melonpan.png");
 }
 
 void MiniMelonpan::Update()
@@ -41,15 +40,10 @@ void MiniMelonpan::Draw(float cameraX, float cameraY)
 
     if (imageHandle != -1)
     {
-        // 中心を基準に0.2倍の大きさで描画
-        DrawRotaGraph(drawX + width / 2, drawY + height / 2, 0.2f, 0.0f, imageHandle, TRUE);
-    }
-    else
-    {
-        // 画像がない場合の仮描画（緑色の小さな丸）
-        DrawCircle(drawX + width / 2, drawY + height / 2, width / 2, GetColor(0, 255, 0), TRUE);
+        // 中心を基準に0.6倍の大きさで描画
+        DrawRotaGraph(drawX + width / 2, drawY + height / 2, 1.0f, 0.0f, imageHandle, TRUE);
     }
 
     // デバッグ用当たり判定の可視化
-    DrawBox(drawX, drawY, drawX + width, drawY + height, GetColor(255, 0, 0), FALSE);
+    //DrawBox(drawX, drawY, drawX + width, drawY + heigh     t, GetColor(255, 0, 0), FALSE);
 }

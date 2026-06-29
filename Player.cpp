@@ -99,16 +99,29 @@ void Player::Update()
 
 	if (InputManager::GetInstance().IsTrgDown(KEY_INPUT_C) || InputManager::GetInstance().IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::L_TRIGGER))
 	{
-		// 次の種類に進める
-		int nextType = static_cast<int>(currentBreadType) + 1;
-
-		// もし最大数（MAX）に達したら、最初の種類（NORMAL）に戻す
-		if (nextType >= static_cast<int>(BREAD_TYPE::MAX))
+		// ステージ内にパンが0個のときだけ切り替えられる（前のリクエストの処理と組み合わせる場合）
+		if (gameScene != nullptr && gameScene->GetBreadCount() == 0)
 		{
-			nextType = 0;
-		}
+			BREAD_TYPE nextType = currentBreadType;
 
-		currentBreadType = static_cast<BREAD_TYPE>(nextType);
+			// 解放されているパンが見つかるまで最大でMAX回ループして探す
+			for (int i = 0; i < static_cast<int>(BREAD_TYPE::MAX); ++i)
+			{
+				int nextIdx = static_cast<int>(nextType) + 1;
+				if (nextIdx >= static_cast<int>(BREAD_TYPE::MAX))
+				{
+					nextIdx = 0; // ループして最初に戻す
+				}
+				nextType = static_cast<BREAD_TYPE>(nextIdx);
+
+				// もしそのパンが解放されていたら、それに決定してループを抜ける
+				if (isBreadUnlocked[nextIdx] == true)
+				{
+					currentBreadType = nextType;
+					break;
+				}
+			}
+		}
 	}
 
 	breadIdx = static_cast<int>(currentBreadType);

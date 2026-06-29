@@ -10,6 +10,7 @@
 #include "BreadBase.h"
 #include "Bread.h"
 #include "Melonpan.h"
+#include "MelonpanRecipe.h"
 
 
 GameScene::GameScene()
@@ -41,6 +42,12 @@ GameScene::~GameScene()
 		}
 	}
 	enemyBullets.clear();
+
+	for (size_t i = 0; i < recipeList.size(); i++)
+	{
+		if (recipeList[i] != nullptr) { delete recipeList[i]; }
+	}
+	recipeList.clear();
 }
 
 bool GameScene::SystemInit(void)
@@ -86,6 +93,8 @@ bool GameScene::GameInit(void)
 	//���̃N���A
 	isClearTriggered = false;
 	clearTimer = 0;
+
+	AddRecipe(new MelonRecipe(800.0f, 1150.0f));
 
 	return true;
 }
@@ -205,16 +214,18 @@ void GameScene::CollisionCheckEB()
 							breadPos.y < enemyPos.y + (enemySize.y / 2) &&
 							breadPos.y + breadSize.y > enemyPos.y - (enemySize.y / 2))
 						{
-							enemys[i]->SetDamage(1); // エネミーにダメージを与える
+							
 
 						  Melonpan* melon = dynamic_cast<Melonpan*>(bread);
 						  if (melon != nullptr)
 						  {
+							enemys[i]->SetDamage(2); // エネミーにダメージを与える
 						  	// メロンパンだった場合は破裂させる（内部で小さなパンが生成され、自身は死亡する）
 						  	melon->Explode();
 						  }
 						  else
 						  {
+							enemys[i]->SetDamage(1); // エネミーにダメージを与える
 						  	// 通常のパンだった場合はそのまま消す
 						  	bread->Kill();
 						  }
@@ -222,6 +233,43 @@ void GameScene::CollisionCheckEB()
 					}
 				}
 			}
+		}
+	}
+}
+
+
+void GameScene::CollisionCheckPR()
+{
+	if (player == nullptr) return;
+
+	// プレイヤーの矩形情報
+	float pX = player->GetPosX();
+	float pY = player->GetPosY();
+	int pW = Player::PLAYER_WID;
+	int pH = Player::PLAYER_HIG;
+
+	for (auto* recipe : recipeList)
+	{
+		if (!recipe->IsAlive()) continue;
+
+		// アイテムの矩形情報
+		float rX = recipe->GetX();
+		float rY = recipe->GetY();
+		int rW = recipe->GetWidth();
+		int rH = recipe->GetHeight();
+
+		// 💡 矩形同士の当たり判定（AABB）
+		if (pX < rX + rW && pX + pW > rX &&
+			pY < rY + rH && pY + pH > rY)
+		{
+			// 1. アイテムを消滅状態にする
+			recipe->Collect();
+
+			// 2. プレイヤーの該当するパンを解放する！
+			player->UnlockBread(recipe->GetUnlockType());
+
+			// 画面確認用デバッグテキスト
+			// printfDx("BREAD UNLOCKED!\n");
 		}
 	}
 }
@@ -253,6 +301,24 @@ void GameScene::Update(void)
 		else
 		{
 			++it; // �����Ă���Ύ���
+		}
+	}
+
+	for (auto* recipe : recipeList)
+	{
+		recipe->Update();
+	}
+
+	for (auto it = recipeList.begin(); it != recipeList.end(); )
+	{
+		if (!(*it)->IsAlive())
+		{
+			delete* it;
+			it = recipeList.erase(it);
+		}
+		else
+		{
+			++it;
 		}
 	}
 
@@ -360,6 +426,7 @@ void GameScene::Update(void)
 		CollisionCheckPE(); // 
 		CollisionCheckPB(); // ?�v?�?�?�C?�?�?�[?�ƓG?�̒e?�̓�?�?�?�蔻?�?�?�?�s?�?�?�֐�
 		CollisionCheckEB(); // ?�G?�̒e?�ƃp?�?�?�̓�?�?�?�蔻?�?�?�?�s?�?�?�֐�
+		CollisionCheckPR();
 	}
 }
 
@@ -379,14 +446,119 @@ void GameScene::Draw(void)
 	if (player != nullptr)
 	{
 		player->Draw(cameraX, cameraY);
+
+		//---------------------------------------------
+		//  左下にHPゲージを表示する処理
+		int currentHp = player->GetHp();
+		int maxHp = 5;
+
+		// ゲージを表示する基準位置（左下）
+		int gaugeX = 60;
+		int gaugeY = SCREEN_HEIGHT - 100; // 1080 - 100 = 980 
+
+		int gaugeWidth = 300;  // ゲージの全体の長さ(最大HP時)
+		int gaugeHeight = 24;  // ゲージの縦幅
+
+		// 現在のHPの割合に応じて緑色バーの長さを計算
+		int currentBarWidth = (int)((float)currentHp / (float)maxHp * gaugeWidth);
+
+		// 1. ゲージの背景（黒い座布団）
+		DrawBox(gaugeX - 10, gaugeY - 45, gaugeX + gaugeWidth + 10, gaugeY + gaugeHeight + 10, GetColor(0, 0, 0), TRUE);
+
+		// 2. テキスト表示 (HP: 5 / 5)
+		SetFontSize(24);
+		DrawFormatString(gaugeX, gaugeY - 35, GetColor(255, 255, 255), "PLAYER HP: %d / %d", currentHp, maxHp);
+
+		// 3. ゲージの枠（白い線）
+		DrawBox(gaugeX, gaugeY, gaugeX + gaugeWidth, gaugeY + gaugeHeight, GetColor(255, 255, 255), FALSE);
+
+		// 4. 中身のバー（HPが残っている時だけ緑色で塗る）
+		if (currentHp > 0)
+		{
+			// 残りHPが1の時はピンチっぽく赤、それ以外は緑にする演出
+			unsigned int barColor = (currentHp <= 1) ? GetColor(255, 0, 0) : GetColor(0, 255, 0);
+			DrawBox(gaugeX + 2, gaugeY + 2, gaugeX + currentBarWidth - 2, gaugeY + gaugeHeight - 2, barColor, TRUE);
+		}
+
+		// 無敵状態のテキストはゲージの少し上にズラして表示
+		if (player->IsInvincible())
+		{
+			SetFontSize(20);
+			DrawString(gaugeX, gaugeY - 70, "INVINCIBLE!!", GetColor(255, 0, 0));
+		}
+		//---------------------------------------------
+
+
+		//---------------------------------------------
+		//パンのクールタイムUI
+		int currentTypeIdx = static_cast<int>(player->GetCurrentBreadType());
+		int currentTimer = player->GetShotBreadTimer(currentTypeIdx);
+		int maxCoolTime = player->GetMaxCoolTime(currentTypeIdx);
+
+		// 表示する右下の基準座標
+		int uiX = SCREEN_WIDTH - 300; 
+		int uiY = SCREEN_HEIGHT - 300; 
+		int iconSize = 256;   // アイコンのサイズ
+
+		// 現在選択されているパンの画像ハンドルを決定
+		int breadImg = -1;
+		if (currentTypeIdx == 0) // NORMAL
+		{
+			breadImg = LoadGraph("image/bread.png");
+		}
+		else if (currentTypeIdx == 1) // MELONPAN
+		{
+			breadImg = LoadGraph("image/melonpan.png");
+		}
+
+		int roundRadius = 12;
+
+
+		DrawRoundRect(uiX, uiY, uiX + iconSize, uiY + iconSize, roundRadius, roundRadius, GetColor(0, 0, 0), TRUE);
+
+		// パンのアイコン画像を描画
+		if (breadImg != -1)
+		{
+			DrawExtendGraph(uiX, uiY, uiX + iconSize, uiY + iconSize, breadImg, TRUE);
+		}
+
+
+		// クールタイムの影演出（下から上に晴れる演出）
+		if (currentTimer > 0 && maxCoolTime > 0)
+		{
+			// クールタイムの残り割合 (1.0 から 0.0 へと減っていく)
+			float rate = (float)currentTimer / (float)maxCoolTime;
+
+			// 残り時間（割合）に応じた、影の縦幅を計算
+			int shadowHeight = (int)(iconSize * rate);
+
+			int shadowTopY = uiY + (iconSize - shadowHeight);
+
+			// --- 透過ブレンドモードを開始 ---
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180); // 180 = ほどよい暗さの半透明の黒
+
+			// 計算した座標で、アイコンの下端（uiY + iconSize）までを黒い四角で塗りつぶす
+			DrawRoundRect(uiX, shadowTopY, uiX + iconSize, uiY + iconSize, roundRadius, roundRadius, GetColor(0, 0, 0), TRUE);
+
+			// --- 透過ブレンドモードを必ず解除 ---
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);;
+		}
+
+		DrawRoundRect(uiX, uiY, uiX + iconSize, uiY + iconSize, roundRadius, roundRadius, GetColor(255, 255, 255), FALSE);		//---------------------------------------
 	}
 
 	size_t size = enemys.size(); // �G�̃e�[�u���̗v�f�����擾
 	std::vector<EnemyBase*>::iterator eitr = enemys.begin(); // �C�e���[�^���擾
-	for (int ii = 0; ii < size; ii++) {
+	for (int ii = 0; ii < size; ii++)
+	{
 		(*eitr)->Draw();
 		eitr++;
-	};        
+	};    
+
+	for (auto* recipe : recipeList)
+	{
+		recipe->Draw(cameraX, cameraY);
+	}
 
 	// 2.���ׂẴp���̕`�揈��
 	for (auto* bread : breadList)
