@@ -11,8 +11,6 @@ public:
 	void Update(void) override;
 	void SetPlayer(Player* p) { player = p; }
 private:
-	int PX;
-	int PY;
 	int JumpTimer;
 	bool isJumping = false;     // 現在ジャンプ中（空中）かどうかのフラグ
 	float jumpVy = 0.0f;        // 毎フレームの縦方向の移動量
