@@ -146,6 +146,12 @@
     <ClCompile Include="Enemy1.cpp" />
     <ClCompile Include="Enemy2.cpp" />
     <ClCompile Include="Enemy3.cpp" />
+    <ClCompile Include="Enemy4.cpp" />
+    <ClCompile Include="Enemy5.cpp" />
+    <ClCompile Include="Enemy6.cpp" />
+    <ClCompile Include="Enemy7.cpp" />
+    <ClCompile Include="Enemy8.cpp" />
+    <ClCompile Include="Enemy9.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="AsoUtility.cpp" />
     <ClCompile Include="GameClearScene.cpp" />
@@ -165,6 +171,10 @@
     <ClCompile Include="Stage1_EnemyA_Bullet.cpp" />
     <ClCompile Include="Stage1_EnemyB_Bullet.cpp" />
     <ClCompile Include="Stage1_EnemyC_Bullet.cpp" />
+    <ClCompile Include="Stage2_EnemyA_Bullet.cpp" />
+    <ClCompile Include="Stage2_EnemyB_Bullet.cpp" />
+    <ClCompile Include="Stage2_EnemyC_Bullet.cpp" />
+    <ClCompile Include="Stage3_EnemyC_Bullet.cpp" />
     <ClCompile Include="StageSelectScene.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="Vector2.cpp" />
@@ -180,6 +190,12 @@
     <ClInclude Include="Enemy1.h" />
     <ClInclude Include="Enemy2.h" />
     <ClInclude Include="Enemy3.h" />
+    <ClInclude Include="Enemy4.h" />
+    <ClInclude Include="Enemy5.h" />
+    <ClInclude Include="Enemy6.h" />
+    <ClInclude Include="Enemy7.h" />
+    <ClInclude Include="Enemy8.h" />
+    <ClInclude Include="Enemy9.h" />
     <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="GameClearScene.h" />
     <ClInclude Include="EnemyBulletBase.h" />
@@ -197,6 +213,10 @@
     <ClInclude Include="Stage1_EnemyA_Bullet.h" />
     <ClInclude Include="Stage1_EnemyB_Bullet.h" />
     <ClInclude Include="Stage1_EnemyC_Bullet.h" />
+    <ClInclude Include="Stage2_EnemyA_Bullet.h" />
+    <ClInclude Include="Stage2_EnemyB_Bullet.h" />
+    <ClInclude Include="Stage2_EnemyC_Bullet.h" />
+    <ClInclude Include="Stage3_EnemyC_Bullet.h" />
     <ClInclude Include="StageSelectScene.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Vector2.h" />

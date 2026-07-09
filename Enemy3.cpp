@@ -7,7 +7,7 @@
 
 void Enemy3::GameInit(void)
 {
-    EnemyBase::GameInit(Vector2F(4300.0f, 1225.0f));
+    EnemyBase::GameInit(Vector2F(1800.0f, 1225.0f));
 }
 
 void Enemy3::SetEnemyParam(void)
