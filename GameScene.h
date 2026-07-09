@@ -38,6 +38,8 @@ private:
 	int clearTimer = 0;            // クリア条件が満たされてからの経過フレーム数
 	bool isPlayerAlive = true; // プレイヤーが生存しているかどうか
 
+	int currentStageNum = 1;
+
 public:
 	int PX = 0; // プレイヤーのX座標
 	int PY = 0; // プレイヤーのY座標
@@ -67,6 +69,7 @@ public:
 
 	void AddEnemyBullet(EnemyBulletBase* newBullet, Vector2F spawnPos, Vector2F vel);
 
+	void SetStageNum(int num) { currentStageNum = num; }
 
 	void CollisionCheckPB(); // プレイヤーと敵の弾の当たり判定を行う関数
 	void CollisionCheckPE(); // プレイヤーと敵の当たり判定を行う関数

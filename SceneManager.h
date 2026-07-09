@@ -29,6 +29,7 @@ private:
 
     BaseScene* currentScene = nullptr;
 
+    int selectStageNum = 1;
 
     SceneType nextScene = SCENE_NONE;
 
@@ -44,4 +45,6 @@ public:
 
     void Update();
     void Draw() { if (currentScene) currentScene->Draw(); }
+    void SetSelectStageNum(int num) { selectStageNum = num; }
+    int GetSelectStageNum() const { return selectStageNum; }
 };

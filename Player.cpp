@@ -9,6 +9,7 @@
 #include "Melonpan.h"
 #include "GameScene.h"
 #include "Stage.h"
+#include "SoundManager.h"
 
 Player::Player() 
 {
@@ -50,42 +51,86 @@ void Player::Update()
 
 	Run();
 	
-	vy += 0.5f; // 重力
-	if (vy > 5.0f)
-	{
-		vy = 5.0f;
-	}
-	playerPosy += vy; // 座標を更新
+	vy += 0.5f; // 重力加速
+	if (vy > 12.0f) vy = 12.0f; // 落下速度の限界値を少し調整（すり抜け防止）
 
-	// 地面に衝突したら止まる
-	if (playerPosy >= 1225.0f)
-	{
-		playerPosy = 1225.0f;
-		vy = 0.0f;
-		jumpableFlg = true;
+	playerPosy += vy; // Y座標を仮更新
 
+	// Stageのポインタを安全に取得
+	Stage* stage = (gameScene != nullptr) ? gameScene->GetLpStage() : nullptr;
+
+	if (stage != nullptr)
+	{
+		if (vy < 0.0f)
+		{
+			float headX1 = playerPosx + 4.0f;               // 頭の左側
+			float headX2 = playerPosx + PLAYER_WID - 4.0f;  // 頭の右側
+			float headY = playerPosy;                       // 頭のてっぺん
+
+			if (stage->CheckCollision(headX1, headY) || stage->CheckCollision(headX2, headY))
+			{
+				// 天井にぶつかったので、めり込みを戻して落下に転じさせる
+				int tileY = (int)(headY / Stage::TILE_SIZE) + 1;
+				playerPosy = (float)(tileY * Stage::TILE_SIZE);
+				vy = 0.0f; // 上昇ストップ
+			}
+		}
+
+		float footX1 = playerPosx + 4.0f;               // 足の左側
+		float footX2 = playerPosx + PLAYER_WID - 4.0f;  // 足の右側
+		float footY = playerPosy + PLAYER_HIG;          // 足元
+
+		if (vy >= 0.0f && (stage->CheckCollision(footX1, footY) || stage->CheckCollision(footX2, footY)))
+		{
+			int tileY = (int)(footY / Stage::TILE_SIZE);
+			playerPosy = (float)(tileY * Stage::TILE_SIZE) - PLAYER_HIG;
+
+			vy = 0.0f;
+			jumpableFlg = true;
+		}
+		else
+		{
+			jumpableFlg = false;
+		}
 	}
+	else
+	{
+		if (playerPosy >= 1225.0f)
+		{
+			playerPosy = 1225.0f;
+			vy = 0.0f;
+			jumpableFlg = true;
+		}
+	}
+
+	// ジャンプボタンの入力を受け付ける（着地判定の後に行う）
 
 	if (jumpableFlg == true)
 	{
 		Jump();
 	}
 
+
 	if (playerPosx < 0)
 	{
 		playerPosx = 0;
 	}	
-	if (gameScene->GetCameraX() == Stage::TILE_SIZE * Stage::MAP_WIDTH - PLAYER_WID - gameScene->GetScreenW())
-	{
-		if (playerPosx < Stage::TILE_SIZE * Stage::MAP_WIDTH - PLAYER_WID - gameScene->GetScreenW())
-		{
-			playerPosx = Stage::TILE_SIZE * Stage::MAP_WIDTH - PLAYER_WID - gameScene->GetScreenW();
-		}
-	}
-	if (playerPosx > Stage::TILE_SIZE * Stage::MAP_WIDTH - PLAYER_WID)
-	{
-		playerPosx = Stage::TILE_SIZE * Stage::MAP_WIDTH - PLAYER_WID;
 
+	if (gameScene != nullptr && gameScene->GetLpStage() != nullptr)
+	{
+		int currentMapWidth = gameScene->GetLpStage()->Stage::MAP_WIDTH;
+
+		if (gameScene->GetCameraX() == Stage::TILE_SIZE * currentMapWidth - PLAYER_WID - gameScene->GetScreenW())
+		{
+			if (playerPosx < Stage::TILE_SIZE * currentMapWidth - PLAYER_WID - gameScene->GetScreenW())
+			{
+				playerPosx = Stage::TILE_SIZE * currentMapWidth - PLAYER_WID - gameScene->GetScreenW();
+			}
+		}
+		if (playerPosx > Stage::TILE_SIZE * currentMapWidth - PLAYER_WID)
+		{
+			playerPosx = Stage::TILE_SIZE * currentMapWidth - PLAYER_WID;
+		}
 	}
 
 	for (int i = 0; i < static_cast<int>(BREAD_TYPE::MAX); ++i)
@@ -133,6 +178,7 @@ void Player::Update()
 
 		BreadBase* newBread = nullptr;
 
+		SoundManager::GetInstance().PlaySE("sound/bread_throw.mp3");
 
 		breadThrowPoseFlg = true;
 
@@ -152,7 +198,6 @@ void Player::Update()
 		break;
 		}
 
-		// 安全にGameSceneの管理リストに追加する
 		if (newBread != nullptr && gameScene != nullptr)
 		{
 			gameScene->AddBread(newBread);
@@ -340,12 +385,12 @@ void Player::Draw(float camX,float camY)
 	//if (currentBreadType == BREAD_TYPE::CROISSANT) breadName = "CROISSANT";
 
 	// プレイヤーの少し上に現在の選択を表示
-	DrawFormatString(drawX, drawY - 20, GetColor(0, 255, 255), "[%s,%d]", breadName ,shotBreadTimers[breadIdx]);
+	//DrawFormatString(drawX, drawY - 20, GetColor(0, 255, 255), "[%s,%d]", breadName ,shotBreadTimers[breadIdx]);
 
 
 }
 
-void Player::Run()
+void Player::Run() 
 {
 	isMoving = false;
 	AsoUtility::DIR moveDir = AsoUtility::DIR::MAX; // 初期値として無効な値を設定
@@ -377,18 +422,47 @@ void Player::Run()
 
 	if (isMoving)
 	{
-		float moveSpeed = 4.0f;
+		float moveSpeed = 6.0f;
 
-		switch (playerDir)
+		SoundManager::GetInstance().PlaySE("run");
+
+		Stage* stage = (gameScene != nullptr) ? gameScene->GetLpStage() : nullptr;
+
+		if (playerDir == AsoUtility::DIR::LEFT)
 		{
-		case AsoUtility::DIR::LEFT:
-			playerPosx -= moveSpeed;
-			break;
-		case AsoUtility::DIR::RIGHT:
-			playerPosx += moveSpeed;
-			break;
-		default:
-			break;
+			// 左に移動した仮の座標（少し余裕を持たせるため +4px 内側から判定）
+			float nextLeftX = playerPosx - moveSpeed;
+			float checkY1 = playerPosy + 1.0f;                  // プレイヤーの頭付近
+			float checkY2 = playerPosy + PLAYER_HIG - 1.0f;     // プレイヤーの足元付近
+
+			if (stage != nullptr && (stage->CheckCollision(nextLeftX, checkY1) || stage->CheckCollision(nextLeftX, checkY2)))
+			{
+				// 壁があるので進めない。壁の右端にぴったり補正
+				int tileX = (int)(nextLeftX / Stage::TILE_SIZE) + 1;
+				playerPosx = (float)(tileX * Stage::TILE_SIZE);
+			}
+			else
+			{
+				playerPosx -= moveSpeed;
+			}
+		}
+		else if (playerDir == AsoUtility::DIR::RIGHT)
+		{
+			// 右に移動した仮の座標（右端の座標は playerPosx + PLAYER_WID）
+			float nextRightX = playerPosx + PLAYER_WID + moveSpeed;
+			float checkY1 = playerPosy + 1.0f;
+			float checkY2 = playerPosy + PLAYER_HIG - 1.0f;
+
+			if (stage != nullptr && (stage->CheckCollision(nextRightX, checkY1) || stage->CheckCollision(nextRightX, checkY2)))
+			{
+				// 壁があるので進めない。壁の左端にぴったり補正
+				int tileX = (int)(nextRightX / Stage::TILE_SIZE);
+				playerPosx = (float)(tileX * Stage::TILE_SIZE) - PLAYER_WID;
+			}
+			else
+			{
+				playerPosx += moveSpeed;
+			}
 		}
 	}
 }
@@ -421,3 +495,10 @@ void Player::ApplyDamage()
 	}
 }
 
+void Player::Die()
+{
+	if (playerPosy > 1500.0f)
+	{
+		hp = 0; // 体力を0にする
+	}
+}

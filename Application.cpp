@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "SceneManager.h"
 #include "InputManager.h"
+#include "SoundManager.h"
 
 Application::Application()
 {
@@ -10,7 +11,7 @@ Application::Application()
 
 Application::~Application()
 {
-
+	SoundManager::GetInstance().ReleaseAll();
 }
 
 bool Application::SystemInit(void)
@@ -113,3 +114,15 @@ void Application::Draw(void)
 		sceneManager->Draw();
 	}
 }
+
+void Application::IdentityInit()
+{
+	auto& sm = SoundManager::GetInstance();
+	sm.LoadSE("jump", "sound/Jump.mp3");
+	sm.LoadSE("throw", "sound/Throw.mp3");
+	sm.LoadSE("damage", "sound/Damage.mp3");
+	sm.LoadSE("run", "sound/Run.mp3");
+	sm.LoadSE("runS", "sound/RunSchool.mp3");
+}
+
+

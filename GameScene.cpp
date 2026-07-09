@@ -71,56 +71,68 @@ bool GameScene::GameInit(void)
 	player->SetGameScene(this);
 	player->GameInit();
 	stage = new Stage();
-	stage->Initialize();
+	stage->Initialize(currentStageNum);
 	 
-	EnemyBase* newEnemy = new Enemy1();
-	if (newEnemy != nullptr)
+	if (currentStageNum == 1)
 	{
-		// this (GameScene) ??G??m????n???I
-		newEnemy->SystemInit(this);
+		EnemyBase* newEnemy = new Enemy1();
+		if (newEnemy != nullptr)
+		{
+			// this (GameScene) ??G??m????n???I
+			newEnemy->SystemInit(this);
 
-		// GameInit?????i??????u????j
-		newEnemy->GameInit();
+			// GameInit?????i??????u????j
+			newEnemy->GameInit();
 
-		// ?????????????G?????X?g??o?^
-		enemys.push_back(newEnemy);
+			// ?????????????G?????X?g??o?^
+			enemys.push_back(newEnemy);
+		}
+
+		EnemyBase* newEnemy2 = new Enemy2();
+		if (newEnemy2 != nullptr)
+		{
+			// this (GameScene) ??G??m????n???I
+			newEnemy2->SystemInit(this);
+
+			// GameInit?????i??????u????j
+			newEnemy2->GameInit();
+
+			// ?????????????G?????X?g??o?^
+			enemys.push_back(newEnemy2);
+		}
+
+		EnemyBase* newEnemy3 = new Enemy3();
+		if (newEnemy3 != nullptr)
+		{
+			// this (GameScene) ??G??m????n???I
+			newEnemy3->SystemInit(this);
+
+			// GameInit?????i??????u????j
+			newEnemy3->GameInit();
+
+			// ?????????????G?????X?g??o?^
+			enemys.push_back(newEnemy3);
+		}
+
+		EnemyBase* newEnemy4 = new Boss1();
+		if (newEnemy4 != nullptr)
+		{
+			// this (GameScene) ????m????n???I
+			newEnemy4->SystemInit(this);
+			// GameInit?????i??????u????j
+			newEnemy4->GameInit();
+			static_cast<Boss1*>(newEnemy4)->SetPlayer(player);
+			// ?????????????G?????X?g??o?^
+			enemys.push_back(newEnemy4);
+		}
 	}
-
-	EnemyBase* newEnemy2 = new Enemy2();
-	if (newEnemy2 != nullptr)
+	else if (currentStageNum == 2)
 	{
-		// this (GameScene) ??G??m????n???I
-		newEnemy2->SystemInit(this);
-
-		// GameInit?????i??????u????j
-		newEnemy2->GameInit();
-
-		// ?????????????G?????X?g??o?^
-		enemys.push_back(newEnemy2);
+		// 2繧ｹ繝�畑縺ｮ謨ｵ縺ｮ驟咲ｽｮ蜃ｦ逅...
 	}
-
-	EnemyBase* newEnemy3 = new Enemy3();
-	if (newEnemy3 != nullptr)
+	else if (currentStageNum == 3)
 	{
-		// this (GameScene) ??G??m????n???I
-		newEnemy3->SystemInit(this);
-
-		// GameInit?????i??????u????j
-		newEnemy3->GameInit();
-
-		// ?????????????G?????X?g??o?^
-		enemys.push_back(newEnemy3);
-	}
-
-	EnemyBase* newEnemy4 = new Enemy4();
-	if (newEnemy4 != nullptr)
-	{
-		// this (GameScene) ??G??m????n???I
-		newEnemy4->SystemInit(this);
-		// GameInit?????i??????u????j
-		newEnemy4->GameInit();
-		// ?????????????G?????X?g??o?^
-		enemys.push_back(newEnemy4);
+		// 3繧ｹ繝�畑縺ｮ謨ｵ縺ｮ驟咲ｽｮ蜃ｦ逅...
 	}
 
 	EnemyBase* newEnemy5 = new Enemy5();
@@ -261,7 +273,7 @@ void GameScene::CollisionCheckPE()
 			{
 				if (enemys[i] != nullptr)
 				{
-					Vector2F pos = enemys[i]->GetEnemyPos(); // EnemyBase EnemyBase ??C???X?^???X????��
+					Vector2F pos = enemys[i]->GetEnemyPos(); // EnemyBase EnemyBase ??C???X?^???X????擾
 					EX = (int)pos.x;
 					EY = (int)pos.y;
 					if (enemys[i]->EoB != 10)
@@ -319,13 +331,14 @@ void GameScene::CollisionCheckEB()
 						  {
 							  enemys[i]->SetDamage(2); 
 						  	
-						  	// �������p���������ꍇ�͔j�􂳂���i�����ŏ����ȃp������������A���g�͎��S����j
+						  	// メロンパンだった場合は破裂させる（内部で小さなパンが生成され、自身は死亡する）
 						  	melon->Explode();
 						  }
 						  else
 						  {
+
 							  enemys[i]->SetDamage(1); 
-						  	// �ʏ�̃p���������ꍇ�͂��̂܂܏���
+						  	// 通常のパンだった場合はそのまま消す
 						  	bread->Kill();
 						  }
 						}
@@ -340,8 +353,6 @@ void GameScene::CollisionCheckEB()
 void GameScene::CollisionCheckPR()
 {
 	if (player == nullptr) return;
-
-
 	float pX = player->GetPosX();
 	float pY = player->GetPosY();
 	int pW = Player::PLAYER_WID;
@@ -350,34 +361,34 @@ void GameScene::CollisionCheckPR()
 	for (auto* recipe : recipeList)
 	{
 		if (!recipe->IsAlive()) continue;
-
 		float rX = recipe->GetX();
 		float rY = recipe->GetY();
 		int rW = recipe->GetWidth();
 		int rH = recipe->GetHeight();
-
 		
 		if (pX < rX + rW && pX + pW > rX &&
 			pY < rY + rH && pY + pH > rY)
 		{
-			
 			recipe->Collect();
-
-			
 			player->UnlockBread(recipe->GetUnlockType());
-
-			// printfDx("BREAD UNLOCKED!\n");
 		}
 	}
 }
 
 void GameScene::Update(void)
 {
+	float scale = 1.5f;
+	float viewWidth = SCREEN_WIDTH / scale;
+	float viewHeight = SCREEN_HEIGHT / scale;
 
 	if (player != nullptr)
 	{
 		player->Update();
 		cameraY = player->GetPosY() - (SCREEN_HEIGHT / 2);
+		if (cameraY >= 1120)
+		{
+			cameraY = 1120;
+		}
 	}
 
 	for (auto* bread : breadList)
@@ -451,22 +462,23 @@ void GameScene::Update(void)
 			++bitr;
 		}
 	}
-
-
 	if (player != nullptr)
 	{
-		if (cameraX != Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH)
-		{
-			cameraX = player->GetPosX() - (SCREEN_WIDTH / 2);
-		}
+		int currentWidth = stage->Stage::MAP_WIDTH;
+
+		// 繝励Ξ繧､繝､繝ｼ繧呈僑螟ｧ逕ｻ髱｢縺ｮ荳ｭ蠢�↓縺吶ｋ
+		cameraX = player->GetPosX() - (viewWidth / 2.0f);
 
 		if (cameraX <= 0)
 		{
 			cameraX = 0;
 		}
-		if (cameraX >= Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH)
+
+		// 繝槭ャ繝怜承遶ｯ蛻ｶ髯舌ｒ迴ｾ蝨ｨ縺ｮ螳溯ｳｪ隕夜㍽蟷�ｼ�iewWidth�峨ｒ蜈�↓邂怜�縺吶ｋ
+		float maxCameraX = (Stage::TILE_SIZE * currentWidth) - viewWidth;
+		if (cameraX >= maxCameraX)
 		{
-			cameraX = Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH;
+			cameraX = maxCameraX;
 		}
 	}
 
@@ -519,22 +531,26 @@ void GameScene::Update(void)
 	}
 	if (player != nullptr)
 	{
-		CollisionCheckPE(); 
-		CollisionCheckPB(); 
-		CollisionCheckEB(); 
-		CollisionCheckPR(); 
+		CollisionCheckPE(); // 
+		CollisionCheckPB(); // ?�ｽ�ｽv?�ｽ�ｽ?�ｽ�ｽ?�ｽ�ｽC?�ｽ�ｽ?�ｽ�ｽ?�ｽ�ｽ[?�ｽ�ｽ��雰?�ｽ�ｽ�悟ｼｾ?�ｽ�ｽ�碁屮�ｿ�ｽ?�ｽ�ｽ?�ｽ�ｽ?�ｽ�ｽ髦｡�ｻ?�ｽ�ｽ?�ｽ�ｽ?�ｽ�ｽ?�ｽ�ｽs?�ｽ�ｽ?�ｽ�ｽ?�ｽ�ｽ�匁腸�ｿ�ｽ
+		CollisionCheckEB(); // ?�ｽ�ｽG?�ｽ�ｽ�悟ｼｾ?�ｽ�ｽ��ヱ?�ｽ�ｽ?�ｽ�ｽ?�ｽ�ｽ�碁屮�ｿ�ｽ?�ｽ�ｽ?�ｽ�ｽ?�ｽ�ｽ髦｡�ｻ?�ｽ�ｽ?�ｽ�ｽ?�ｽ�ｽ?�ｽ�ｽs?�ｽ�ｽ?�ｽ�ｽ?�ｽ�ｽ�匁腸�ｿ�ｽ
+		CollisionCheckPR(); //
+		player->Die();
 	}
 }
 
 void GameScene::Draw(void)
 {
 
+	float scale = 1.5;
+	MATRIX mat = MGetScale(VGet(scale, scale, 1.0f));
+	float scaleUI = 1;
+	MATRIX matUI = MGetScale(VGet(scaleUI, scaleUI, 1.0f));
+	SetTransformTo2D(&mat);
+
 	if (stage != nullptr && player != nullptr)
 	{
-		
 		stage->Draw(cameraX, cameraY, LAYER_BACKGROUND);
-
-
 		stage->Draw(cameraX, cameraY, LAYER_MIDDLEGROUND);
 	}
 
@@ -542,34 +558,76 @@ void GameScene::Draw(void)
 	if (player != nullptr)
 	{
 		player->Draw(cameraX, cameraY);
+	}
 
-	
+	size_t size = enemys.size(); // �ｽ�ｽG�ｽ�ｽ�後ユ�ｽ�ｽ[�ｽ�ｽu�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�瑚ｦ�ｿｽ�ｽf�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ隰ｫ�ｾ
+	std::vector<EnemyBase*>::iterator eitr = enemys.begin(); // �ｽ�ｽC�ｽ�ｽe�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ[�ｽ�ｽ^�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ隰ｫ�ｾ
+	for (int ii = 0; ii < size; ii++)
+	{
+		(*eitr)->Draw();
+		eitr++;
+	};    
+
+	for (auto* recipe : recipeList)
+	{
+		recipe->Draw(cameraX, cameraY);
+	}
+
+	// 2.??????p????`????
+	for (auto* bread : breadList)
+	{
+		bread->Draw(cameraX, cameraY);
+	}
+
+	//??????G?e??`????
+	for (size_t i = 0; i < enemyBullets.size(); i++)
+	{
+		if (enemyBullets[i] != nullptr)
+		{
+			enemyBullets[i]->Draw();
+		}
+	}
+	if (stage != nullptr)
+	{
+		// ?O?i??`??
+		stage->Draw(cameraX, cameraY, LAYER_OBJECT);
+
+		// ?O?i??`??
+		stage->Draw(cameraX, cameraY, LAYER_FOREGROUND);
+	}
+
+	SetTransformTo2D(&matUI);
+
+	if (player != nullptr)
+	{
+		// 繝�ヰ繝�げ逕ｨ繝�く繧ｹ繝郁｡ｨ遉ｺ
+		SetFontSize(24);
+		DrawFormatString(60, 200, GetColor(255, 255, 0), "Player X: %.1f, Y: %.1f", player->GetPosX(), player->GetPosY());
+		DrawFormatString(60, 230, GetColor(255, 255, 0), "Camera X: %.1f, Y: %.1f", cameraX, cameraY);
+
+
+		//---------------------------------------------
+		//  Player縺ｮHP
 		int currentHp = player->GetHp();
 		int maxHp = 5;
 
-		
+		// Player縺ｮHPUI縺ｮ菴咲ｽｮ
 		int gaugeX = 60;
 		int gaugeY = SCREEN_HEIGHT - 100; // 1080 - 100 = 980 
 
-		int gaugeWidth = 300;  
-		int gaugeHeight = 24;  
+		int gaugeWidth = 300;
+		int gaugeHeight = 24;
 
-	
 		int currentBarWidth = (int)((float)currentHp / (float)maxHp * gaugeWidth);
-
-
 		DrawBox(gaugeX - 10, gaugeY - 45, gaugeX + gaugeWidth + 10, gaugeY + gaugeHeight + 10, GetColor(0, 0, 0), TRUE);
 
 		SetFontSize(24);
 		DrawFormatString(gaugeX, gaugeY - 35, GetColor(255, 255, 255), "PLAYER HP: %d / %d", currentHp, maxHp);
 
-
 		DrawBox(gaugeX, gaugeY, gaugeX + gaugeWidth, gaugeY + gaugeHeight, GetColor(255, 255, 255), FALSE);
-
 
 		if (currentHp > 0)
 		{
-
 			unsigned int barColor = (currentHp <= 1) ? GetColor(255, 0, 0) : GetColor(0, 255, 0);
 			DrawBox(gaugeX + 2, gaugeY + 2, gaugeX + currentBarWidth - 2, gaugeY + gaugeHeight - 2, barColor, TRUE);
 		}
@@ -579,14 +637,13 @@ void GameScene::Draw(void)
 			SetFontSize(20);
 			DrawString(gaugeX, gaugeY - 70, "INVINCIBLE!!", GetColor(255, 0, 0));
 		}
-
 		int currentTypeIdx = static_cast<int>(player->GetCurrentBreadType());
 		int currentTimer = player->GetShotBreadTimer(currentTypeIdx);
 		int maxCoolTime = player->GetMaxCoolTime(currentTypeIdx);
 
-		int uiX = SCREEN_WIDTH - 300; 
-		int uiY = SCREEN_HEIGHT - 300; 
-		int iconSize = 256;   
+		int uiX = SCREEN_WIDTH - 300;
+		int uiY = SCREEN_HEIGHT - 300;
+		int iconSize = 256;
 
 		int breadImg = -1;
 		if (currentTypeIdx == 0) // NORMAL
@@ -600,15 +657,12 @@ void GameScene::Draw(void)
 
 		int roundRadius = 12;
 
-
 		DrawRoundRect(uiX, uiY, uiX + iconSize, uiY + iconSize, roundRadius, roundRadius, GetColor(0, 0, 0), TRUE);
 
 		if (breadImg != -1)
 		{
 			DrawExtendGraph(uiX, uiY, uiX + iconSize, uiY + iconSize, breadImg, TRUE);
 		}
-
-
 
 		if (currentTimer > 0 && maxCoolTime > 0)
 		{
@@ -618,68 +672,16 @@ void GameScene::Draw(void)
 			int shadowHeight = (int)(iconSize * rate);
 
 			int shadowTopY = uiY + (iconSize - shadowHeight);
-
-
-			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180); 
-
-
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
 			DrawRoundRect(uiX, shadowTopY, uiX + iconSize, uiY + iconSize, roundRadius, roundRadius, GetColor(0, 0, 0), TRUE);
 
-			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);;
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		}
 
-		DrawRoundRect(uiX, uiY, uiX + iconSize, uiY + iconSize, roundRadius, roundRadius, GetColor(255, 255, 255), FALSE);		//---------------------------------------
-	}
-	size_t size = enemys.size(); 
-	std::vector<EnemyBase*>::iterator eitr = enemys.begin(); 
-	for (int ii = 0; ii < size; ii++)
-	{
-		(*eitr)->Draw();
-		eitr++;
-	};    
-
-	for (auto* recipe : recipeList)
-	{
-		recipe->Draw(cameraX, cameraY);
+		DrawRoundRect(uiX, uiY, uiX + iconSize, uiY + iconSize, roundRadius, roundRadius, GetColor(255, 255, 255), FALSE);
+		//---------------------------------------
 	}
 
-	for (auto* bread : breadList)
-	{
-		bread->Draw(cameraX, cameraY);
-	}
-
-
-	for (size_t i = 0; i < enemyBullets.size(); i++)
-	{
-		if (enemyBullets[i] != nullptr)
-		{
-			enemyBullets[i]->Draw();
-		}
-	}
-	if (stage != nullptr)
-	{
-		
-		stage->Draw(cameraX, cameraY, LAYER_OBJECT);
-
-		stage->Draw(cameraX, cameraY, LAYER_FOREGROUND);
-	}
-
-	if (player != nullptr)
-	{
-		SetFontSize(40);
-		DrawFormatString(50, 50, GetColor(255, 255, 255), "PLAYER HP: %d / 5", player->GetHp());
-
-		if (player->IsInvincible())
-		{
-			DrawString(50, 100, "INVINCIBLE!!", GetColor(255, 0, 0));
-		}
-	}
-
-	for (int i = 0; i < 20000; i += 64) {
-		int x = (int)(i - cameraX);
-		DrawLine(x, 0, x, 3000, GetColor(100, 100, 100));
-	}
-}
 
 bool GameScene::Release(void)
 {

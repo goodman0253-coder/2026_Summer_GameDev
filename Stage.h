@@ -1,12 +1,12 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 
-enum eOfficeMapLayer
+enum eMapLayer
 {
-    LAYER_BACKGROUND = 0, // ”wŒi
-    LAYER_MIDDLEGROUND,   // ‰œ‚Ì•Ç‚â°
-    LAYER_OBJECT,         // áŠQ•¨
-    LAYER_FOREGROUND,     // ‘OŒi
+    LAYER_BACKGROUND = 0, // èƒŒæ™¯
+    LAYER_MIDDLEGROUND,   // å¥¥ã®å£ã‚„åºŠ
+    LAYER_OBJECT,         // éšœå®³ç‰©
+    LAYER_FOREGROUND,     // å‰æ™¯
 
     LAYER_MAX
 };
@@ -15,23 +15,32 @@ class Stage
 {
 
 public:
-    static const int TILE_SIZE = 32;     // ƒ^ƒCƒ‹1ƒ}ƒX‚ÌƒTƒCƒY(32x32ƒsƒNƒZƒ‹)
-    static const int MAP_WIDTH = 200;    // CSV‚Ì‰¡‚Ì—ñ” 
-    static const int MAP_HEIGHT = 60;    // CSV‚Ìc‚Ìs”
+    static const int TILE_SIZE = 32;     // ã‚¿ã‚¤ãƒ«1ãƒã‚¹ã®ã‚µã‚¤ã‚º(32x32ãƒ”ã‚¯ã‚»ãƒ«)
+    static const int MAP_WIDTH = 230;
+    static const int MAP_HEIGHT = 60;
+
     Stage();
     ~Stage();
 
-    void Initialize(); // ‰Šú‰»i‰æ‘œ‚Ì“Ç‚İ‚İ‚âCSV“Ç‚İ‚İ‚ÌƒgƒŠƒK[j
-    void Draw(float cameraX, float cameraY, eOfficeMapLayer OLayer); // •`‰æˆ—
+    void Initialize(int stageNum); // åˆæœŸåŒ–ï¼ˆç”»åƒã®èª­ã¿è¾¼ã¿ã‚„CSVèª­ã¿è¾¼ã¿ã®ãƒˆãƒªã‚¬ãƒ¼ï¼‰
+    void Draw(float cameraX, float cameraY, eMapLayer OLayer); // æç”»å‡¦ç†
+
+    bool CheckCollision(float worldX, float worldY);
+
+    int GetMapWidth() const { return MAP_WIDTH; }
+    int GetMapHeight() const { return MAP_HEIGHT; }
+
 private:
+    int stageMap[LAYER_MAX][MAP_HEIGHT][MAP_WIDTH];
+    int collisionMap[MAP_HEIGHT][MAP_WIDTH];
 
-    int stageMap[LAYER_MAX][MAP_HEIGHT][MAP_WIDTH]; // ƒ}ƒbƒvƒf[ƒ^‚ğ•Û‚·‚é”z—ñ
+    static const int TILE_MAX = 500;     // èª­ã¿è¾¼ã‚€ã‚¿ã‚¤ãƒ«ã®æœ€å¤§æ•°
+    int tileImages[TILE_MAX];            // åˆ†å‰²ã—ãŸç”»åƒã‚’ä¿å­˜ã™ã‚‹é…åˆ—
+    int tileImages2[TILE_MAX];            // åˆ†å‰²ã—ãŸç”»åƒã‚’ä¿å­˜ã™ã‚‹é…åˆ—
 
-    static const int TILE_MAX = 500;     // “Ç‚İ‚Şƒ^ƒCƒ‹‚ÌÅ‘å”
-    int tileImages[TILE_MAX];            // •ªŠ„‚µ‚½‰æ‘œ‚ğ•Û‘¶‚·‚é”z—ñ
+    // CSVãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€ãŸã‚ã®å†…éƒ¨é–¢æ•°
+    void LoadMapCSV(const std::string& filename, eMapLayer OLayer);
 
-    // CSVƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş‚½‚ß‚Ì“à•”ŠÖ”
-    void LoadMapCSV(const std::string& filename,eOfficeMapLayer OLayer);
-
+    void LoadCollisionCSV(const std::string& filename);
 };
 
