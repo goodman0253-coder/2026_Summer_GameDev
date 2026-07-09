@@ -39,6 +39,8 @@ public:
     // ダメージを受ける関数
     void ApplyDamage();
 
+    void Die();
+
     // アニメーション状態
     enum class ANIM_STATE
     {

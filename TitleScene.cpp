@@ -18,7 +18,7 @@ void TitleScene::Update()
     {
         if (sceneManager != nullptr)
         {
-            sceneManager->ChangeScene(SCENE_GAME);
+            sceneManager->ChangeScene(SCENE_STAGESELECT);
         }
     }
 }

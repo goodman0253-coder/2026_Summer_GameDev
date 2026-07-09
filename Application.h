@@ -25,6 +25,7 @@ public:
 private:
 	void Update(void);
 	void Draw(void);
+	void IdentityInit();
 
 	SceneManager* sceneManager = nullptr;
 

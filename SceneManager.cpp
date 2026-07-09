@@ -15,8 +15,7 @@ SceneManager::SceneManager()
 
 SceneManager::~SceneManager()
 {
-    // ⭕ 【安全に修正】現在動いているシーンだけを解放すればOKです！
-    // 存在しない titleScene や gameScene を個別に delete しようとするとバグの原因になります。
+
     if (currentScene != nullptr)
     {
         delete currentScene;
@@ -38,7 +37,7 @@ void SceneManager::ProcChangeScene()
     if (currentScene != nullptr)
     {
         delete currentScene;
-        currentScene = nullptr; // 安全のため一度空っぽにする
+        currentScene = nullptr; 
     }
 
     // 新しいシーンを作る
@@ -53,19 +52,25 @@ void SceneManager::ProcChangeScene()
         currentScene = tScene;
         break;
     }
+    case SCENE_STAGESELECT:
+    {
+        StageSelectScene* sScene = new StageSelectScene();
+        sScene->SetSceneManager(this);
+        currentScene = sScene;
+        break;
+    }
     case SCENE_GAME:
     {
         GameScene* gScene = new GameScene();
 
         gScene->SetSceneManager(this);
+        gScene->SetStageNum(this->GetSelectStageNum());
         gScene->GameInit();
 
         // 最後に管理用の「currentScene」に代入する
         currentScene = gScene;
         break;
     }
-    case SCENE_STAGESELECT:
-        break;
     case SCENE_GAMECLEAR:
     {
         // ゲームクリアシーン

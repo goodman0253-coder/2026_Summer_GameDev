@@ -1,274 +1,241 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Main">
-      <UniqueIdentifier>{59738424-9aa2-4c74-a5a8-52a05fc67481}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application">
-      <UniqueIdentifier>{4167c8a6-bf82-4d80-b939-4343b6577dcc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Map">
-      <UniqueIdentifier>{07b182eb-7ad0-4cca-9bef-b6024f8c0f8b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Camera">
-      <UniqueIdentifier>{fd22f57a-7a9b-4d69-975b-737b659df95c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject">
-      <UniqueIdentifier>{98cf44c2-b526-461c-a324-bc95b6356149}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Enemy">
-      <UniqueIdentifier>{8087b3df-cd46-42d4-aa43-370e9f3b1f2b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Player">
-      <UniqueIdentifier>{1df400ab-3601-4c1a-890e-e6b78403cd37}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SceneManager">
-      <UniqueIdentifier>{df753578-48d0-46c3-98a9-2c918d809c8f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SceneManager\Scene">
-      <UniqueIdentifier>{26bd0668-3204-4007-84fa-b097a674437d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SceneManager\Scene\GameScene">
-      <UniqueIdentifier>{7874101e-4840-421b-81d5-212b4df7db9e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SceneManager\Scene\TitleScene">
-      <UniqueIdentifier>{02781f50-23e7-4a5a-a966-279e71d758eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="InputManager">
-      <UniqueIdentifier>{f126f263-8688-42b5-ab33-5be8317267ff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Vector2">
-      <UniqueIdentifier>{d0fbca24-63e5-4a0f-a30d-59945b63d379}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Vector2\Vector2F">
-      <UniqueIdentifier>{98d9cb4c-f13b-4b7f-a2a0-25697d6ac901}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SceneManager\Scene\GameScene\Stage">
-      <UniqueIdentifier>{e1ec415a-e87c-488f-960e-ae2020b62433}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utility">
-      <UniqueIdentifier>{96cc4a86-5859-4540-bb32-af156c77cdbf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Bullet">
-      <UniqueIdentifier>{4c0176cc-dfdd-4832-aa2c-ac84fa094829}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SceneManager\Scene\StageSlectScene">
-      <UniqueIdentifier>{b9854463-0f10-4b4f-8507-a4c7a2c69acd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SceneManager\Scene\GameOverScene">
-      <UniqueIdentifier>{8335f511-bd2f-48e9-a213-74f764672c69}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SceneManager\Scene\GameClearScene">
-      <UniqueIdentifier>{fdef3f76-a220-4ed4-93d1-7d7089faec88}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Bread">
-      <UniqueIdentifier>{905e368e-f36a-4406-ab38-a0c6608e3c34}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Bread\Bread">
-      <UniqueIdentifier>{d8e16bdd-99b7-4bd2-9cf9-4eac64f72480}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Enemy\Boss">
-      <UniqueIdentifier>{f2692827-8463-4cfa-bc24-d9fcf4c919b5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Bread\Melonpan">
-      <UniqueIdentifier>{6f8e9f7f-7563-4d58-bb27-b8fb55434eea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Bread\Melonpan\MiniMelonpan">
-      <UniqueIdentifier>{da24c557-7559-46b6-b99e-1def7fe6eaf7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Recipe">
-      <UniqueIdentifier>{65b3681e-cd5b-4e96-a5d1-fe626824e13f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Recipe\MelonpanRecipe">
-      <UniqueIdentifier>{c111bb8d-df57-4711-9fd6-692c48ab083b}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Application.cpp">
       <Filter>Application</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>GameObject\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="GameScene.cpp">
-      <Filter>SceneManager\Scene\GameScene</Filter>
+    <ClCompile Include="AsoUtility.cpp">
+      <Filter>AsoUtillity</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="TitleScene.cpp">
-      <Filter>SceneManager\Scene\TitleScene</Filter>
+    <ClCompile Include="Boss1.cpp">
+      <Filter>GameObject\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>SceneManager</Filter>
+    <ClCompile Include="BreadBase.cpp">
+      <Filter>GameObject\Player\Bread</Filter>
+    </ClCompile>
+    <ClCompile Include="Bread.cpp">
+      <Filter>GameObject\Player\Bread\Bread</Filter>
+    </ClCompile>
+    <ClCompile Include="Melonpan.cpp">
+      <Filter>GameObject\Player\Bread\Melonpan</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniMelonpan.cpp">
+      <Filter>GameObject\Player\Bread\Melonpan</Filter>
     </ClCompile>
     <ClCompile Include="Enemy1.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy2.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy3.cpp">
       <Filter>GameObject\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="EnemyBase.cpp">
       <Filter>GameObject\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Vector2F.cpp">
-      <Filter>Vector2\Vector2F</Filter>
+    <ClCompile Include="EnemyBulletBase.cpp">
+      <Filter>GameObject\Enemy\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="Vector2.cpp">
-      <Filter>Vector2</Filter>
+    <ClCompile Include="Stage1_EnemyA_Bullet.cpp">
+      <Filter>GameObject\Enemy\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1_EnemyB_Bullet.cpp">
+      <Filter>GameObject\Enemy\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1_EnemyC_Bullet.cpp">
+      <Filter>GameObject\Enemy\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClearScene.cpp">
+      <Filter>SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverScene.cpp">
+      <Filter>SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="StageSelectScene.cpp">
+      <Filter>SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>SceneManager</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
       <Filter>InputManager</Filter>
-    </ClCompile>
-    <ClCompile Include="AsoUtility.cpp">
-      <Filter>Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyBulletBase.cpp">
-      <Filter>GameObject\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="Stage1_EnemyA_Bullet.cpp">
-      <Filter>GameObject\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="Stage.cpp">
-      <Filter>SceneManager\Scene\GameScene\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="StageSelectScene.cpp">
-      <Filter>SceneManager\Scene\StageSlectScene</Filter>
-    </ClCompile>
-    <ClCompile Include="BreadBase.cpp">
-      <Filter>GameObject\Bread</Filter>
-    </ClCompile>
-    <ClCompile Include="Bread.cpp">
-      <Filter>GameObject\Bread\Bread</Filter>
-    </ClCompile>
-    <ClCompile Include="GameClearScene.cpp">
-      <Filter>SceneManager\Scene\GameClearScene</Filter>
-    </ClCompile>
-    <ClCompile Include="GameOverScene.cpp">
-      <Filter>SceneManager\Scene\GameOverScene</Filter>
-    </ClCompile>
-    <ClCompile Include="StageSelectScene.cpp">
-      <Filter>SceneManager\Scene\StageSlectScene</Filter>
-    </ClCompile>
-    <ClCompile Include="Boss1.cpp">
-      <Filter>GameObject\Enemy\Boss</Filter>
-    </ClCompile>
-    <ClCompile Include="Melonpan.cpp">
-      <Filter>GameObject\Bread\Melonpan</Filter>
-    </ClCompile>
-    <ClCompile Include="MiniMelonpan.cpp">
-      <Filter>GameObject\Bread\Melonpan\MiniMelonpan</Filter>
     </ClCompile>
     <ClCompile Include="RecipeBase.cpp">
       <Filter>GameObject\Recipe</Filter>
     </ClCompile>
     <ClCompile Include="MelonpanRecipe.cpp">
-      <Filter>GameObject\Recipe\MelonpanRecipe</Filter>
-    <ClCompile Include="Enemy2.cpp">
-      <Filter>GameObject\Enemy</Filter>
+      <Filter>GameObject\Recipe\Melonpan</Filter>
     </ClCompile>
-    <ClCompile Include="Stage1_EnemyB_Bullet.cpp">
-      <Filter>GameObject\Bullet</Filter>
+    <ClCompile Include="Stage.cpp">
+      <Filter>Stage</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy3.cpp">
-      <Filter>GameObject\Enemy</Filter>
+    <ClCompile Include="Vector2.cpp">
+      <Filter>Vector2</Filter>
     </ClCompile>
-    <ClCompile Include="Stage1_EnemyC_Bullet.cpp">
-      <Filter>GameObject\Bullet</Filter>
+    <ClCompile Include="Vector2F.cpp">
+      <Filter>Vector2</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>SoundManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
       <Filter>Application</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>GameObject\Player</Filter>
+    <ClInclude Include="AsoUtility.h">
+      <Filter>AsoUtillity</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene.h">
-      <Filter>SceneManager\Scene\GameScene</Filter>
+    <ClInclude Include="BaseScene.h">
+      <Filter>SceneManager</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="BaseScene.h">
-      <Filter>SceneManager\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="TitleScene.h">
-      <Filter>SceneManager\Scene\TitleScene</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>SceneManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy1.h">
+    <ClInclude Include="Boss1.h">
       <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="BreadBase.h">
+      <Filter>GameObject\Player\Bread</Filter>
+    </ClInclude>
+    <ClInclude Include="Bread.h">
+      <Filter>GameObject\Player\Bread\Bread</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniMelonpan.h">
+      <Filter>GameObject\Player\Bread\Melonpan</Filter>
+    </ClInclude>
+    <ClInclude Include="Melonpan.h">
+      <Filter>GameObject\Player\Bread\Melonpan</Filter>
     </ClInclude>
     <ClInclude Include="EnemyBase.h">
       <Filter>GameObject\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Vector2F.h">
-      <Filter>Vector2\Vector2F</Filter>
+    <ClInclude Include="Enemy1.h">
+      <Filter>GameObject\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Vector2.h">
-      <Filter>Vector2</Filter>
+    <ClInclude Include="Enemy2.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy3.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBulletBase.h">
+      <Filter>GameObject\Enemy\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1_EnemyA_Bullet.h">
+      <Filter>GameObject\Enemy\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1_EnemyB_Bullet.h">
+      <Filter>GameObject\Enemy\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1_EnemyC_Bullet.h">
+      <Filter>GameObject\Enemy\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>GameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClearScene.h">
+      <Filter>SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverScene.h">
+      <Filter>SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="StageSelectScene.h">
+      <Filter>SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>SceneManager</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>InputManager</Filter>
-    </ClInclude>
-    <ClInclude Include="AsoUtility.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyBulletBase.h">
-      <Filter>GameObject\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="Stage1_EnemyA_Bullet.h">
-      <Filter>GameObject\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="Stage.h">
-      <Filter>SceneManager\Scene\GameScene\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="StageSelectScene.h">
-      <Filter>SceneManager\Scene\StageSlectScene</Filter>
-    </ClInclude>
-    <ClInclude Include="BreadBase.h">
-      <Filter>GameObject\Bread</Filter>
-    </ClInclude>
-    <ClInclude Include="Bread.h">
-      <Filter>GameObject\Bread\Bread</Filter>
-    </ClInclude>
-    <ClInclude Include="GameClearScene.h">
-      <Filter>SceneManager\Scene\GameClearScene</Filter>
-    </ClInclude>
-    <ClInclude Include="GameOverScene.h">
-      <Filter>SceneManager\Scene\GameOverScene</Filter>
-    </ClInclude>
-    <ClInclude Include="StageSelectScene.h">
-      <Filter>SceneManager\Scene\StageSlectScene</Filter>
-    </ClInclude>
-    <ClInclude Include="Boss1.h">
-      <Filter>GameObject\Enemy\Boss</Filter>
-    </ClInclude>
-    <ClInclude Include="Melonpan.h">
-      <Filter>GameObject\Bread\Melonpan</Filter>
-    </ClInclude>
-    <ClInclude Include="MiniMelonpan.h">
-      <Filter>GameObject\Bread\Melonpan\MiniMelonpan</Filter>
     </ClInclude>
     <ClInclude Include="RecipeBase.h">
       <Filter>GameObject\Recipe</Filter>
     </ClInclude>
     <ClInclude Include="MelonpanRecipe.h">
-      <Filter>GameObject\Recipe\MelonpanRecipe</Filter
-    <ClInclude Include="Enemy2.h">
-      <Filter>GameObject\Enemy</Filter>
+      <Filter>GameObject\Recipe\Melonpan</Filter>
     </ClInclude>
-    <ClInclude Include="Stage1_EnemyB_Bullet.h">
-      <Filter>GameObject\Bullet</Filter>
+    <ClInclude Include="Stage.h">
+      <Filter>Stage</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy3.h">
-      <Filter>GameObject\Enemy</Filter>
+    <ClInclude Include="Vector2.h">
+      <Filter>Vector2</Filter>
     </ClInclude>
-    <ClInclude Include="Stage1_EnemyC_Bullet.h">
-      <Filter>GameObject\Bullet</Filter
+    <ClInclude Include="Vector2F.h">
+      <Filter>Vector2</Filter>
     </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>SoundManager</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Application">
+      <UniqueIdentifier>{dd2fb330-61bf-4d96-be39-0686b1b360c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AsoUtillity">
+      <UniqueIdentifier>{c5d2c7df-d8b0-4ed4-9803-9ca3dc000ce1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SceneManager">
+      <UniqueIdentifier>{5f675b0d-a855-446e-8380-b36a0a964386}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{e65c82a0-ab98-40a1-98dd-6ff9340d9dfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Enemy">
+      <UniqueIdentifier>{54b85eba-a2a9-43f9-b490-e695174b23b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Player">
+      <UniqueIdentifier>{8bf08f44-4658-4304-9726-f9b53ace9828}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Recipe">
+      <UniqueIdentifier>{b10989af-d847-47aa-8819-0c7ae3d947a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Player\Bread">
+      <UniqueIdentifier>{e568b85c-ae52-4e1e-a5ff-4238a207a587}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Player\Bread\Bread">
+      <UniqueIdentifier>{7a66ef89-71ff-4f03-9d4e-9d97d94a2001}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Player\Bread\Melonpan">
+      <UniqueIdentifier>{afba3272-f8a4-4441-82d3-9e883e73575c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Enemy\Bullet">
+      <UniqueIdentifier>{f49c2ef2-a149-4bb1-847a-9551b0d9fecd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="InputManager">
+      <UniqueIdentifier>{cd8922fb-b482-427a-a9a7-576792675178}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Recipe\Melonpan">
+      <UniqueIdentifier>{87a5a0ff-09fe-4d75-954b-dd0672f7351e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stage">
+      <UniqueIdentifier>{8a296c13-17bb-44db-92aa-15922f277e4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vector2">
+      <UniqueIdentifier>{95ff07d8-3821-48e8-a5ab-892dc99e1529}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SoundManager">
+      <UniqueIdentifier>{7171dfbb-7f20-4210-aca3-a5ec97647517}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

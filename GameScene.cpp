@@ -65,57 +65,68 @@ bool GameScene::GameInit(void)
 	player->SetGameScene(this);
 	player->GameInit();
 	stage = new Stage();
-	stage->Initialize();
+	stage->Initialize(currentStageNum);
 	 
-	EnemyBase* newEnemy = new Enemy1();
-	if (newEnemy != nullptr)
+	if (currentStageNum == 1)
 	{
-		// this (GameScene) ??G??m????n???I
-		newEnemy->SystemInit(this);
+		EnemyBase* newEnemy = new Enemy1();
+		if (newEnemy != nullptr)
+		{
+			// this (GameScene) ??G??m????n???I
+			newEnemy->SystemInit(this);
 
-		// GameInit?????i??????u????j
-		newEnemy->GameInit();
+			// GameInit?????i??????u????j
+			newEnemy->GameInit();
 
-		// ?????????????G?????X?g??o?^
-		enemys.push_back(newEnemy);
+			// ?????????????G?????X?g??o?^
+			enemys.push_back(newEnemy);
+		}
+
+		EnemyBase* newEnemy2 = new Enemy2();
+		if (newEnemy2 != nullptr)
+		{
+			// this (GameScene) ??G??m????n???I
+			newEnemy2->SystemInit(this);
+
+			// GameInit?????i??????u????j
+			newEnemy2->GameInit();
+
+			// ?????????????G?????X?g??o?^
+			enemys.push_back(newEnemy2);
+		}
+
+		EnemyBase* newEnemy3 = new Enemy3();
+		if (newEnemy3 != nullptr)
+		{
+			// this (GameScene) ??G??m????n???I
+			newEnemy3->SystemInit(this);
+
+			// GameInit?????i??????u????j
+			newEnemy3->GameInit();
+
+			// ?????????????G?????X?g??o?^
+			enemys.push_back(newEnemy3);
+		}
+
+		EnemyBase* newEnemy4 = new Boss1();
+		if (newEnemy4 != nullptr)
+		{
+			// this (GameScene) ??G??m????n???I
+			newEnemy4->SystemInit(this);
+			// GameInit?????i??????u????j
+			newEnemy4->GameInit();
+			static_cast<Boss1*>(newEnemy4)->SetPlayer(player);
+			// ?????????????G?????X?g??o?^
+			enemys.push_back(newEnemy4);
+		}
 	}
-
-	EnemyBase* newEnemy2 = new Enemy2();
-	if (newEnemy2 != nullptr)
+	else if (currentStageNum == 2)
 	{
-		// this (GameScene) ??G??m????n???I
-		newEnemy2->SystemInit(this);
-
-		// GameInit?????i??????u????j
-		newEnemy2->GameInit();
-
-		// ?????????????G?????X?g??o?^
-		enemys.push_back(newEnemy2);
+		// 2ステ用の敵の配置処理...
 	}
-
-	EnemyBase* newEnemy3 = new Enemy3();
-	if (newEnemy3 != nullptr)
+	else if (currentStageNum == 3)
 	{
-		// this (GameScene) ??G??m????n???I
-		newEnemy3->SystemInit(this);
-
-		// GameInit?????i??????u????j
-		newEnemy3->GameInit();
-
-		// ?????????????G?????X?g??o?^
-		enemys.push_back(newEnemy3);
-	}
-
-	EnemyBase* newEnemy4 = new Boss1();
-	if (newEnemy4 != nullptr)
-	{
-		// this (GameScene) ??G??m????n???I
-		newEnemy4->SystemInit(this);
-		// GameInit?????i??????u????j
-		newEnemy4->GameInit();
-		static_cast<Boss1*>(newEnemy4)->SetPlayer(player);
-		// ?????????????G?????X?g??o?^
-		enemys.push_back(newEnemy4);
+		// 3ステ用の敵の配置処理...
 	}
 
 	//????N???A
@@ -245,16 +256,12 @@ void GameScene::CollisionCheckEB()
 						  Melonpan* melon = dynamic_cast<Melonpan*>(bread);
 						  if (melon != nullptr)
 						  {
-							  enemys[i]->SetDamage(2); // 繧ｨ繝阪Α繝ｼ縺ｫ繝繝｡繝ｼ繧ｸ繧剃ｸ弱∴繧
-						  	// 繝｡繝ｭ繝ｳ繝代Φ縺縺｣縺溷ｴ蜷医�遐ｴ陬ゅ＆縺帙ｋ�亥�驛ｨ縺ｧ蟆上＆縺ｪ繝代Φ縺檎函謌舌＆繧後∬�霄ｫ縺ｯ豁ｻ莠｡縺吶ｋ�
-						  	// メロンパンだった場合は破裂させる（内部で小さなパンが生成され、自身は死亡する）
+							enemys[i]->SetDamage(2);
 						  	melon->Explode();
 						  }
 						  else
 						  {
-							  enemys[i]->SetDamage(1); // 繧ｨ繝阪Α繝ｼ縺ｫ繝繝｡繝ｼ繧ｸ繧剃ｸ弱∴繧
-						  	// 騾壼ｸｸ縺ｮ繝代Φ縺縺｣縺溷ｴ蜷医�縺昴�縺ｾ縺ｾ豸医☆
-						  	// 通常のパンだった場合はそのまま消す
+							enemys[i]->SetDamage(1);
 						  	bread->Kill();
 						  }
 						}
@@ -270,7 +277,7 @@ void GameScene::CollisionCheckPR()
 {
 	if (player == nullptr) return;
 
-	// 繝励Ξ繧､繝､繝ｼ縺ｮ遏ｩ蠖｢諠�ｱ
+	// playerの情報獲得
 	float pX = player->GetPosX();
 	float pY = player->GetPosY();
 	int pW = Player::PLAYER_WID;
@@ -280,35 +287,39 @@ void GameScene::CollisionCheckPR()
 	{
 		if (!recipe->IsAlive()) continue;
 
-		// 繧｢繧､繝�Β縺ｮ遏ｩ蠖｢諠�ｱ
+		// Recipeの情報獲得
 		float rX = recipe->GetX();
 		float rY = recipe->GetY();
 		int rW = recipe->GetWidth();
 		int rH = recipe->GetHeight();
 
-		// 庁 遏ｩ蠖｢蜷悟｣ｫ縺ｮ蠖薙◆繧雁愛螳夲ｼ�ABB�
+		// 判定確認
 		if (pX < rX + rW && pX + pW > rX &&
 			pY < rY + rH && pY + pH > rY)
 		{
-			// 1. 繧｢繧､繝�Β繧呈ｶ域ｻ�憾諷九↓縺吶ｋ
+			// Recipe獲得処理
 			recipe->Collect();
 
-			// 2. 繝励Ξ繧､繝､繝ｼ縺ｮ隧ｲ蠖薙☆繧九ヱ繝ｳ繧定ｧ｣謾ｾ縺吶ｋ�
+			// 獲得したRecipeのパンを解放
 			player->UnlockBread(recipe->GetUnlockType());
-
-			// 逕ｻ髱｢遒ｺ隱咲畑繝�ヰ繝�げ繝�く繧ｹ繝
-			// printfDx("BREAD UNLOCKED!\n");
 		}
 	}
 }
 
 void GameScene::Update(void)
 {
+	float scale = 1.5f;
+	float viewWidth = SCREEN_WIDTH / scale;
+	float viewHeight = SCREEN_HEIGHT / scale;
 
 	if (player != nullptr)
 	{
 		player->Update();
 		cameraY = player->GetPosY() - (SCREEN_HEIGHT / 2);
+		if (cameraY >= 1120)
+		{
+			cameraY = 1120;
+		}
 	}
 
 	for (auto* bread : breadList)
@@ -382,23 +393,26 @@ void GameScene::Update(void)
 			++bitr;
 		}
 	}
+
 	// ??????G?e??????X?V???????s??
 	// ?v???C???[????W(playerX, playerY)????????????????J??????z?u
-
 	if (player != nullptr)
 	{
-		if (cameraX != Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH)
-		{
-			cameraX = player->GetPosX() - (SCREEN_WIDTH / 2);
-		}
+		int currentWidth = stage->Stage::MAP_WIDTH;
+
+		// プレイヤーを拡大画面の中心にする
+		cameraX = player->GetPosX() - (viewWidth / 2.0f);
 
 		if (cameraX <= 0)
 		{
 			cameraX = 0;
 		}
-		if (cameraX >= Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH)
+
+		// マップ右端制限を現在の実質視野幅（viewWidth）を元に算出する
+		float maxCameraX = (Stage::TILE_SIZE * currentWidth) - viewWidth;
+		if (cameraX >= maxCameraX)
 		{
-			cameraX = Stage::TILE_SIZE * Stage::MAP_WIDTH - Player::PLAYER_WID - SCREEN_WIDTH;
+			cameraX = maxCameraX;
 		}
 	}
 
@@ -455,18 +469,25 @@ void GameScene::Update(void)
 		CollisionCheckPB(); // ?�ｽv?�ｽ?�ｽ?�ｽC?�ｽ?�ｽ?�ｽ[?�ｽﾆ敵?�ｽﾌ弾?�ｽﾌ難ｿｽ?�ｽ?�ｽ?�ｽ阡ｻ?�ｽ?�ｽ?�ｽ?�ｽs?�ｽ?�ｽ?�ｽﾖ撰ｿｽ
 		CollisionCheckEB(); // ?�ｽG?�ｽﾌ弾?�ｽﾆパ?�ｽ?�ｽ?�ｽﾌ難ｿｽ?�ｽ?�ｽ?�ｽ阡ｻ?�ｽ?�ｽ?�ｽ?�ｽs?�ｽ?�ｽ?�ｽﾖ撰ｿｽ
 		CollisionCheckPR(); //
+		player->Die();
 	}
 }
 
 void GameScene::Draw(void)
 {
 
+	float scale = 1.5;
+	MATRIX mat = MGetScale(VGet(scale, scale, 1.0f));
+	float scaleUI = 1;
+	MATRIX matUI = MGetScale(VGet(scaleUI, scaleUI, 1.0f));
+	SetTransformTo2D(&mat);
+
 	if (stage != nullptr && player != nullptr)
 	{
-		// ?w?i??`??
+		// 背景
 		stage->Draw(cameraX, cameraY, LAYER_BACKGROUND);
 
-		// ???i??`??
+		// 床
 		stage->Draw(cameraX, cameraY, LAYER_MIDDLEGROUND);
 	}
 
@@ -474,106 +495,8 @@ void GameScene::Draw(void)
 	if (player != nullptr)
 	{
 		player->Draw(cameraX, cameraY);
-
-		//---------------------------------------------
-		//  蟾ｦ荳九↓HP繧ｲ繝ｼ繧ｸ繧定｡ｨ遉ｺ縺吶ｋ蜃ｦ逅
-		int currentHp = player->GetHp();
-		int maxHp = 5;
-
-		// 繧ｲ繝ｼ繧ｸ繧定｡ｨ遉ｺ縺吶ｋ蝓ｺ貅紋ｽ咲ｽｮ�亥ｷｦ荳具ｼ
-		int gaugeX = 60;
-		int gaugeY = SCREEN_HEIGHT - 100; // 1080 - 100 = 980 
-
-		int gaugeWidth = 300;  // 繧ｲ繝ｼ繧ｸ縺ｮ蜈ｨ菴薙�髟ｷ縺(譛螟ｧHP譎)
-		int gaugeHeight = 24;  // 繧ｲ繝ｼ繧ｸ縺ｮ邵ｦ蟷
-
-		// 迴ｾ蝨ｨ縺ｮHP縺ｮ蜑ｲ蜷医↓蠢懊§縺ｦ邱題牡繝舌�縺ｮ髟ｷ縺輔ｒ險育ｮ
-		int currentBarWidth = (int)((float)currentHp / (float)maxHp * gaugeWidth);
-
-		// 1. 繧ｲ繝ｼ繧ｸ縺ｮ閭梧勹�磯ｻ偵＞蠎ｧ蟶�屮�
-		DrawBox(gaugeX - 10, gaugeY - 45, gaugeX + gaugeWidth + 10, gaugeY + gaugeHeight + 10, GetColor(0, 0, 0), TRUE);
-
-		// 2. 繝�く繧ｹ繝郁｡ｨ遉ｺ (HP: 5 / 5)
-		SetFontSize(24);
-		DrawFormatString(gaugeX, gaugeY - 35, GetColor(255, 255, 255), "PLAYER HP: %d / %d", currentHp, maxHp);
-
-		// 3. 繧ｲ繝ｼ繧ｸ縺ｮ譫�育區縺�ｷ夲ｼ
-		DrawBox(gaugeX, gaugeY, gaugeX + gaugeWidth, gaugeY + gaugeHeight, GetColor(255, 255, 255), FALSE);
-
-		// 4. 荳ｭ霄ｫ縺ｮ繝舌���P縺梧ｮ九▲縺ｦ縺�ｋ譎ゅ□縺醍ｷ題牡縺ｧ蝪励ｋ�
-		if (currentHp > 0)
-		{
-			// 谿九ｊHP縺1縺ｮ譎ゅ�繝斐Φ繝√▲縺ｽ縺剰ｵ､縲√◎繧御ｻ･螟悶�邱代↓縺吶ｋ貍泌�
-			unsigned int barColor = (currentHp <= 1) ? GetColor(255, 0, 0) : GetColor(0, 255, 0);
-			DrawBox(gaugeX + 2, gaugeY + 2, gaugeX + currentBarWidth - 2, gaugeY + gaugeHeight - 2, barColor, TRUE);
-		}
-
-		// 辟｡謨ｵ迥ｶ諷九�繝�く繧ｹ繝医�繧ｲ繝ｼ繧ｸ縺ｮ蟆代＠荳翫↓繧ｺ繝ｩ縺励※陦ｨ遉ｺ
-		if (player->IsInvincible())
-		{
-			SetFontSize(20);
-			DrawString(gaugeX, gaugeY - 70, "INVINCIBLE!!", GetColor(255, 0, 0));
-		}
-		//---------------------------------------------
-
-
-		//---------------------------------------------
-		//繝代Φ縺ｮ繧ｯ繝ｼ繝ｫ繧ｿ繧､繝UI
-		int currentTypeIdx = static_cast<int>(player->GetCurrentBreadType());
-		int currentTimer = player->GetShotBreadTimer(currentTypeIdx);
-		int maxCoolTime = player->GetMaxCoolTime(currentTypeIdx);
-
-		// 陦ｨ遉ｺ縺吶ｋ蜿ｳ荳九�蝓ｺ貅門ｺｧ讓
-		int uiX = SCREEN_WIDTH - 300; 
-		int uiY = SCREEN_HEIGHT - 300; 
-		int iconSize = 256;   // 繧｢繧､繧ｳ繝ｳ縺ｮ繧ｵ繧､繧ｺ
-
-		// 迴ｾ蝨ｨ驕ｸ謚槭＆繧後※縺�ｋ繝代Φ縺ｮ逕ｻ蜒上ワ繝ｳ繝峨Ν繧呈ｱｺ螳
-		int breadImg = -1;
-		if (currentTypeIdx == 0) // NORMAL
-		{
-			breadImg = LoadGraph("image/bread.png");
-		}
-		else if (currentTypeIdx == 1) // MELONPAN
-		{
-			breadImg = LoadGraph("image/melonpan.png");
-		}
-
-		int roundRadius = 12;
-
-
-		DrawRoundRect(uiX, uiY, uiX + iconSize, uiY + iconSize, roundRadius, roundRadius, GetColor(0, 0, 0), TRUE);
-
-		// 繝代Φ縺ｮ繧｢繧､繧ｳ繝ｳ逕ｻ蜒上ｒ謠冗判
-		if (breadImg != -1)
-		{
-			DrawExtendGraph(uiX, uiY, uiX + iconSize, uiY + iconSize, breadImg, TRUE);
-		}
-
-
-		// 繧ｯ繝ｼ繝ｫ繧ｿ繧､繝縺ｮ蠖ｱ貍泌��井ｸ九°繧我ｸ翫↓譎ｴ繧後ｋ貍泌��
-		if (currentTimer > 0 && maxCoolTime > 0)
-		{
-			// 繧ｯ繝ｼ繝ｫ繧ｿ繧､繝縺ｮ谿九ｊ蜑ｲ蜷 (1.0 縺九ｉ 0.0 縺ｸ縺ｨ貂帙▲縺ｦ縺�￥)
-			float rate = (float)currentTimer / (float)maxCoolTime;
-
-			// 谿九ｊ譎る俣�亥牡蜷茨ｼ峨↓蠢懊§縺溘∝ｽｱ縺ｮ邵ｦ蟷�ｒ險育ｮ
-			int shadowHeight = (int)(iconSize * rate);
-
-			int shadowTopY = uiY + (iconSize - shadowHeight);
-
-			// --- 騾城℃繝悶Ξ繝ｳ繝峨Δ繝ｼ繝峨ｒ髢句ｧ ---
-			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180); // 180 = 縺ｻ縺ｩ繧医＞證励＆縺ｮ蜊企乗�縺ｮ鮟
-
-			// 險育ｮ励＠縺溷ｺｧ讓吶〒縲√い繧､繧ｳ繝ｳ縺ｮ荳狗ｫｯ��iY + iconSize�峨∪縺ｧ繧帝ｻ偵＞蝗幄ｧ偵〒蝪励ｊ縺､縺ｶ縺
-			DrawRoundRect(uiX, shadowTopY, uiX + iconSize, uiY + iconSize, roundRadius, roundRadius, GetColor(0, 0, 0), TRUE);
-
-			// --- 騾城℃繝悶Ξ繝ｳ繝峨Δ繝ｼ繝峨ｒ蠢�★隗｣髯､ ---
-			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);;
-		}
-
-		DrawRoundRect(uiX, uiY, uiX + iconSize, uiY + iconSize, roundRadius, roundRadius, GetColor(255, 255, 255), FALSE);		//---------------------------------------
 	}
+
 	size_t size = enemys.size(); // �ｽG�ｽﾌテ�ｽ[�ｽu�ｽ�ｽ�ｽﾌ要�ｽf�ｽ�ｽ�ｽ�ｽ�ｽ謫ｾ
 	std::vector<EnemyBase*>::iterator eitr = enemys.begin(); // �ｽC�ｽe�ｽ�ｽ�ｽ[�ｽ^�ｽ�ｽ�ｽ謫ｾ
 	for (int ii = 0; ii < size; ii++)
@@ -610,23 +533,97 @@ void GameScene::Draw(void)
 		stage->Draw(cameraX, cameraY, LAYER_FOREGROUND);
 	}
 
+	SetTransformTo2D(&matUI);
+
 	if (player != nullptr)
 	{
-		SetFontSize(40);
-		DrawFormatString(50, 50, GetColor(255, 255, 255), "PLAYER HP: %d / 5", player->GetHp());
+		// デバッグ用テキスト表示
+		SetFontSize(24);
+		DrawFormatString(60, 200, GetColor(255, 255, 0), "Player X: %.1f, Y: %.1f", player->GetPosX(), player->GetPosY());
+		DrawFormatString(60, 230, GetColor(255, 255, 0), "Camera X: %.1f, Y: %.1f", cameraX, cameraY);
+
+		//---------------------------------------------
+		//  PlayerのHP
+		int currentHp = player->GetHp();
+		int maxHp = 5;
+
+		// PlayerのHPUIの位置
+		int gaugeX = 60;
+		int gaugeY = SCREEN_HEIGHT - 100; // 1080 - 100 = 980 
+
+		int gaugeWidth = 300;
+		int gaugeHeight = 24;
+
+		int currentBarWidth = (int)((float)currentHp / (float)maxHp * gaugeWidth);
+
+		DrawBox(gaugeX - 10, gaugeY - 45, gaugeX + gaugeWidth + 10, gaugeY + gaugeHeight + 10, GetColor(0, 0, 0), TRUE);
+
+		SetFontSize(24);
+		DrawFormatString(gaugeX, gaugeY - 35, GetColor(255, 255, 255), "PLAYER HP: %d / %d", currentHp, maxHp);
+
+		DrawBox(gaugeX, gaugeY, gaugeX + gaugeWidth, gaugeY + gaugeHeight, GetColor(255, 255, 255), FALSE);
+
+		if (currentHp > 0)
+		{
+			unsigned int barColor = (currentHp <= 1) ? GetColor(255, 0, 0) : GetColor(0, 255, 0);
+			DrawBox(gaugeX + 2, gaugeY + 2, gaugeX + currentBarWidth - 2, gaugeY + gaugeHeight - 2, barColor, TRUE);
+		}
 
 		if (player->IsInvincible())
 		{
-			DrawString(50, 100, "INVINCIBLE!!", GetColor(255, 0, 0));
+			SetFontSize(20);
+			DrawString(gaugeX, gaugeY - 70, "INVINCIBLE!!", GetColor(255, 0, 0));
 		}
+		//---------------------------------------------
+
+
+		//---------------------------------------------
+		int currentTypeIdx = static_cast<int>(player->GetCurrentBreadType());
+		int currentTimer = player->GetShotBreadTimer(currentTypeIdx);
+		int maxCoolTime = player->GetMaxCoolTime(currentTypeIdx);
+
+		int uiX = SCREEN_WIDTH - 300;
+		int uiY = SCREEN_HEIGHT - 300;
+		int iconSize = 256;
+
+		int breadImg = -1;
+		if (currentTypeIdx == 0) // NORMAL
+		{
+			breadImg = LoadGraph("image/bread.png");
+		}
+		else if (currentTypeIdx == 1) // MELONPAN
+		{
+			breadImg = LoadGraph("image/melonpan.png");
+		}
+
+		int roundRadius = 12;
+
+		DrawRoundRect(uiX, uiY, uiX + iconSize, uiY + iconSize, roundRadius, roundRadius, GetColor(0, 0, 0), TRUE);
+
+		// パンのアイコン画像を描画
+		if (breadImg != -1)
+		{
+			DrawExtendGraph(uiX, uiY, uiX + iconSize, uiY + iconSize, breadImg, TRUE);
+		}
+
+		if (currentTimer > 0 && maxCoolTime > 0)
+		{
+			float rate = (float)currentTimer / (float)maxCoolTime;
+
+			int shadowHeight = (int)(iconSize * rate);
+
+			int shadowTopY = uiY + (iconSize - shadowHeight);
+
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
+			DrawRoundRect(uiX, shadowTopY, uiX + iconSize, uiY + iconSize, roundRadius, roundRadius, GetColor(0, 0, 0), TRUE);
+
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		}
+
+		DrawRoundRect(uiX, uiY, uiX + iconSize, uiY + iconSize, roundRadius, roundRadius, GetColor(255, 255, 255), FALSE);
+		//---------------------------------------
 	}
 
-	// --- ????????e?X?g?p?F?n???`?? ---
-	// ??????????A64?s?N?Z????????c????????
-	for (int i = 0; i < 20000; i += 64) {
-		int x = (int)(i - cameraX);
-		DrawLine(x, 0, x, 3000, GetColor(100, 100, 100));
-	}
 }
 
 bool GameScene::Release(void)
