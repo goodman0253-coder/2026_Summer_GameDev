@@ -1,5 +1,6 @@
 #include "EnemyBulletBase.h"
 #include "GameScene.h"
+#include <math.h>
 #include <DxLib.h>
 
 // EnemyBulletBaseクラスのコンストラクタとデストラクタ
@@ -49,9 +50,12 @@ void EnemyBulletBase::Draw(void) // 描画処理
 	float camX = gInst->GetCameraX();	//カメラ座標X
 	float camY = gInst->GetCameraY();	//カメラ座標Y
 
-	DrawGraph(static_cast<int>(pos.x - size.x / 2 - camX),
-				static_cast<int>(pos.y - size.y / 2 - camY),
-				imgHandle, true);
+	double angle = atan2(velocity.y, velocity.x);// ラジアンを求める
+	DrawRotaGraph(static_cast<int>(pos.x - camX),
+					static_cast<int>(pos.y - camY),
+					1.0, angle,
+					imgHandle,
+					true);
 }
 
 bool EnemyBulletBase::Release(void) // 解放処理(最後の１回のみ実行)
