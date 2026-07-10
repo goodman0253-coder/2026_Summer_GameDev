@@ -159,7 +159,8 @@ void EnemyBase::SetEnemyParam(void) // 敵キャラ個別のパラメータ設定処理
 // 敵にダメージを与える
 void EnemyBase::SetDamage(int dp)
 {
-	if (IsInvincible()) {
+	if (IsInvincible()) 
+	{
 		return; // 無敵中はダメージを受けない
 	}
 

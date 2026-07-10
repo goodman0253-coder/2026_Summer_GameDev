@@ -16,8 +16,12 @@ Stage::Stage()
             }
         }
     }
-    for (int i = 0; i < TILE_MAX; i++) {
-        tileImages[i] = -1;
+    for (int l = 0; l < LAYER_MAX; l++)
+    {
+        for (int i = 0; i < TILE_MAX; i++)
+        {
+            tileImages[l][i] = -1;
+        }
     }
 
     // collisionMap の初期化
@@ -32,33 +36,59 @@ Stage::Stage()
 
 Stage::~Stage()
 {
-    for (int i = 0; i < TILE_MAX; i++) {
-        if (tileImages[i] != -1) {
-            DeleteGraph(tileImages[i]);
+#if 0
+    for (int l = 0; l < LAYER_MAX; l++)
+    {
+        for (int i = 0; i < TILE_MAX; i++) {
+            if (tileImages[l][i] != -1) {
+                DeleteGraph(tileImages[l][i]);
+            }
         }
     }
+#endif
+	InitGraph();
 }
 
 void Stage::Initialize(int stageNum)
 {
-    for (int i = 0; i < TILE_MAX; i++) {
-        if (tileImages[i] != -1) {
-            DeleteGraph(tileImages[i]);
-            tileImages[i] = -1;
+    for (int l = 0; l < LAYER_MAX; l++)
+    {
+        for (int i = 0; i < TILE_MAX; i++) 
+        {
+            if (tileImages[l][i] != -1)
+            {
+                DeleteGraph(tileImages[l][i]);
+                tileImages[l][i] = -1;
+            }
         }
     }
 
     if (stageNum == 1)
     {
         int xNum = 8;
-        int yNum = 58;
-        LoadDivGraph("Data/MAP-Office.png", xNum * yNum, xNum, yNum, TILE_SIZE, TILE_SIZE, tileImages);
-        LoadDivGraph("Data/MAP-Office.png", xNum * yNum, xNum, yNum, TILE_SIZE, TILE_SIZE, tileImages2);
-       
-        LoadMapCSV("Data/MAP01BACKV1.csv", LAYER_BACKGROUND); // 背景用CSV
-        LoadMapCSV("Data/MAP01MIDV1.csv", LAYER_MIDDLEGROUND); // 中景用CSV（今のメインマップ）
-        LoadMapCSV("Data/MAP01OBJV1.csv", LAYER_OBJECT); // 障害物用CSV
-        LoadMapCSV("Data/MAP01FOREV1.csv", LAYER_FOREGROUND); // 前景用CSV
+        int yNumE = 57;
+        int yNumI = 50;
+		int yNumG = 50;
+
+        LoadDivGraph("Data/ST-Schl-E01.png", xNum * yNumE, xNum, yNumE, TILE_SIZE, TILE_SIZE, tileImages[LAYER_BACKGROUNDSE]);
+        LoadDivGraph("Data/ST-Schl-E01.png", xNum * yNumE, xNum, yNumE, TILE_SIZE, TILE_SIZE, tileImages[LAYER_MIDDLEGROUNDSE]);
+        LoadDivGraph("Data/ST-Schl-E01.png", xNum * yNumE, xNum, yNumE, TILE_SIZE, TILE_SIZE, tileImages[LAYER_OBJECTSE]);
+        LoadDivGraph("Data/ST-Schl-E01.png", xNum * yNumE, xNum, yNumE, TILE_SIZE, TILE_SIZE, tileImages[LAYER_FOREGROUNDSE]);
+        LoadDivGraph("Data/ST-Schl-Gym.png", xNum * yNumG, xNum, yNumG, TILE_SIZE, TILE_SIZE, tileImages[LAYER_BACKGROUNDSG]);
+        LoadDivGraph("Data/ST-Schl-Gym.png", xNum * yNumG, xNum, yNumG, TILE_SIZE, TILE_SIZE, tileImages[LAYER_MIDDLEGROUNDSG]);
+        LoadDivGraph("Data/ST-Schl-Gym.png", xNum * yNumG, xNum, yNumG, TILE_SIZE, TILE_SIZE, tileImages[LAYER_OBJECTSG]);
+        LoadDivGraph("Data/ST-Schl-Gym.png", xNum * yNumG, xNum, yNumG, TILE_SIZE, TILE_SIZE, tileImages[LAYER_FOREGROUNDSG]);
+        LoadDivGraph("Data/ST-Schl-I01.png", xNum * yNumI, xNum, yNumI, TILE_SIZE, TILE_SIZE, tileImages[LAYER_OBJECTSI]);
+
+        LoadMapCSV("Data/MAP01BACKV6E.csv", LAYER_BACKGROUNDSE); // 背景用CSV
+        LoadMapCSV("Data/MAP01MIDV6E.csv", LAYER_MIDDLEGROUNDSE); // 中景用CSV（今のメインマップ）
+        LoadMapCSV("Data/MAP01OBJV6E.csv", LAYER_OBJECTSE); // 障害物用CSV
+        LoadMapCSV("Data/MAP01FOREV6E.csv", LAYER_FOREGROUNDSE); // 前景用CSV
+        LoadMapCSV("Data/MAP01BACKV6G.csv", LAYER_BACKGROUNDSG); // 背景用CSV
+        LoadMapCSV("Data/MAP01MIDV6G.csv", LAYER_MIDDLEGROUNDSG); // 中景用CSV（今のメインマップ）
+        LoadMapCSV("Data/MAP01OBJV6G.csv", LAYER_OBJECTSG); // 障害物用CSV
+        LoadMapCSV("Data/MAP01FOREV6G.csv", LAYER_FOREGROUNDSG); // 前景用CSV
+        LoadMapCSV("Data/MAP01OBJV6I.csv", LAYER_OBJECTSI); // 障害物用CSV
         // ステージ1の当たり判定CSVをロード
         LoadCollisionCSV("Data/AGS_Map_School_Collision.csv");
     }
@@ -67,12 +97,15 @@ void Stage::Initialize(int stageNum)
 
         int xNum = 8;
         int yNum = 58;
-        LoadDivGraph("Data/MAP-Office.png", xNum * yNum, xNum, yNum, TILE_SIZE, TILE_SIZE, tileImages);
+        LoadDivGraph("Data/MAP-Office.png", xNum * yNum, xNum, yNum, TILE_SIZE, TILE_SIZE, tileImages[LAYER_BACKGROUNDO]);
+        LoadDivGraph("Data/MAP-Office.png", xNum * yNum, xNum, yNum, TILE_SIZE, TILE_SIZE, tileImages[LAYER_MIDDLEGROUNDO]);
+        LoadDivGraph("Data/MAP-Office.png", xNum * yNum, xNum, yNum, TILE_SIZE, TILE_SIZE, tileImages[LAYER_OBJECTO]);
+        LoadDivGraph("Data/MAP-Office.png", xNum * yNum, xNum, yNum, TILE_SIZE, TILE_SIZE, tileImages[LAYER_FOREGROUNDO]);
 
-        LoadMapCSV("Data/MAP02BACKV5.csv", LAYER_BACKGROUND); // 背景用CSV
-        LoadMapCSV("Data/MAP02MIDV5.csv", LAYER_MIDDLEGROUND); // 中景用CSV（今のメインマップ）
-        LoadMapCSV("Data/MAP02OBJV5.csv", LAYER_OBJECT); // 障害物用CSV
-        LoadMapCSV("Data/MAP02FOREV5.csv", LAYER_FOREGROUND); // 前景用CSV
+        LoadMapCSV("Data/MAP02BACKV5.csv", LAYER_BACKGROUNDO); // 背景用CSV
+        LoadMapCSV("Data/MAP02MIDV5.csv", LAYER_MIDDLEGROUNDO); // 中景用CSV（今のメインマップ）
+        LoadMapCSV("Data/MAP02OBJV5.csv", LAYER_OBJECTO); // 障害物用CSV
+        LoadMapCSV("Data/MAP02FOREV5.csv", LAYER_FOREGROUNDO); // 前景用CSV
     
         LoadCollisionCSV("Data/AGS_Map_Office_Collision.csv");
 
@@ -80,17 +113,35 @@ void Stage::Initialize(int stageNum)
     else if (stageNum == 3) // ステージ３マップCSVを読み込む
     {
         int xNum = 8;
-        int yNum = 58;
-        LoadDivGraph("Data/MAP-Office.png", xNum * yNum, xNum, yNum, TILE_SIZE, TILE_SIZE, tileImages);
-        LoadMapCSV("Data/MAP03BACKV1.csv", LAYER_BACKGROUND); // 背景用CSV
-        LoadMapCSV("Data/MAP03MIDV1.csv", LAYER_MIDDLEGROUND); // 中景用CSV（今のメインマップ）
-        LoadMapCSV("Data/MAP03OBJV1.csv", LAYER_OBJECT); // 障害物用CSV
-        LoadMapCSV("Data/MAP03FOREV1.csv", LAYER_FOREGROUND); // 前景用CSV
-        LoadCollisionCSV("Data/AGS_Map_School_Collision.csv");
+        int yNumC = 54;
+        int yNumSE = 57;
+        int yNumTE = 50;
+        int yNumO = 58;
+
+        LoadDivGraph("Data/ST-Convi-E01.png", xNum * yNumC, xNum, yNumC, TILE_SIZE, TILE_SIZE, tileImages[LAYER_BACKGROUNDC]);
+        LoadDivGraph("Data/ST-Convi-E01.png", xNum * yNumC, xNum, yNumC, TILE_SIZE, TILE_SIZE, tileImages[LAYER_OBJECTC]);
+        LoadDivGraph("Data/ST-Schl-E01.png", xNum * yNumSE, xNum, yNumSE, TILE_SIZE, TILE_SIZE, tileImages[LAYER_BACKGROUNDSE]);
+        LoadDivGraph("Data/ST-Schl-E01.png", xNum * yNumSE, xNum, yNumSE, TILE_SIZE, TILE_SIZE, tileImages[LAYER_MIDDLEGROUNDSE]);
+        LoadDivGraph("Data/ST-Town-E01.png", xNum * yNumTE, xNum, yNumTE, TILE_SIZE, TILE_SIZE, tileImages[LAYER_BACKGROUNDTE]);
+        LoadDivGraph("Data/ST-Town-E01.png", xNum * yNumTE, xNum, yNumTE, TILE_SIZE, TILE_SIZE, tileImages[LAYER_MIDDLEGROUNDTE]);
+        LoadDivGraph("Data/ST-Town-E01.png", xNum * yNumTE, xNum, yNumTE, TILE_SIZE, TILE_SIZE, tileImages[LAYER_OBJECTTE]);
+        LoadDivGraph("Data/MAP-Office.png", xNum * yNumO, xNum, yNumO, TILE_SIZE, TILE_SIZE, tileImages[LAYER_OBJECTO]);
+      
+
+        LoadMapCSV("Data/MAP03BACKV1C.csv", LAYER_BACKGROUNDC); 
+        LoadMapCSV("Data/MAP03BACKV1SE.csv", LAYER_BACKGROUNDSE);
+        LoadMapCSV("Data/MAP03BACKV1TE.csv", LAYER_BACKGROUNDTE);
+        LoadMapCSV("Data/MAP03MIDV1SE.csv", LAYER_MIDDLEGROUNDSE);
+        LoadMapCSV("Data/MAP03MIDV1TE.csv", LAYER_MIDDLEGROUNDTE);
+        LoadMapCSV("Data/MAP03OBJV1C.csv", LAYER_OBJECTC);
+        LoadMapCSV("Data/MAP03OBJV1O.csv", LAYER_OBJECTO); 
+        LoadMapCSV("Data/MAP03OBJV1TE.csv", LAYER_OBJECTTE);
+
+        LoadCollisionCSV("Data/AGS_Map_Street_Collision.csv");
     }
 }
 
-void Stage::LoadMapCSV(const std::string& filename, eMapLayer OLayer)
+void Stage::LoadMapCSV(const std::string& filename, eMapLayer Layer)
 {
     std::ifstream file(filename);
     if (!file.is_open()) {
@@ -109,7 +160,7 @@ void Stage::LoadMapCSV(const std::string& filename, eMapLayer OLayer)
 
         while (std::getline(ss, value, ',') && x < MAP_WIDTH)
         {
-            stageMap[OLayer][y][x] = std::stoi(value);
+            stageMap[Layer][y][x] = std::stoi(value);
             x++;
         }
         y++;
@@ -141,21 +192,25 @@ void Stage::LoadCollisionCSV(const std::string& filename)
 }
 
 // 指定されたレイヤーだけを描画する関数にする
-void Stage::Draw(float cameraX, float cameraY, eMapLayer OLayer)
+void Stage::Draw(float cameraX, float cameraY, eMapLayer Layer)
 {
     for (int y = 0; y < MAP_HEIGHT; y++)
     {
         for (int x = 0; x < MAP_WIDTH; x++)
         {
             // 指定されたレイヤーのチップ番号を取得
-            int chipIndex = stageMap[OLayer][y][x];
+            int chipIndex = stageMap[Layer][y][x];
 
-            if (chipIndex >= 0 && chipIndex < TILE_MAX && tileImages[chipIndex] != -1)
+            // 0未満、または TILE_MAX 以上の不正な数値はスルー
+            if (chipIndex < 0 || chipIndex >= TILE_MAX) continue;
+
+            // 画像ハンドルが有効な場合のみ描画
+            if (tileImages[Layer][chipIndex] != -1)
             {
                 int drawX = x * TILE_SIZE - (int)cameraX;
                 int drawY = y * TILE_SIZE - (int)cameraY;
-                DrawGraph(drawX, drawY, tileImages[chipIndex], TRUE);
-                
+
+                DrawGraph(drawX, drawY, tileImages[Layer][chipIndex], TRUE);
             }
         }
     }

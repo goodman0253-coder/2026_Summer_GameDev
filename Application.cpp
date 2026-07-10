@@ -9,20 +9,20 @@
 
 Application::Application()
 {
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^ˆ—
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿å‡¦ç†
 }
 
 Application::~Application()
 {
-	// ƒfƒXƒgƒ‰ƒNƒ^‚ÍƒNƒ‰ƒX–¼‚ğg‚Á‚Ä³‚µ‚­’è‹`‚·‚é‚±‚Æ‚Å
-	// "–¼‘O‚ÌŒã‚É '::~' ‚ğ•t‚¯‚é‚±‚Æ‚ª‚Å‚«‚é‚Ì‚ÍƒNƒ‰ƒX–¼‚Ü‚½‚Í–¼‘O‹óŠÔ–¼‚¾‚¯‚Å‚·" ƒGƒ‰[‚ğ‰ğÁ‚µ‚Ü‚·
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¯ã‚¯ãƒ©ã‚¹åã‚’ä½¿ã£ã¦æ­£ã—ãå®šç¾©ã™ã‚‹ã“ã¨ã§
+	// "åå‰ã®å¾Œã« '::~' ã‚’ä»˜ã‘ã‚‹ã“ã¨ãŒã§ãã‚‹ã®ã¯ã‚¯ãƒ©ã‚¹åã¾ãŸã¯åå‰ç©ºé–“åã ã‘ã§ã™" ã‚¨ãƒ©ãƒ¼ã‚’è§£æ¶ˆã—ã¾ã™
 	SoundManager::GetInstance().ReleaseAll();
 }
 
 bool Application::SystemInit(void)
 {
-	// ƒVƒXƒeƒ€ˆ—
-	SetWindowText("‚Å‚è‚Î‚è‚¡‚×‚¥‚©‚è‚¡");
+	// ã‚·ã‚¹ãƒ†ãƒ å‡¦ç†
+	SetWindowText("ã§ã‚Šã°ã‚Šãƒã¹ã‡ã‹ã‚Šãƒ");
 	SetGraphMode(SCREEN_SIZE_WID, SCREEN_SIZE_HIG,32);
 	SetWaitVSyncFlag(TRUE);
 	if (DxLib_Init() == -1) return false;
@@ -31,7 +31,7 @@ bool Application::SystemInit(void)
 
 	ChangeWindowMode(false);
 
-	//FPS‰Šú‰»
+	//FPSåˆæœŸåŒ–
 	fps = new FpsControl;
 	fps->Init();
 	return true;
@@ -49,48 +49,48 @@ bool Application::GameInit(void)
 void Application::Run()
 {
 	LONGLONG startTime = GetNowHiPerformanceCount();
-	const LONGLONG targetFrameTime = 1000000 / 60; // 1ƒtƒŒ[ƒ€‚ ‚½‚è‚Ì–Ú•WŠÔiƒ}ƒCƒNƒ•bF–ñ16666j
+	const LONGLONG targetFrameTime = 1000000 / 60; // 1ãƒ•ãƒ¬ãƒ¼ãƒ ã‚ãŸã‚Šã®ç›®æ¨™æ™‚é–“ï¼ˆãƒã‚¤ã‚¯ãƒ­ç§’ï¼šç´„16666ï¼‰
 
-	// ƒƒCƒ“ƒ‹[ƒv
+	// ãƒ¡ã‚¤ãƒ³ãƒ«ãƒ¼ãƒ—
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 	{
-		// ‰æ–ÊƒNƒŠƒA‚ÆXVE•`‰æ‚ÌÀs
+		// ç”»é¢ã‚¯ãƒªã‚¢ã¨æ›´æ–°ãƒ»æç”»ã®å®Ÿè¡Œ
 		ClearDrawScreen();
 
 		Update();
 		Draw();
 
-		// — ‰æ–Ê‚Ì“à—e‚ğ•\‰æ–Ê‚É”½‰f
+		// è£ç”»é¢ã®å†…å®¹ã‚’è¡¨ç”»é¢ã«åæ˜ 
 		ScreenFlip();
 
-		// ?? 144Hz‚â240Hz‚È‚Ç‚ÌƒQ[ƒ~ƒ“ƒOƒ‚ƒjƒ^[ŠÂ‹«‚Å‚à‹­§“I‚É60FPS‚É—}‚¦‚éƒEƒGƒCƒgˆ—
+		// ?? 144Hzã‚„240Hzãªã©ã®ã‚²ãƒ¼ãƒŸãƒ³ã‚°ãƒ¢ãƒ‹ã‚¿ãƒ¼ç’°å¢ƒã§ã‚‚å¼·åˆ¶çš„ã«60FPSã«æŠ‘ãˆã‚‹ã‚¦ã‚¨ã‚¤ãƒˆå‡¦ç†
 		LONGLONG endTime = GetNowHiPerformanceCount();
 		LONGLONG processTime = endTime - startTime;
 
-		// –Ú•WŠÔ‚æ‚è‘‚­1ƒtƒŒ[ƒ€‚Ìˆ—‚ªI‚í‚Á‚½ê‡A‘«‚è‚È‚¢ŠÔ•ª‚¾‚¯‘Ò‚Â
+		// ç›®æ¨™æ™‚é–“ã‚ˆã‚Šæ—©ã1ãƒ•ãƒ¬ãƒ¼ãƒ ã®å‡¦ç†ãŒçµ‚ã‚ã£ãŸå ´åˆã€è¶³ã‚Šãªã„æ™‚é–“åˆ†ã ã‘å¾…ã¤
 		if (processTime < targetFrameTime)
 		{
 			while (GetNowHiPerformanceCount() - startTime < targetFrameTime)
 			{
-				// CPU‚Ìè—L—¦‚ğ‰º‚°‚ÄPC‚Ö‚Ì•‰‰×‚ğŒ¸‚ç‚·‚½‚ß‚ÌƒXƒŠ[ƒv
+				// CPUã®å æœ‰ç‡ã‚’ä¸‹ã’ã¦PCã¸ã®è² è·ã‚’æ¸›ã‚‰ã™ãŸã‚ã®ã‚¹ãƒªãƒ¼ãƒ—
 				Sleep(0);
 			}
 		}
 
-		// Ÿ‚ÌƒtƒŒ[ƒ€‚ÌŠJnŠÔ‚ğ‹L˜^
+		// æ¬¡ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã®é–‹å§‹æ™‚é–“ã‚’è¨˜éŒ²
 		startTime = GetNowHiPerformanceCount();
 
 		if (fps)
 		{
-			fps->CalcFrameRate();   //ƒtƒŒ[ƒ€ƒŒ[ƒgŒvZ
-			fps->DrawFrameRate();   //ƒtƒŒ[ƒ€ƒŒ[ƒg•`‰æ
+			fps->CalcFrameRate();   //ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¬ãƒ¼ãƒˆè¨ˆç®—
+			fps->DrawFrameRate();   //ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¬ãƒ¼ãƒˆæç”»
 		}
 	}
 }
 
 bool Application::Release(void)
 {
-	//ƒtƒŒ[ƒ€ƒŒ[ƒg‰ğ•ú
+	//ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¬ãƒ¼ãƒˆè§£æ”¾
 	if (fps)
 	{
 		delete fps;
@@ -139,6 +139,8 @@ void Application::Draw(void)
 void Application::IdentityInit()
 {
 	auto& sm = SoundManager::GetInstance();
+	sm.LoadBGM("gameScene", "sound/searchlight.wav");
+
 	sm.LoadSE("jump", "sound/Jump.mp3");
 	sm.LoadSE("throw", "sound/Throw.mp3");
 	sm.LoadSE("damage", "sound/Damage.mp3");
