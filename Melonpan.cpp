@@ -16,7 +16,7 @@ Melonpan::Melonpan(float startX, float startY, AsoUtility::DIR direction, GameSc
     // 💡 通常のメロンパン画像を読み込む
     imageHandle = LoadGraph("image/melonpan.png");
 
-    lifeTimer = 120;
+    lifeTimer = 90;
 }
 
 void Melonpan::Update()

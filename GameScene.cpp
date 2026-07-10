@@ -21,7 +21,8 @@
 #include "Bread.h"
 #include "Melonpan.h"
 #include "MelonpanRecipe.h"
-
+#include "MiniMelonpan.h"
+#include "SoundManager.h"
 
 GameScene::GameScene()
 {
@@ -189,7 +190,9 @@ bool GameScene::GameInit(void)
 	isClearTriggered = false;
 	clearTimer = 0;
 
-	AddRecipe(new MelonRecipe(800.0f, 1150.0f));
+	SoundManager::GetInstance().PlayBGM("gameScene");
+
+	AddRecipe(new MelonRecipe(1500.0f, 1150.0f));
 
 	return true;
 }
@@ -204,7 +207,6 @@ void GameScene::AddEnemyBullet(EnemyBulletBase* newBullet, Vector2F spawnPos, Ve
 	{
 		if (newBullet != nullptr)
 		{
-
 			newBullet->SystemInit(this);
 			newBullet->GameInit(spawnPos, vel);
 			enemyBullets.push_back(newBullet);
@@ -234,6 +236,7 @@ void GameScene::CollisionCheckPB()
 					PY < BY + (enemyBullets[i]->GetSize().y / 2) && 
 					PY + Player::PLAYER_HIG > BY - (enemyBullets[i]->GetSize().y / 2))
 				{
+					SoundManager::GetInstance().PlaySE("damage");
 					player->ApplyDamage(); 
 					enemyBullets[i]->SetAlive(false);
 				}
@@ -267,6 +270,7 @@ void GameScene::CollisionCheckPE()
 							PY + Player::PLAYER_HIG > EY - (enemys[i]->GetEnemySize().y / 2))
 						{
 							player->ApplyDamage();
+							SoundManager::GetInstance().PlaySE("damage");
 							enemys[i]->SetDamage(1);
 						}
 					}
@@ -277,6 +281,7 @@ void GameScene::CollisionCheckPE()
 							PY < EY + (enemys[i]->GetEnemySize().y / 2) &&
 							PY + Player::PLAYER_HIG > EY - (enemys[i]->GetEnemySize().y / 2))
 						{
+							SoundManager::GetInstance().PlaySE("damage");
 							player->ApplyDamage();
 						}
 					}
@@ -310,16 +315,29 @@ void GameScene::CollisionCheckEB()
 							breadPos.y + breadSize.y > enemyPos.y - (enemySize.y / 2))
 						{
 						  Melonpan* melon = dynamic_cast<Melonpan*>(bread);
+						  MiniMelonpan* miniMelon = dynamic_cast<MiniMelonpan*>(bread);
 						  if (melon != nullptr)
 						  {
-							  enemys[i]->SetDamage(2); 
+							  SoundManager::GetInstance().PlaySE("damage");
+							  enemys[i]->SetDamage(3); 
 						  	
 						  	// メロンパンだった場合は破裂させる（内部で小さなパンが生成され、自身は死亡する）
 						  	melon->Explode();
 						  }
+						  else if (miniMelon != nullptr)
+						  {
+							  if (enemys[i]->IsInvincible() == true)
+							  {
+								  continue;
+							  }
+							  SoundManager::GetInstance().PlaySE("damage");
+							  enemys[i]->SetDamage(1);
+							  // ミニメロンパンだった場合はそのまま消す
+							  miniMelon->Kill();
+						  }
 						  else
 						  {
-
+							  SoundManager::GetInstance().PlaySE("damage");
 							  enemys[i]->SetDamage(1); 
 						  	// 通常のパンだった場合はそのまま消す
 						  	bread->Kill();
@@ -367,11 +385,11 @@ void GameScene::Update(void)
 	if (player != nullptr)
 	{
 		player->Update();
-		cameraY = player->GetPosY() - (SCREEN_HEIGHT / 2);
-		if (cameraY >= 800)
-		{
-			cameraY = 800;
-		}
+		//cameraY = player->GetPosY() - (SCREEN_HEIGHT / 2);
+		//if (cameraY >= 800)
+		//{
+		//	cameraY = 800;
+		//}
 	}
 
 	for (auto* bread : breadList)
@@ -529,12 +547,44 @@ void GameScene::Draw(void)
 	MATRIX matUI = MGetScale(VGet(scaleUI, scaleUI, 1.0f));
 	SetTransformTo2D(&mat);
 
-	if (stage != nullptr && player != nullptr)
+	if (currentStageNum == 1)
 	{
-		stage->Draw(cameraX, cameraY, LAYER_BACKGROUND);
-		stage->Draw(cameraX, cameraY, LAYER_MIDDLEGROUND);
-	}
+		if (stage != nullptr && player != nullptr)
+		{
+			stage->Draw(cameraX, cameraY, LAYER_BACKGROUNDSE);
+			stage->Draw(cameraX, cameraY, LAYER_BACKGROUNDSG);
+			stage->Draw(cameraX, cameraY, LAYER_OBJECTSE);
+			stage->Draw(cameraX, cameraY, LAYER_MIDDLEGROUNDSE);
+			stage->Draw(cameraX, cameraY, LAYER_MIDDLEGROUNDSG);
+			stage->Draw(cameraX, cameraY, LAYER_OBJECTSG);
+			stage->Draw(cameraX, cameraY, LAYER_OBJECTSI);
 
+		}
+	}
+	if (currentStageNum == 2)
+	{
+		if (stage != nullptr && player != nullptr)
+		{
+			stage->Draw(cameraX, cameraY, LAYER_BACKGROUNDO);
+			stage->Draw(cameraX, cameraY, LAYER_MIDDLEGROUNDO);
+			stage->Draw(cameraX, cameraY, LAYER_OBJECTO);
+
+		}
+	}
+	if (currentStageNum == 3)
+	{
+		if (stage != nullptr && player != nullptr)
+		{
+			stage->Draw(cameraX, cameraY, LAYER_BACKGROUNDC);
+			stage->Draw(cameraX, cameraY, LAYER_BACKGROUNDSE);
+			stage->Draw(cameraX, cameraY, LAYER_BACKGROUNDTE);
+			stage->Draw(cameraX, cameraY, LAYER_MIDDLEGROUNDSE);
+			stage->Draw(cameraX, cameraY, LAYER_MIDDLEGROUNDTE);
+			stage->Draw(cameraX, cameraY, LAYER_OBJECTC);
+			stage->Draw(cameraX, cameraY, LAYER_OBJECTO);
+			stage->Draw(cameraX, cameraY, LAYER_OBJECTTE);
+		}
+	}
 
 	if (player != nullptr)
 	{
@@ -566,12 +616,25 @@ void GameScene::Draw(void)
 			enemyBullets[i]->Draw();
 		}
 	}
-	if (stage != nullptr)
-	{
-		stage->Draw(cameraX, cameraY, LAYER_OBJECT);
 
-		stage->Draw(cameraX, cameraY, LAYER_FOREGROUND);
+	if (currentStageNum == 1)
+	{
+		if (stage != nullptr && player != nullptr)
+		{
+
+			stage->Draw(cameraX, cameraY, LAYER_FOREGROUNDSE);
+			stage->Draw(cameraX, cameraY, LAYER_FOREGROUNDSG);
+		}
 	}
+	if (currentStageNum == 2)
+	{
+		if (stage != nullptr && player != nullptr)
+		{
+
+			stage->Draw(cameraX, cameraY, LAYER_FOREGROUNDO);
+		}
+	}
+
 
 	SetTransformTo2D(&matUI);
 
@@ -653,10 +716,12 @@ void GameScene::Draw(void)
 
 		DrawRoundRect(uiX, uiY, uiX + iconSize, uiY + iconSize, roundRadius, roundRadius, GetColor(255, 255, 255), FALSE);
 	}
+
 }
 
 bool GameScene::Release(void)
 {
+#if 0
 	for (size_t i = 0; i < enemys.size(); i++)
 	{
 		if (enemys[i] != nullptr)
@@ -681,5 +746,7 @@ bool GameScene::Release(void)
 		delete bread;
 	}
 	breadList.clear();
+#endif
 	return true;
+
 }

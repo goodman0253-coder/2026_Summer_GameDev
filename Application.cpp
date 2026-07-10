@@ -74,8 +74,8 @@ void Application::Run()
 }
 
 bool Application::Release(void)
-{
-	if (DxLib_End() == -1)return false;
+{ 
+   	if (DxLib_End() == -1)return false;
 	return true;
 }
 
@@ -118,6 +118,8 @@ void Application::Draw(void)
 void Application::IdentityInit()
 {
 	auto& sm = SoundManager::GetInstance();
+	sm.LoadBGM("gameScene", "sound/searchlight.wav");
+
 	sm.LoadSE("jump", "sound/Jump.mp3");
 	sm.LoadSE("throw", "sound/Throw.mp3");
 	sm.LoadSE("damage", "sound/Damage.mp3");

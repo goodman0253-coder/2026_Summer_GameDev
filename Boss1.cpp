@@ -1,13 +1,14 @@
 #include "Boss1.h"
 #include "GameScene.h"
 #include "Player.h"
+#include "Stage.h"
 #include<DXLib.h>
-
+#include <math.h>
 
 
 void Boss1::GameInit(void)
 {
-	EnemyBase::GameInit(Vector2F(6200.0f, 1225.0f));
+	EnemyBase::GameInit(Vector2F(6200.0f, 800.0f));
 	EoB = 10; // ボスとして設定
 }
 
@@ -21,6 +22,31 @@ void Boss1::SetEnemyParam(void)
 	speed = 0.0f;
 	// 敵のヒットポイント最大値
 	hpMax = 15;
+}
+
+bool Boss1::CheckGrounded(float checkX, float checkY)
+{
+	// EnemyBaseに保存されているGameSceneのポインタ（gameScene等）からStageを取得
+	// ※もしEnemyBase内の変数名が異なる場合は、環境に合わせて調整してください。
+	if (this->gInst == nullptr) return false;
+	Stage* stage = this->gInst->GetLpStage();
+	if (stage == nullptr) return false;
+
+	// ボスの中心位置から左右の足元2点（左下・右下）を割り出す
+	float halfW = size.x / 2.0f;
+	float halfH = size.y / 2.0f;
+
+	// 少し内側（遊びを持たせる）をチェック
+	float footLeftX = checkX - halfW + 4.0f;
+	float footRightX = checkX + halfW - 4.0f;
+	float footY = checkY + halfH; // ボスの最下部
+
+	// 左下、または右下が壁チップに触れていれば地面のココアール（接触）と判定
+	if (stage->CheckCollision(footLeftX, footY) || stage->CheckCollision(footRightX, footY))
+	{
+		return true;
+	}
+	return false;
 }
 
 void Boss1::Update(void)
@@ -39,6 +65,50 @@ void Boss1::Update(void)
 	Vector2F playerDir = Vector2F(PX - pos.x, 0.0f);
 	this->setMoveDirection(playerDir);
 
+	if (isJumping)
+	{
+		// 空中での重力処理
+		if (jumpVy < 0.0f)
+		{
+			jumpVy += GRAVITY;
+		}
+		else
+		{
+			jumpVy += GRAVITY * 2.5f; // 落下時は少し重力を強く
+		}
+	}
+	else
+	{
+		// 地上にいる時でも、床がなくなったら落下させるための処理
+		jumpVy += GRAVITY;
+	}
+
+	// 移動量を座標に仮適用
+	pos.x += jumpVx;
+	pos.y += jumpVy;
+
+	// --- 足元のコリジョン判定 ---
+	if (CheckGrounded(pos.x, pos.y))
+	{
+		// 地面にめり込まないように位置を調整（タイルサイズ 32 ピクセル単位にスナップ）
+		float halfH = size.y / 2.0f;
+		float footY = pos.y + halfH;
+		int tileY = (int)floorf(footY / 32.0f);
+
+		// 地面の表面のY座標にボスを合わせる
+		pos.y = (tileY * 32.0f) - halfH;
+
+		// 着地完了処理
+		jumpVy = 0.0f;
+		jumpVx = 0.0f;
+		isJumping = false;
+	}
+	else
+	{
+		// 足元に床がない場合は空中状態にする
+		isJumping = true;
+	}
+
 	if (!isJumping)
 	{
 		JumpTimer++;
@@ -54,6 +124,7 @@ void Boss1::Update(void)
 			jumpVx = (distanceX / 60.0f)*1.7f;
 		}
 	}
+#if 0
 	else
 	{
 		if (jumpVy < 0.0f)
@@ -70,6 +141,7 @@ void Boss1::Update(void)
 				jumpVx = 0.0f; 
 			}
 		}
+
 		else
 		{
 			
@@ -84,7 +156,9 @@ void Boss1::Update(void)
 				isJumping = false;
 			}
 		}
+
 	}
+#endif
 }
 
 

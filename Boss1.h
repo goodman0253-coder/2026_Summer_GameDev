@@ -1,6 +1,7 @@
 #pragma once
 #include "EnemyBase.h"
 class Player;
+class GameScene;
 
 class Boss1 : public EnemyBase
 {
@@ -10,6 +11,8 @@ public:
 	void Update(void) override;
 	void SetPlayer(Player* p) { player = p; }
 private:
+	bool CheckGrounded(float checkX, float checkY);
+
 	int JumpTimer;
 	bool isJumping = false;     // 現在ジャンプ中（空中）かどうかのフラグ
 	float jumpVy = 0.0f;        // 毎フレームの縦方向の移動量

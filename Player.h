@@ -116,8 +116,8 @@ private:
 
     const int MAX_COOL_TIME[static_cast<int>(BREAD_TYPE::MAX)] = 
     {
-        90,  // NORMAL のクールタイム
-        150, //Melonoanのクールタイム
+        45,  // NORMAL のクールタイム
+        120, //Melonoanのクールタイム
     };
     int breadIdx; 
 
