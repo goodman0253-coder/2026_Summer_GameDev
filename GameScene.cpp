@@ -15,6 +15,8 @@
 #include "Enemy8.h"
 #include "Enemy9.h"
 #include "Boss1.h"
+#include "Boss2.h"
+#include "Boss3.h"
 #include "BreadBase.h"
 #include "Bread.h"
 #include "Melonpan.h"
@@ -24,13 +26,9 @@
 GameScene::GameScene()
 {
 #if 0
-	enemys.push_back(new Enemy1, new Enemy2, new Enemy3, new Enemy4, new Enemy5, new Enemy6, new Enemy7, new Enemy8, new Enemy9, new Boss1()); // ?G??C???X?^???X??????????X?g????
+	enemys.push_back(new Enemy1, new Enemy2, new Enemy3, new Enemy4, new Enemy5, new Enemy6, new Enemy7, new Enemy8, new Enemy9, new Boss1, new Boss2 ,new Boss3());
 	for (int i = 0; i < enemys.size();i++)
 	{
-		//if (!enemys[i]->SystemInit(this))
-		//{
-			//printfDx("?G???????????s");
-		//}
 		enemys[i]->GameInit();
 	}
 #endif
@@ -78,131 +76,116 @@ bool GameScene::GameInit(void)
 		EnemyBase* newEnemy = new Enemy1();
 		if (newEnemy != nullptr)
 		{
-			// this (GameScene) ??G??m????n???I
 			newEnemy->SystemInit(this);
 
-			// GameInit?????i??????u????j
 			newEnemy->GameInit();
 
-			// ?????????????G?????X?g??o?^
 			enemys.push_back(newEnemy);
 		}
 
 		EnemyBase* newEnemy2 = new Enemy2();
 		if (newEnemy2 != nullptr)
 		{
-			// this (GameScene) ??G??m????n???I
 			newEnemy2->SystemInit(this);
 
-			// GameInit?????i??????u????j
 			newEnemy2->GameInit();
 
-			// ?????????????G?????X?g??o?^
 			enemys.push_back(newEnemy2);
 		}
 
 		EnemyBase* newEnemy3 = new Enemy3();
 		if (newEnemy3 != nullptr)
 		{
-			// this (GameScene) ??G??m????n???I
 			newEnemy3->SystemInit(this);
 
-			// GameInit?????i??????u????j
 			newEnemy3->GameInit();
 
-			// ?????????????G?????X?g??o?^
 			enemys.push_back(newEnemy3);
 		}
 
 		EnemyBase* newEnemy4 = new Boss1();
 		if (newEnemy4 != nullptr)
 		{
-			// this (GameScene) ????m????n???I
 			newEnemy4->SystemInit(this);
-			// GameInit?????i??????u????j
 			newEnemy4->GameInit();
 			static_cast<Boss1*>(newEnemy4)->SetPlayer(player);
-			// ?????????????G?????X?g??o?^
 			enemys.push_back(newEnemy4);
 		}
 	}
 	else if (currentStageNum == 2)
 	{
-		// 2繧ｹ繝�畑縺ｮ謨ｵ縺ｮ驟咲ｽｮ蜃ｦ逅...
+		EnemyBase* newEnemy1 = new Enemy4();
+		if (newEnemy1 != nullptr)
+		{
+			newEnemy1->SystemInit(this);
+
+			newEnemy1->GameInit();
+
+			enemys.push_back(newEnemy1);
+		}
+
+		EnemyBase* newEnemy2 = new Enemy5();
+		if (newEnemy2 != nullptr)
+		{
+			newEnemy2->SystemInit(this);
+
+			newEnemy2->GameInit();
+
+			enemys.push_back(newEnemy2);
+		}
+
+		EnemyBase* newEnemy3 = new Enemy6();
+		if (newEnemy3 != nullptr)
+		{
+			newEnemy3->SystemInit(this);
+
+			newEnemy3->GameInit();
+
+			enemys.push_back(newEnemy3);
+		}
+
+		 EnemyBase* newEnemy4 = new Boss2();
+		 if (newEnemy4 != nullptr)
+		 {
+		 	newEnemy4->SystemInit(this);
+		 	newEnemy4->GameInit();
+		 	static_cast<Boss2*>(newEnemy4)->SetPlayer(player);
+		 	enemys.push_back(newEnemy4);
+		 }
 	}
 	else if (currentStageNum == 3)
 	{
-		// 3繧ｹ繝�畑縺ｮ謨ｵ縺ｮ驟咲ｽｮ蜃ｦ逅...
+		EnemyBase* newEnemy1 = new Enemy7();
+		if (newEnemy1 != nullptr)
+		{
+			newEnemy1->SystemInit(this);
+			newEnemy1->GameInit();
+			enemys.push_back(newEnemy1);
+		}
+		EnemyBase* newEnemy2 = new Enemy8();
+		if (newEnemy2 != nullptr)
+		{
+			newEnemy2->SystemInit(this);
+			newEnemy2->GameInit();
+			enemys.push_back(newEnemy2);
+		}
+		EnemyBase* newEnemy3 = new Enemy9();
+		if (newEnemy3 != nullptr)
+		{
+			newEnemy3->SystemInit(this);
+			newEnemy3->GameInit();
+			enemys.push_back(newEnemy3);
+		}
+		 EnemyBase* newEnemy4 = new Boss3();
+		 if (newEnemy4 != nullptr)
+		 {
+		 	newEnemy4->SystemInit(this);
+		 	newEnemy4->GameInit();
+		 	static_cast<Boss1*>(newEnemy4)->SetPlayer(player);
+		 	enemys.push_back(newEnemy4);
+		 }
 	}
 
-	EnemyBase* newEnemy5 = new Enemy5();
-	if (newEnemy5 != nullptr)
-	{
-		// this (GameScene) ??G??m????n???I
-		newEnemy5->SystemInit(this);
-		// GameInit?????i??????u????j
-		newEnemy5->GameInit();
-		// ?????????????G?????X?g??o?^
-		enemys.push_back(newEnemy5);
-	}
-
-	EnemyBase* newEnemy6 = new Enemy6();
-	if (newEnemy6 != nullptr)
-	{
-		// this (GameScene) ??G??m????n???I
-		newEnemy6->SystemInit(this);
-		// GameInit?????i??????u????j
-		newEnemy6->GameInit();
-		// ?????????????G?????X?g??o?^
-		enemys.push_back(newEnemy6);
-	}
-
-	EnemyBase* newEnemy7 = new Enemy7();
-	if (newEnemy7 != nullptr)
-	{
-		// this (GameScene) ??G??m????n???I
-		newEnemy7->SystemInit(this);
-		// GameInit?????i??????u????j
-		newEnemy7->GameInit();
-		// ?????????????G?????X?g??o?^
-		enemys.push_back(newEnemy7);
-	}
-
-	EnemyBase* newEnemy8 = new Enemy8();
-	if (newEnemy8 != nullptr)
-	{
-		// this (GameScene) ??G??m????n???I
-		newEnemy8->SystemInit(this);
-		// GameInit?????i??????u????j
-		newEnemy8->GameInit();
-		// ?????????????G?????X?g??o?^
-		enemys.push_back(newEnemy8);
-	}
-
-	EnemyBase* newEnemy9 = new Enemy9();
-	if (newEnemy9 != nullptr)
-	{
-		// this (GameScene) ??G??m????n???I
-		newEnemy9->SystemInit(this);
-		// GameInit?????i??????u????j
-		newEnemy9->GameInit();
-		// ?????????????G?????X?g??o?^
-		enemys.push_back(newEnemy9);
-	}
-
-	EnemyBase* newEnemy10 = new Boss1();
-	if (newEnemy10 != nullptr)
-	{
-		// this (GameScene) ??G??m????n???I
-		newEnemy10->SystemInit(this);
-		// GameInit?????i??????u????j
-		newEnemy10->GameInit();
-		static_cast<Boss1*>(newEnemy10)->SetPlayer(player);
-		// ?????????????G?????X?g??o?^
-		enemys.push_back(newEnemy10);
-	}
-
-	//????N???A
 	isClearTriggered = false;
 	clearTimer = 0;
 
@@ -222,9 +205,9 @@ void GameScene::AddEnemyBullet(EnemyBulletBase* newBullet, Vector2F spawnPos, Ve
 		if (newBullet != nullptr)
 		{
 
-			newBullet->SystemInit(this); // EnemyBulletBase??SystemInit()??GameScene??C???X?^???X??n??
-			newBullet->GameInit(spawnPos, vel); // EnemyBulletBase??GameInit()???????u????x????
-			enemyBullets.push_back(newBullet); // GameScene??G?e???X?g????
+			newBullet->SystemInit(this);
+			newBullet->GameInit(spawnPos, vel);
+			enemyBullets.push_back(newBullet);
 		}
 	}
 }
@@ -242,17 +225,17 @@ void GameScene::CollisionCheckPB()
 
 			if (enemyBullets[i] != nullptr)
 			{
-				Vector2F pos = enemyBullets[i]->GetPos(); // EnemyBulletBase ????e????W????
+				Vector2F pos = enemyBullets[i]->GetPos();
 				BX = (int)pos.x;
 				BY = (int)pos.y;
 
-				if (PX + 23 < BX + (enemyBullets[i]->GetSize().x / 2) && // ?v???C???[??E?[???G??e????[?????????
-					PX + Player::PLAYER_WID - 23 > BX - (enemyBullets[i]->GetSize().x / 2) && // ?v???C???[????[???G??e??E?[???E??????
-					PY < BY + (enemyBullets[i]->GetSize().y / 2) && // ?v???C???[????[???G??e???[?????????
-					PY + Player::PLAYER_HIG > BY - (enemyBullets[i]->GetSize().y / 2)) // ?v???C???[???[???G??e????[?????????
+				if (PX + 23 < BX + (enemyBullets[i]->GetSize().x / 2) && 
+					PX + Player::PLAYER_WID - 23 > BX - (enemyBullets[i]->GetSize().x / 2) && 
+					PY < BY + (enemyBullets[i]->GetSize().y / 2) && 
+					PY + Player::PLAYER_HIG > BY - (enemyBullets[i]->GetSize().y / 2))
 				{
-					player->ApplyDamage(); // ?v???C???[??_???[?W??^????
-					enemyBullets[i]->SetAlive(false); // ?G??e??????
+					player->ApplyDamage(); 
+					enemyBullets[i]->SetAlive(false);
 				}
 			}
 		}
@@ -273,28 +256,28 @@ void GameScene::CollisionCheckPE()
 			{
 				if (enemys[i] != nullptr)
 				{
-					Vector2F pos = enemys[i]->GetEnemyPos(); // EnemyBase EnemyBase ??C???X?^???X????擾
+					Vector2F pos = enemys[i]->GetEnemyPos(); 
 					EX = (int)pos.x;
 					EY = (int)pos.y;
 					if (enemys[i]->EoB != 10)
 					{
-						if (PX + 23 < EX + 16 && // ?v???C???[??E?[???G????[?????????
-							PX + Player::PLAYER_WID - 23 > EX - 16 && // ?v???C???[????[???G??E?[???E??????
-							PY < EY + (enemys[i]->GetEnemySize().y / 2) && // ?v???C???[????[???G???[?????????
-							PY + Player::PLAYER_HIG > EY - (enemys[i]->GetEnemySize().y / 2)) //?v???C???[???[???G????[?????????
+						if (PX + 23 < EX + 16 &&
+							PX + Player::PLAYER_WID - 23 > EX - 16 && 
+							PY < EY + (enemys[i]->GetEnemySize().y / 2) &&
+							PY + Player::PLAYER_HIG > EY - (enemys[i]->GetEnemySize().y / 2))
 						{
-							player->ApplyDamage(); // ?v???C???[??_???[?W??^????
-							enemys[i]->SetDamage(1); // ?G?l?~?[??_???[?W??^????
+							player->ApplyDamage();
+							enemys[i]->SetDamage(1);
 						}
 					}
 					else
 					{
-						if (PX + 23 < EX + (enemys[i]->GetEnemySize().x / 2) && // ?v???C???[??E?[???G????[?????????
-							PX + Player::PLAYER_WID - 23 > EX - (enemys[i]->GetEnemySize().x / 2) && // ?v???C???[????[???G??E?[???E??????
-							PY < EY + (enemys[i]->GetEnemySize().y / 2) && // ?v???C???[????[???G???[?????????
-							PY + Player::PLAYER_HIG > EY - (enemys[i]->GetEnemySize().y / 2)) //?v???C???[???[???G????[?????????
+						if (PX + 23 < EX + (enemys[i]->GetEnemySize().x / 2) && 
+							PX + Player::PLAYER_WID - 23 > EX - (enemys[i]->GetEnemySize().x / 2) && 
+							PY < EY + (enemys[i]->GetEnemySize().y / 2) &&
+							PY + Player::PLAYER_HIG > EY - (enemys[i]->GetEnemySize().y / 2))
 						{
-							player->ApplyDamage(); // ?v???C???[??_???[?W??^????
+							player->ApplyDamage();
 						}
 					}
 				}
@@ -331,14 +314,14 @@ void GameScene::CollisionCheckEB()
 						  {
 							  enemys[i]->SetDamage(2); 
 						  	
-						  	// メロンパンだった場合は破裂させる（内部で小さなパンが生成され、自身は死亡する）
+						  	// �������p���������ꍇ�͔j�􂳂���i�����ŏ����ȃp������������A���g�͎��S����j
 						  	melon->Explode();
 						  }
 						  else
 						  {
 
 							  enemys[i]->SetDamage(1); 
-						  	// 通常のパンだった場合はそのまま消す
+						  	// �ʏ�̃p���������ꍇ�͂��̂܂܏���
 						  	bread->Kill();
 						  }
 						}
@@ -466,7 +449,6 @@ void GameScene::Update(void)
 	{
 		int currentWidth = stage->Stage::MAP_WIDTH;
 
-		// 繝励Ξ繧､繝､繝ｼ繧呈僑螟ｧ逕ｻ髱｢縺ｮ荳ｭ蠢�↓縺吶ｋ
 		cameraX = player->GetPosX() - (viewWidth / 2.0f);
 
 		if (cameraX <= 0)
@@ -474,7 +456,6 @@ void GameScene::Update(void)
 			cameraX = 0;
 		}
 
-		// 繝槭ャ繝怜承遶ｯ蛻ｶ髯舌ｒ迴ｾ蝨ｨ縺ｮ螳溯ｳｪ隕夜㍽蟷�ｼ�iewWidth�峨ｒ蜈�↓邂怜�縺吶ｋ
 		float maxCameraX = (Stage::TILE_SIZE * currentWidth) - viewWidth;
 		if (cameraX >= maxCameraX)
 		{
@@ -524,17 +505,17 @@ void GameScene::Update(void)
 	
 		if(sceneManager != nullptr)
 		{
-			sceneManager->ChangeScene(SCENE_GAMECLEAR);// ?????V?[??????
+			sceneManager->ChangeScene(SCENE_GAMECLEAR);
 			return;
 		}
 	
 	}
 	if (player != nullptr)
 	{
-		CollisionCheckPE(); // 
-		CollisionCheckPB(); // ?�ｽ�ｽv?�ｽ�ｽ?�ｽ�ｽ?�ｽ�ｽC?�ｽ�ｽ?�ｽ�ｽ?�ｽ�ｽ[?�ｽ�ｽ��雰?�ｽ�ｽ�悟ｼｾ?�ｽ�ｽ�碁屮�ｿ�ｽ?�ｽ�ｽ?�ｽ�ｽ?�ｽ�ｽ髦｡�ｻ?�ｽ�ｽ?�ｽ�ｽ?�ｽ�ｽ?�ｽ�ｽs?�ｽ�ｽ?�ｽ�ｽ?�ｽ�ｽ�匁腸�ｿ�ｽ
-		CollisionCheckEB(); // ?�ｽ�ｽG?�ｽ�ｽ�悟ｼｾ?�ｽ�ｽ��ヱ?�ｽ�ｽ?�ｽ�ｽ?�ｽ�ｽ�碁屮�ｿ�ｽ?�ｽ�ｽ?�ｽ�ｽ?�ｽ�ｽ髦｡�ｻ?�ｽ�ｽ?�ｽ�ｽ?�ｽ�ｽ?�ｽ�ｽs?�ｽ�ｽ?�ｽ�ｽ?�ｽ�ｽ�匁腸�ｿ�ｽ
-		CollisionCheckPR(); //
+		CollisionCheckPE();
+		CollisionCheckPB();
+		CollisionCheckEB();
+		CollisionCheckPR();
 		player->Die();
 	}
 }
@@ -560,26 +541,24 @@ void GameScene::Draw(void)
 		player->Draw(cameraX, cameraY);
 	}
 
-	size_t size = enemys.size(); // �ｽ�ｽG�ｽ�ｽ�後ユ�ｽ�ｽ[�ｽ�ｽu�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�瑚ｦ�ｿｽ�ｽf�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ隰ｫ�ｾ
-	std::vector<EnemyBase*>::iterator eitr = enemys.begin(); // �ｽ�ｽC�ｽ�ｽe�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ[�ｽ�ｽ^�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ隰ｫ�ｾ
+	size_t size = enemys.size();
+	std::vector<EnemyBase*>::iterator eitr = enemys.begin();
 	for (int ii = 0; ii < size; ii++)
 	{
 		(*eitr)->Draw();
 		eitr++;
-	};    
+	};
 
 	for (auto* recipe : recipeList)
 	{
 		recipe->Draw(cameraX, cameraY);
 	}
 
-	// 2.??????p????`????
 	for (auto* bread : breadList)
 	{
 		bread->Draw(cameraX, cameraY);
 	}
 
-	//??????G?e??`????
 	for (size_t i = 0; i < enemyBullets.size(); i++)
 	{
 		if (enemyBullets[i] != nullptr)
@@ -589,10 +568,8 @@ void GameScene::Draw(void)
 	}
 	if (stage != nullptr)
 	{
-		// ?O?i??`??
 		stage->Draw(cameraX, cameraY, LAYER_OBJECT);
 
-		// ?O?i??`??
 		stage->Draw(cameraX, cameraY, LAYER_FOREGROUND);
 	}
 
@@ -600,20 +577,16 @@ void GameScene::Draw(void)
 
 	if (player != nullptr)
 	{
-		// 繝�ヰ繝�げ逕ｨ繝�く繧ｹ繝郁｡ｨ遉ｺ
 		SetFontSize(24);
 		DrawFormatString(60, 200, GetColor(255, 255, 0), "Player X: %.1f, Y: %.1f", player->GetPosX(), player->GetPosY());
 		DrawFormatString(60, 230, GetColor(255, 255, 0), "Camera X: %.1f, Y: %.1f", cameraX, cameraY);
 
 
-		//---------------------------------------------
-		//  Player縺ｮHP
 		int currentHp = player->GetHp();
 		int maxHp = 5;
 
-		// Player縺ｮHPUI縺ｮ菴咲ｽｮ
 		int gaugeX = 60;
-		int gaugeY = SCREEN_HEIGHT - 100; // 1080 - 100 = 980 
+		int gaugeY = SCREEN_HEIGHT - 100;
 
 		int gaugeWidth = 300;
 		int gaugeHeight = 24;
@@ -679,8 +652,8 @@ void GameScene::Draw(void)
 		}
 
 		DrawRoundRect(uiX, uiY, uiX + iconSize, uiY + iconSize, roundRadius, roundRadius, GetColor(255, 255, 255), FALSE);
-		//---------------------------------------
 	}
+}
 
 
 bool GameScene::Release(void)
