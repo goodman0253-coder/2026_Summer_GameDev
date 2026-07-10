@@ -178,7 +178,7 @@ void Player::Update()
 
 		BreadBase* newBread = nullptr;
 
-		SoundManager::GetInstance().PlaySE("sound/bread_throw.mp3");
+		SoundManager::GetInstance().PlaySE("throw");
 
 		breadThrowPoseFlg = true;
 
@@ -224,10 +224,8 @@ void Player::Update()
 		animTimer++;
 		if (animTimer >= ANIM_SPEED)
 		{
-			
 			animTimer = 0;
 			animNoNow++;
-
 		}
 		if (animNoNow > ANIM_RUN_NO_MAX)
 		{
@@ -424,7 +422,7 @@ void Player::Run()
 	{
 		float moveSpeed = 6.0f;
 
-		SoundManager::GetInstance().PlaySE("run");
+		//SoundManager::GetInstance().PlaySE("run");
 
 		Stage* stage = (gameScene != nullptr) ? gameScene->GetLpStage() : nullptr;
 
@@ -465,6 +463,32 @@ void Player::Run()
 			}
 		}
 	}
+
+	if (isMoving == true && jumpableFlg == true)
+	{
+		// 鳴らしたい足音（"run"）のハンドルを SoundManager から直接確認して再生
+		int runHandle = SoundManager::GetInstance().GetSEHandle("run");
+		if (runHandle != -1)
+		{
+			// まだ鳴っていなければ、ループモードで再生開始！
+			if (CheckSoundMem(runHandle) == 0)
+			{
+				PlaySoundMem(runHandle, DX_PLAYTYPE_LOOP, TRUE);
+			}
+		}
+	}
+	else
+	{
+		// 移動をやめた、またはジャンプした（空中に浮いた）瞬間に足音を止める！
+		int runHandle = SoundManager::GetInstance().GetSEHandle("run");
+		if (runHandle != -1)
+		{
+			if (CheckSoundMem(runHandle) == 1)
+			{
+				StopSoundMem(runHandle);
+			}
+		}
+	}
 }
 
 
@@ -476,6 +500,7 @@ void Player::Jump()
 	{
 			vy = -15.0f;
 			jumpableFlg = false;
+			SoundManager::GetInstance().PlaySE("jump");
 	}
 }
 

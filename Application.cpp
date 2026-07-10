@@ -33,7 +33,7 @@ bool Application::GameInit(void)
 	InputManager::CreateInstance();
 	sceneManager = new SceneManager();
 	sceneManager->ChangeScene(SCENE_TITLE);
-
+	IdentityInit();
 	return true;
 }
 

@@ -385,9 +385,9 @@ void GameScene::Update(void)
 	{
 		player->Update();
 		cameraY = player->GetPosY() - (SCREEN_HEIGHT / 2);
-		if (cameraY >= 1120)
+		if (cameraY >= 800)
 		{
-			cameraY = 1120;
+			cameraY = 800;
 		}
 	}
 
@@ -566,7 +566,7 @@ void GameScene::Draw(void)
 	{
 		(*eitr)->Draw();
 		eitr++;
-	};    
+	};
 
 	for (auto* recipe : recipeList)
 	{
@@ -681,7 +681,7 @@ void GameScene::Draw(void)
 		DrawRoundRect(uiX, uiY, uiX + iconSize, uiY + iconSize, roundRadius, roundRadius, GetColor(255, 255, 255), FALSE);
 		//---------------------------------------
 	}
-
+}
 
 bool GameScene::Release(void)
 {
