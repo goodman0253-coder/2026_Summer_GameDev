@@ -13,7 +13,7 @@ class Application;
 class EnemyBulletBase;
 
 
-class GameScene:public BaseScene
+class GameScene :public BaseScene
 {
 private:
 
@@ -40,6 +40,20 @@ private:
 
 	int currentStageNum = 1;
 
+
+	struct EnemySpawnDate {
+		int enemyType;
+		float spawnX;
+		float spawnY;
+		bool isSpawned;
+	};
+
+	std::vector<EnemySpawnDate> enemySpawnList; // 敵のスポーンデータを格納するベクター
+	static constexpr int CHIP_SIZE = 32;
+
+	void LoadEnemyCSV(const std::string& filePath); // CSVファイルから敵のスポーンデータを読み込む関数
+
+	EnemyBase* CreateEnemyFromType(int enemyType);
 public:
 	int PX = 0; // プレイヤーのX座標
 	int PY = 0; // プレイヤーのY座標

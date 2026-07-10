@@ -8,7 +8,6 @@
 void Boss1::GameInit(void)
 {
 	EnemyBase::GameInit(Vector2F(6200.0f, 1225.0f));
-	EoB = 10; // ボスとして設定
 }
 
 void Boss1::SetEnemyParam(void)
@@ -21,6 +20,8 @@ void Boss1::SetEnemyParam(void)
 	speed = 0.0f;
 	// 敵のヒットポイント最大値
 	hpMax = 15;
+	// ボスとして設定
+	eob = 10;
 }
 
 void Boss1::Update(void)

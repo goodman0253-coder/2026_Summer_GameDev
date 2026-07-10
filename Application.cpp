@@ -1,23 +1,28 @@
-ï»¿#include <DxLib.h>
+#include <DxLib.h>
 #include "Application.h"
 #include "SceneManager.h"
 #include "InputManager.h"
 #include "SoundManager.h"
+#include "FpsControl.h"
+
+
 
 Application::Application()
 {
-
+	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^ˆ—
 }
 
 Application::~Application()
 {
+	// ƒfƒXƒgƒ‰ƒNƒ^‚ÍƒNƒ‰ƒX–¼‚ğg‚Á‚Ä³‚µ‚­’è‹`‚·‚é‚±‚Æ‚Å
+	// "–¼‘O‚ÌŒã‚É '::~' ‚ğ•t‚¯‚é‚±‚Æ‚ª‚Å‚«‚é‚Ì‚ÍƒNƒ‰ƒX–¼‚Ü‚½‚Í–¼‘O‹óŠÔ–¼‚¾‚¯‚Å‚·" ƒGƒ‰[‚ğ‰ğÁ‚µ‚Ü‚·
 	SoundManager::GetInstance().ReleaseAll();
 }
 
 bool Application::SystemInit(void)
 {
-	// ã‚·ã‚¹ãƒ†ãƒ å‡¦ç†
-	SetWindowText("ã§ã‚Šã°ã‚Šãƒã¹ã‡ã‹ã‚Šãƒ");
+	// ƒVƒXƒeƒ€ˆ—
+	SetWindowText("‚Å‚è‚Î‚è‚¡‚×‚¥‚©‚è‚¡");
 	SetGraphMode(SCREEN_SIZE_WID, SCREEN_SIZE_HIG,32);
 	SetWaitVSyncFlag(TRUE);
 	if (DxLib_Init() == -1) return false;
@@ -25,6 +30,10 @@ bool Application::SystemInit(void)
 	SetDrawScreen(DX_SCREEN_BACK);
 
 	ChangeWindowMode(false);
+
+	//FPS‰Šú‰»
+	fps = new FpsControl;
+	fps->Init();
 	return true;
 }
 
@@ -40,41 +49,53 @@ bool Application::GameInit(void)
 void Application::Run()
 {
 	LONGLONG startTime = GetNowHiPerformanceCount();
-	const LONGLONG targetFrameTime = 1000000 / 60; // 1ãƒ•ãƒ¬ãƒ¼ãƒ ã‚ãŸã‚Šã®ç›®æ¨™æ™‚é–“ï¼ˆãƒã‚¤ã‚¯ãƒ­ç§’ï¼šç´„16666ï¼‰
+	const LONGLONG targetFrameTime = 1000000 / 60; // 1ƒtƒŒ[ƒ€‚ ‚½‚è‚Ì–Ú•WŠÔiƒ}ƒCƒNƒ•bF–ñ16666j
 
-	// ãƒ¡ã‚¤ãƒ³ãƒ«ãƒ¼ãƒ—
+	// ƒƒCƒ“ƒ‹[ƒv
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 	{
-		// ç”»é¢ã‚¯ãƒªã‚¢ã¨æ›´æ–°ãƒ»æç”»ã®å®Ÿè¡Œ
+		// ‰æ–ÊƒNƒŠƒA‚ÆXVE•`‰æ‚ÌÀs
 		ClearDrawScreen();
 
 		Update();
 		Draw();
 
-		// è£ç”»é¢ã®å†…å®¹ã‚’è¡¨ç”»é¢ã«åæ˜ 
+		// — ‰æ–Ê‚Ì“à—e‚ğ•\‰æ–Ê‚É”½‰f
 		ScreenFlip();
 
-		// ğŸ’¡ 144Hzã‚„240Hzãªã©ã®ã‚²ãƒ¼ãƒŸãƒ³ã‚°ãƒ¢ãƒ‹ã‚¿ãƒ¼ç’°å¢ƒã§ã‚‚å¼·åˆ¶çš„ã«60FPSã«æŠ‘ãˆã‚‹ã‚¦ã‚¨ã‚¤ãƒˆå‡¦ç†
+		// ?? 144Hz‚â240Hz‚È‚Ç‚ÌƒQ[ƒ~ƒ“ƒOƒ‚ƒjƒ^[ŠÂ‹«‚Å‚à‹­§“I‚É60FPS‚É—}‚¦‚éƒEƒGƒCƒgˆ—
 		LONGLONG endTime = GetNowHiPerformanceCount();
 		LONGLONG processTime = endTime - startTime;
 
-		// ç›®æ¨™æ™‚é–“ã‚ˆã‚Šæ—©ã1ãƒ•ãƒ¬ãƒ¼ãƒ ã®å‡¦ç†ãŒçµ‚ã‚ã£ãŸå ´åˆã€è¶³ã‚Šãªã„æ™‚é–“åˆ†ã ã‘å¾…ã¤
+		// –Ú•WŠÔ‚æ‚è‘‚­1ƒtƒŒ[ƒ€‚Ìˆ—‚ªI‚í‚Á‚½ê‡A‘«‚è‚È‚¢ŠÔ•ª‚¾‚¯‘Ò‚Â
 		if (processTime < targetFrameTime)
 		{
 			while (GetNowHiPerformanceCount() - startTime < targetFrameTime)
 			{
-				// CPUã®å æœ‰ç‡ã‚’ä¸‹ã’ã¦PCã¸ã®è² è·ã‚’æ¸›ã‚‰ã™ãŸã‚ã®ã‚¹ãƒªãƒ¼ãƒ—
+				// CPU‚Ìè—L—¦‚ğ‰º‚°‚ÄPC‚Ö‚Ì•‰‰×‚ğŒ¸‚ç‚·‚½‚ß‚ÌƒXƒŠ[ƒv
 				Sleep(0);
 			}
 		}
 
-		// æ¬¡ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã®é–‹å§‹æ™‚é–“ã‚’è¨˜éŒ²
+		// Ÿ‚ÌƒtƒŒ[ƒ€‚ÌŠJnŠÔ‚ğ‹L˜^
 		startTime = GetNowHiPerformanceCount();
+
+		if (fps)
+		{
+			fps->CalcFrameRate();   //ƒtƒŒ[ƒ€ƒŒ[ƒgŒvZ
+			fps->DrawFrameRate();   //ƒtƒŒ[ƒ€ƒŒ[ƒg•`‰æ
+		}
 	}
 }
 
 bool Application::Release(void)
 {
+	//ƒtƒŒ[ƒ€ƒŒ[ƒg‰ğ•ú
+	if (fps)
+	{
+		delete fps;
+		fps = nullptr;
+	}
 	if (DxLib_End() == -1)return false;
 	return true;
 }

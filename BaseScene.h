@@ -2,7 +2,7 @@
 class BaseScene
 {
 public:
-    BaseScene(){}
+    BaseScene() {}
     virtual ~BaseScene() {}
     virtual void Initialize() = 0; // ‰Šú‰»
     virtual void Update() = 0;     // XV

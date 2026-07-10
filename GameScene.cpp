@@ -1,4 +1,6 @@
 #include <DxLib.h>
+#include <fstream>
+#include <sstream>
 #include "SceneManager.h"
 #include "GameScene.h"
 #include "Player.h"
@@ -71,119 +73,24 @@ bool GameScene::GameInit(void)
 	stage = new Stage();
 	stage->Initialize(currentStageNum);
 	 
-	if (currentStageNum == 1)
+	enemySpawnList.clear();
+
+	// ƒXƒe[ƒW”‚É‰‚¶‚Ä“Ç‚İ‚ŞCSVƒtƒ@ƒCƒ‹‚ğØ‚è‘Ö‚¦‚é
+	std::string csvPath = "";
+
+	if (currentStageNum == 1)      csvPath = "Data//AGS_Map_School_Enemy.csv";
+	else if (currentStageNum == 2) csvPath = "Data//AGS_Map_Office_Enemy.csv";
+	else if (currentStageNum == 3) csvPath = "Data//AGS_Map_Street_Enemy.csv";
+
+	// CSVƒtƒ@ƒCƒ‹‚©‚çƒf[ƒ^‚ğ“Ç‚İ‚Ş
+	if (!csvPath.empty())
 	{
-		EnemyBase* newEnemy = new Enemy1();
-		if (newEnemy != nullptr)
-		{
-			newEnemy->SystemInit(this);
-
-			newEnemy->GameInit();
-
-			enemys.push_back(newEnemy);
-		}
-
-		EnemyBase* newEnemy2 = new Enemy2();
-		if (newEnemy2 != nullptr)
-		{
-			newEnemy2->SystemInit(this);
-
-			newEnemy2->GameInit();
-
-			enemys.push_back(newEnemy2);
-		}
-
-		EnemyBase* newEnemy3 = new Enemy3();
-		if (newEnemy3 != nullptr)
-		{
-			newEnemy3->SystemInit(this);
-
-			newEnemy3->GameInit();
-
-			enemys.push_back(newEnemy3);
-		}
-
-		EnemyBase* newEnemy4 = new Boss1();
-		if (newEnemy4 != nullptr)
-		{
-			newEnemy4->SystemInit(this);
-			newEnemy4->GameInit();
-			static_cast<Boss1*>(newEnemy4)->SetPlayer(player);
-			enemys.push_back(newEnemy4);
-		}
+		LoadEnemyCSV(csvPath);
 	}
-	else if (currentStageNum == 2)
+	else
 	{
-		EnemyBase* newEnemy1 = new Enemy4();
-		if (newEnemy1 != nullptr)
-		{
-			newEnemy1->SystemInit(this);
-
-			newEnemy1->GameInit();
-
-			enemys.push_back(newEnemy1);
-		}
-
-		EnemyBase* newEnemy2 = new Enemy5();
-		if (newEnemy2 != nullptr)
-		{
-			newEnemy2->SystemInit(this);
-
-			newEnemy2->GameInit();
-
-			enemys.push_back(newEnemy2);
-		}
-
-		EnemyBase* newEnemy3 = new Enemy6();
-		if (newEnemy3 != nullptr)
-		{
-			newEnemy3->SystemInit(this);
-
-			newEnemy3->GameInit();
-
-			enemys.push_back(newEnemy3);
-		}
-
-		 EnemyBase* newEnemy4 = new Boss2();
-		 if (newEnemy4 != nullptr)
-		 {
-		 	newEnemy4->SystemInit(this);
-		 	newEnemy4->GameInit();
-		 	static_cast<Boss2*>(newEnemy4)->SetPlayer(player);
-		 	enemys.push_back(newEnemy4);
-		 }
-	}
-	else if (currentStageNum == 3)
-	{
-		EnemyBase* newEnemy1 = new Enemy7();
-		if (newEnemy1 != nullptr)
-		{
-			newEnemy1->SystemInit(this);
-			newEnemy1->GameInit();
-			enemys.push_back(newEnemy1);
-		}
-		EnemyBase* newEnemy2 = new Enemy8();
-		if (newEnemy2 != nullptr)
-		{
-			newEnemy2->SystemInit(this);
-			newEnemy2->GameInit();
-			enemys.push_back(newEnemy2);
-		}
-		EnemyBase* newEnemy3 = new Enemy9();
-		if (newEnemy3 != nullptr)
-		{
-			newEnemy3->SystemInit(this);
-			newEnemy3->GameInit();
-			enemys.push_back(newEnemy3);
-		}
-		 EnemyBase* newEnemy4 = new Boss3();
-		 if (newEnemy4 != nullptr)
-		 {
-		 	newEnemy4->SystemInit(this);
-		 	newEnemy4->GameInit();
-		 	static_cast<Boss1*>(newEnemy4)->SetPlayer(player);
-		 	enemys.push_back(newEnemy4);
-		 }
+		// CSVƒtƒ@ƒCƒ‹‚ªw’è‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÌƒGƒ‰[ƒnƒ“ƒhƒŠƒ“ƒO
+		AppLogAdd("Error: No CSV file specified for enemy spawn data.\n");
 	}
 
 	isClearTriggered = false;
@@ -244,7 +151,7 @@ void GameScene::CollisionCheckPB()
 
 void GameScene::CollisionCheckPE()
 {
-	clsDx();
+	clsDx(); //@ƒvƒŠƒ“ƒgƒNƒŠƒA
 
 	if (player != nullptr)
 	{
@@ -313,15 +220,22 @@ void GameScene::CollisionCheckEB()
 						  if (melon != nullptr)
 						  {
 							  enemys[i]->SetDamage(2); 
-						  	
-						  	// ãƒ¡ãƒ­ãƒ³ãƒ‘ãƒ³ã ã£ãŸå ´åˆã¯ç ´è£‚ã•ã›ã‚‹ï¼ˆå†…éƒ¨ã§å°ã•ãªãƒ‘ãƒ³ãŒç”Ÿæˆã•ã‚Œã€è‡ªèº«ã¯æ­»äº¡ã™ã‚‹ï¼‰
+								if (enemys[i]->GetAlive() == false && enemys[i]->EoB > 5)
+								{
+								  	isClearTriggered = true;
+						  		}
+						  	// ƒƒƒ“ƒpƒ“‚¾‚Á‚½ê‡‚Í”j—ô‚³‚¹‚éi“à•”‚Å¬‚³‚Èƒpƒ“‚ª¶¬‚³‚êA©g‚Í€–S‚·‚éj
 						  	melon->Explode();
 						  }
 						  else
 						  {
 
 							  enemys[i]->SetDamage(1); 
-						  	// é€šå¸¸ã®ãƒ‘ãƒ³ã ã£ãŸå ´åˆã¯ãã®ã¾ã¾æ¶ˆã™
+							  if (enemys[i]->GetAlive() == false && enemys[i]->EoB > 5)
+							  {
+								  isClearTriggered = true;
+							  }
+						  	// ’Êí‚Ìƒpƒ“‚¾‚Á‚½ê‡‚Í‚»‚Ì‚Ü‚ÜÁ‚·
 						  	bread->Kill();
 						  }
 						}
@@ -463,7 +377,24 @@ void GameScene::Update(void)
 		}
 	}
 
+	for (auto& spawn : enemySpawnList)
+	{
+		// ‚Ü‚¾¶¬‚³‚ê‚Ä‚¨‚ç‚¸AƒJƒƒ‰‚Ì‰E’[i‰æ–ÊŠO‚Ì­‚µæj‚É‹ß‚Ã‚¢‚½‚ç¶¬
+		if (!spawn.isSpawned && spawn.spawnX < cameraX + SCREEN_WIDTH + 100)
+		{
+			// spawn.enemyType‚É‰‚¶‚Ä“KØ‚ÈEnemyBase”h¶ƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬
+			EnemyBase* newEnemy = CreateEnemyFromType(spawn.enemyType);
 
+			if (newEnemy != nullptr)
+			{
+				newEnemy->SystemInit(this);
+				newEnemy->GameInit(Vector2F(spawn.spawnX, spawn.spawnY));
+				enemys.push_back(newEnemy);
+			}
+
+			spawn.isSpawned = true; // ¶¬Ï‚İƒtƒ‰ƒO‚ğ—§‚Ä‚é
+		}
+	}
 
 	if (player != nullptr && !player->IsInvincible())
 	{
@@ -682,4 +613,118 @@ bool GameScene::Release(void)
 	}
 	breadList.clear();
 	return true;
+}
+
+void GameScene::LoadEnemyCSV(const std::string& filePath) // CSVƒtƒ@ƒCƒ‹‚©‚ç“G‚ÌƒXƒ|[ƒ“ƒf[ƒ^‚ğ“Ç‚İ‚ŞŠÖ”
+{
+	std::ifstream file(filePath);
+	if (!file.is_open())
+	{
+		// yƒfƒoƒbƒOzƒtƒ@ƒCƒ‹‚ªŠJ‚¯‚È‚©‚Á‚½ƒGƒ‰[‚ğVisual Studio‚Ìo—Í‚Éo‚·
+		AppLogAdd("--- [ERROR] CSVƒtƒ@ƒCƒ‹‚ªŠJ‚¯‚Ü‚¹‚ñ‚Å‚µ‚½: %s ---\n", filePath.c_str());
+		return;
+	}
+
+	// yƒfƒoƒbƒOzƒtƒ@ƒCƒ‹‚ªŠJ‚¯‚½‚±‚Æ‚ğ’m‚ç‚¹‚é
+	AppLogAdd("--- [SUCCESS] CSVƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ‚ğŠJn‚µ‚Ü‚·: %s ---\n", filePath.c_str());
+	
+	std::string line;
+	int row = 0; // siY•ûŒü‚Ìƒ}ƒX–Új
+	int totalEnemies = 0; // yƒfƒoƒbƒO—pzŒ©‚Â‚©‚Á‚½“G‚Ì‘ƒJƒEƒ“ƒg
+
+	while (std::getline(file, line))
+	{
+		if (line.empty()) continue;
+
+		std::stringstream ss(line);
+		std::string token;
+		int col = 0; // —ñiX•ûŒü‚Ìƒ}ƒX–Új
+
+		while (std::getline(ss, token, ','))
+		{
+			int enemyType = std::stoi(token);
+
+			// -1 ˆÈŠOi“G‚ª”z’u‚³‚ê‚Ä‚¢‚éƒ}ƒXj‚Ìê‡
+			if (enemyType != -1)
+			{
+				EnemySpawnDate spawnData;
+				spawnData.enemyType = enemyType;
+
+				// ƒ}ƒX–Ú‚ÌˆÊ’u‚©‚çƒsƒNƒZƒ‹À•W‚É•ÏŠ·iƒ}ƒX‚Ì’†S‚É”z’u‚³‚ê‚é‚æ‚¤+CHIP_SIZE/2j
+				spawnData.spawnX = static_cast<float>(col * CHIP_SIZE + CHIP_SIZE / 2);
+				spawnData.spawnY = static_cast<float>(row * CHIP_SIZE + CHIP_SIZE / 2);
+				spawnData.isSpawned = false; // ‚Ü‚¾‰æ–Ê‚Éo‚Ä‚¢‚È‚¢
+
+				// oŒ»—\’èƒŠƒXƒg‚É’Ç‰Á
+				enemySpawnList.push_back(spawnData);
+				totalEnemies++; // ƒJƒEƒ“ƒg‚ğ‘‚â‚·
+
+				// yƒfƒoƒbƒOz“G‚ğ1‘Ì“Ç‚İ‚Ş‚½‚Ñ‚ÉAID‚ÆŒvZ‚³‚ê‚½À•W‚ğo—Í‚·‚é
+				AppLogAdd("  [Enemy Found] Type:%d | Row:%d, Col:%d | SpawnPos(X:%.1f, Y:%.1f)\n",
+					enemyType, row, col, spawnData.spawnX, spawnData.spawnY);
+
+			}
+			col++;
+		}
+		row++;
+	}
+	file.close();
+
+	// yƒfƒoƒbƒOzÅI“I‚È“Ç‚İ‚İŒ‹‰Ê‚ğo—Í‚·‚é
+	AppLogAdd("--- [FINISH] CSV“Ç‚İ‚İŠ®—¹B‘s”:%d | “o˜^‚³‚ê‚½“G‚Ì‘”:%d ---\n", row, totalEnemies);
+}
+
+EnemyBase* GameScene::CreateEnemyFromType(int enemyType) 
+{
+	EnemyBase* newEnemy = nullptr;
+
+	switch (enemyType)
+	{
+		// ==========================================
+		// ¡ ƒXƒe[ƒW1 ‚Ì“G’è‹`
+		// ==========================================
+	case 1:  newEnemy = new Enemy1(); break; // ƒUƒR1
+	case 2:  newEnemy = new Enemy2(); break; // ƒUƒR2
+	case 3:  newEnemy = new Enemy3(); break; // ƒUƒR3
+	case 10:                                  // ƒ{ƒX1
+	{
+		Boss1* boss = new Boss1();
+		boss->SetPlayer(player);
+		newEnemy = boss;
+	}
+	break;
+
+	// ==========================================
+	// ¡ ƒXƒe[ƒW2 ‚Ì“G’è‹`
+	// ==========================================
+	case 4:  newEnemy = new Enemy4(); break; // ƒUƒR4
+	case 5:  newEnemy = new Enemy5(); break; // ƒUƒR5
+	case 6:  newEnemy = new Enemy6(); break; // ƒUƒR6
+	case 11:                                  // ƒ{ƒX2
+	{
+		Boss2* boss = new Boss2();
+		boss->SetPlayer(player);
+		newEnemy = boss;
+	}
+	break;
+
+	// ==========================================
+	// ¡ ƒXƒe[ƒW3 ‚Ì“G’è‹`
+	// ==========================================
+	case 7:  newEnemy = new Enemy7(); break; // ƒUƒR7
+	case 8:  newEnemy = new Enemy8(); break; // ƒUƒR8
+	case 9:  newEnemy = new Enemy9(); break; // ƒUƒR9
+	case 12:                                  // ƒ{ƒX3
+	{
+		Boss3* boss = new Boss3();
+		boss->SetPlayer(player);
+		newEnemy = boss;
+	}
+	break;
+
+	default:
+		break; // ‘z’èŠO‚ÌIDi-1‚È‚Çj‚Í‰½‚à‚µ‚È‚¢
+	}
+
+	return newEnemy;
 }

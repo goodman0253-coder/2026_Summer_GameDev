@@ -36,9 +36,7 @@ bool EnemyBase::SystemInit(GameScene* gs) // ‰Šú‰»ˆ—(Å‰‚Ì‚P‰ñ‚Ì‚İÀs)
 
 void EnemyBase::GameInit(void) // ƒQ[ƒ€‹N“®EÄŠJ‚É•K‚¸ŒÄ‚Ño‚·ˆ—
 {
-	// ‰Šú’l‚Í’Êí“G‚Æ‚µ‚Äİ’è
-	EoB = 0; 
-	
+
 	// “G‚Ì‰ŠúˆÊ’u‚ğİ’è‚·‚é(ˆø”–³‚µ‚Ìê‡ƒfƒtƒHƒ‹ƒgˆÊ’u‚ÉŒÄ‚Ño‚µ)
 	GameInit(Vector2F(500.0f, 1250.0f));
 
@@ -50,6 +48,7 @@ void EnemyBase::GameInit(Vector2F spawnPos) // ƒQ[ƒ€‹N“®EÄŠJ‚É•K‚¸ŒÄ‚Ño‚·
 	animCounter = 0;
 	aliveFlg = true;
 	hp = hpMax;
+	EoB = eob;
 }
 
 void EnemyBase::Update(void) // XVˆ—

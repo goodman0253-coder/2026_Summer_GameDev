@@ -16,6 +16,8 @@ void Enemy3::SetEnemyParam(void)
 	size = { 64, 64 };
 	speed = 0.0f;
 	hpMax = 3;
+    // É{ÉXÇ≈ÇÕÇ»Ç¢
+    eob = 0;
 }
 
 void Enemy3::Update(void)
