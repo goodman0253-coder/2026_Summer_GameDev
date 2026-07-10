@@ -76,6 +76,17 @@ void Stage::Initialize(int stageNum)
     
         LoadCollisionCSV("Data/AGS_Map_Office_Collision.csv");
 
+	}
+    else if (stageNum == 3) // ステージ３マップCSVを読み込む
+    {
+        int xNum = 8;
+        int yNum = 58;
+        LoadDivGraph("Data/MAP-Office.png", xNum * yNum, xNum, yNum, TILE_SIZE, TILE_SIZE, tileImages);
+        LoadMapCSV("Data/MAP03BACKV1.csv", LAYER_BACKGROUND); // 背景用CSV
+        LoadMapCSV("Data/MAP03MIDV1.csv", LAYER_MIDDLEGROUND); // 中景用CSV（今のメインマップ）
+        LoadMapCSV("Data/MAP03OBJV1.csv", LAYER_OBJECT); // 障害物用CSV
+        LoadMapCSV("Data/MAP03FOREV1.csv", LAYER_FOREGROUND); // 前景用CSV
+        LoadCollisionCSV("Data/AGS_Map_School_Collision.csv");
     }
 }
 

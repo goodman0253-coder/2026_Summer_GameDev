@@ -56,6 +56,7 @@ public:
     {
         NORMAL,   // 通常のパン
         MELONPAN,    // メロンパン
+		CROISSANT,  // クロワッサン
         MAX       // 種類の最大数（切り替えループ用）
     };
 

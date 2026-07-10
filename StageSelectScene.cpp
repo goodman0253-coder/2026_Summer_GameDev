@@ -68,11 +68,16 @@ void StageSelectScene::Draw(void)
     // 選択中のステージに応じてテキストの色を変化させ、前に「▶」を付ける演出
     unsigned int stage1Color = (currentCursor == 1) ? yellow : gray;
     std::string stage1Text = (currentCursor == 1) ? "! STAGE 1" : "  STAGE 1";
-    DrawStringToHandle(400, 400, stage1Text.c_str(), stage1Color, fontMenu);
+    DrawStringToHandle(200, 400, stage1Text.c_str(), stage1Color, fontMenu);
 
     unsigned int stage2Color = (currentCursor == 2) ? yellow : gray;
     std::string stage2Text = (currentCursor == 2) ? "! STAGE 2" : "  STAGE 2";
-    DrawStringToHandle(900, 400, stage2Text.c_str(), stage2Color, fontMenu);
+    DrawStringToHandle(750, 400, stage2Text.c_str(), stage2Color, fontMenu);
+
+    unsigned int stage3Color = (currentCursor == 3) ? yellow : gray;
+    std::string stage3Text = (currentCursor == 3) ? "! STAGE 3" : "  STAGE 3";
+    DrawStringToHandle(1300, 400, stage3Text.c_str(), stage3Color, fontMenu);
+
 }
 
 bool StageSelectScene::Release(void)

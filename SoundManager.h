@@ -26,6 +26,8 @@ public:
     void LoadBGM(const std::string& key, const char* filePath);
     void LoadSE(const std::string& key, const char* filePath);
 
+    int GetSEHandle(const std::string& key) { return (seList.find(key) != seList.end()) ? seList[key] : -1; }
+
     // çƒê∂ÅEí‚é~
     void PlayBGM(const std::string& key, bool loop = true);
     void StopBGM();

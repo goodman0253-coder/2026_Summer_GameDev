@@ -314,14 +314,14 @@ void GameScene::CollisionCheckEB()
 						  {
 							  enemys[i]->SetDamage(2); 
 						  	
-						  	// ƒƒƒ“ƒpƒ“‚¾‚Á‚½ê‡‚Í”j—ô‚³‚¹‚éi“à•”‚Å¬‚³‚Èƒpƒ“‚ª¶¬‚³‚êAŽ©g‚ÍŽ€–S‚·‚éj
+						  	// ãƒ¡ãƒ­ãƒ³ãƒ‘ãƒ³ã ã£ãŸå ´åˆã¯ç ´è£‚ã•ã›ã‚‹ï¼ˆå†…éƒ¨ã§å°ã•ãªãƒ‘ãƒ³ãŒç”Ÿæˆã•ã‚Œã€è‡ªèº«ã¯æ­»äº¡ã™ã‚‹ï¼‰
 						  	melon->Explode();
 						  }
 						  else
 						  {
 
 							  enemys[i]->SetDamage(1); 
-						  	// ’Êí‚Ìƒpƒ“‚¾‚Á‚½ê‡‚Í‚»‚Ì‚Ü‚ÜÁ‚·
+						  	// é€šå¸¸ã®ãƒ‘ãƒ³ã ã£ãŸå ´åˆã¯ãã®ã¾ã¾æ¶ˆã™
 						  	bread->Kill();
 						  }
 						}
@@ -368,9 +368,9 @@ void GameScene::Update(void)
 	{
 		player->Update();
 		cameraY = player->GetPosY() - (SCREEN_HEIGHT / 2);
-		if (cameraY >= 1120)
+		if (cameraY >= 800)
 		{
-			cameraY = 1120;
+			cameraY = 800;
 		}
 	}
 
@@ -654,7 +654,6 @@ void GameScene::Draw(void)
 		DrawRoundRect(uiX, uiY, uiX + iconSize, uiY + iconSize, roundRadius, roundRadius, GetColor(255, 255, 255), FALSE);
 	}
 }
-
 
 bool GameScene::Release(void)
 {

@@ -11,7 +11,7 @@ private:
     int fontMenu = -1;
 
     int currentCursor = 1;     // 現在選択中のステージ番号 (1: ステージ1, 2: ステージ2)
-    const int MAX_STAGES = 2;   // 総ステージ数
+    const int MAX_STAGES = 3;   // 総ステージ数
 
     int stringWidth = 0;
     int stringHeight = 0;
