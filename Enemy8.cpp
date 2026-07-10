@@ -18,6 +18,8 @@ void Enemy8::SetEnemyParam(void)
 	speed = 0.5f;
 	// 敵のヒットポイント最大値
 	hpMax = 2;
+	// ボスではない
+	eob = 0;
 }
 
 void Enemy8::Update(void)

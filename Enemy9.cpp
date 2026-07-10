@@ -21,6 +21,8 @@ void Enemy9::SetEnemyParam(void)
 	speed = 3.0f;
 	// 敵のヒットポイント最大値
 	hpMax = 3;
+	// ボスではない
+	eob = 0;
 }
 
 void Enemy9::Update(void)

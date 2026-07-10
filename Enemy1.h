@@ -4,6 +4,7 @@
 class Enemy1 : public EnemyBase
 {
 public:
+	void GameInit(void) override;
 	void SetEnemyParam(void) override;
 	void Update(void) override;
 private:

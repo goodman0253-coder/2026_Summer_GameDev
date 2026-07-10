@@ -158,6 +158,7 @@
     <ClCompile Include="Enemy9.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="AsoUtility.cpp" />
+    <ClCompile Include="FpsControl.cpp" />
     <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="EnemyBulletBase.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -204,6 +205,7 @@
     <ClInclude Include="Enemy8.h" />
     <ClInclude Include="Enemy9.h" />
     <ClInclude Include="EnemyBase.h" />
+    <ClInclude Include="FpsControl.h" />
     <ClInclude Include="GameClearScene.h" />
     <ClInclude Include="EnemyBulletBase.h" />
     <ClInclude Include="GameObject.h" />

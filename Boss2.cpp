@@ -10,7 +10,6 @@
 void Boss2::GameInit(void)
 {
 	EnemyBase::GameInit(Vector2F(6200.0f, 1225.0f));
-	EoB = 10; // ボスとして設定
 	BakHP = hpMax; // 初期HPを保存
 }
 
@@ -24,6 +23,8 @@ void Boss2::SetEnemyParam(void)
 	speed = 0.3f;
 	// 敵のヒットポイント最大値
 	hpMax = 20;
+	// ボスとして設定
+	eob = 10;
 }
 
 void Boss2::Update(void)

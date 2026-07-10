@@ -108,6 +108,9 @@
     <ClCompile Include="Boss3.cpp">
       <Filter>GameObject\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="FpsControl.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -218,6 +221,9 @@
     </ClInclude>
     <ClInclude Include="Boss3.h">
       <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="FpsControl.h">
+      <Filter>Application</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
