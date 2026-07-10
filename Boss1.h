@@ -1,6 +1,5 @@
 #pragma once
 #include "EnemyBase.h"
-#include "EnemyBulletBase.h"
 class Player;
 
 class Boss1 : public EnemyBase
