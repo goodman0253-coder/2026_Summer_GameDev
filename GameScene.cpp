@@ -1,4 +1,6 @@
 #include <DxLib.h>
+#include <fstream>
+#include <sstream>
 #include "SceneManager.h"
 #include "GameScene.h"
 #include "Player.h"
@@ -72,119 +74,24 @@ bool GameScene::GameInit(void)
 	stage = new Stage();
 	stage->Initialize(currentStageNum);
 	 
-	if (currentStageNum == 1)
+	enemySpawnList.clear();
+
+	// ステージ数に応じて読み込むCSVファイルを切り替える
+	std::string csvPath = "";
+
+	if (currentStageNum == 1)      csvPath = "Data//AGS_Map_School_Enemy.csv";
+	else if (currentStageNum == 2) csvPath = "Data//AGS_Map_Office_Enemy.csv";
+	else if (currentStageNum == 3) csvPath = "Data//AGS_Map_Street_Enemy.csv";
+
+	// CSVファイルからデータを読み込む
+	if (!csvPath.empty())
 	{
-		EnemyBase* newEnemy = new Enemy1();
-		if (newEnemy != nullptr)
-		{
-			newEnemy->SystemInit(this);
-
-			newEnemy->GameInit();
-
-			enemys.push_back(newEnemy);
-		}
-
-		EnemyBase* newEnemy2 = new Enemy2();
-		if (newEnemy2 != nullptr)
-		{
-			newEnemy2->SystemInit(this);
-
-			newEnemy2->GameInit();
-
-			enemys.push_back(newEnemy2);
-		}
-
-		EnemyBase* newEnemy3 = new Enemy3();
-		if (newEnemy3 != nullptr)
-		{
-			newEnemy3->SystemInit(this);
-
-			newEnemy3->GameInit();
-
-			enemys.push_back(newEnemy3);
-		}
-
-		EnemyBase* newEnemy4 = new Boss1();
-		if (newEnemy4 != nullptr)
-		{
-			newEnemy4->SystemInit(this);
-			newEnemy4->GameInit();
-			static_cast<Boss1*>(newEnemy4)->SetPlayer(player);
-			enemys.push_back(newEnemy4);
-		}
+		LoadEnemyCSV(csvPath);
 	}
-	else if (currentStageNum == 2)
+	else
 	{
-		EnemyBase* newEnemy1 = new Enemy4();
-		if (newEnemy1 != nullptr)
-		{
-			newEnemy1->SystemInit(this);
-
-			newEnemy1->GameInit();
-
-			enemys.push_back(newEnemy1);
-		}
-
-		EnemyBase* newEnemy2 = new Enemy5();
-		if (newEnemy2 != nullptr)
-		{
-			newEnemy2->SystemInit(this);
-
-			newEnemy2->GameInit();
-
-			enemys.push_back(newEnemy2);
-		}
-
-		EnemyBase* newEnemy3 = new Enemy6();
-		if (newEnemy3 != nullptr)
-		{
-			newEnemy3->SystemInit(this);
-
-			newEnemy3->GameInit();
-
-			enemys.push_back(newEnemy3);
-		}
-
-		 EnemyBase* newEnemy4 = new Boss2();
-		 if (newEnemy4 != nullptr)
-		 {
-		 	newEnemy4->SystemInit(this);
-		 	newEnemy4->GameInit();
-		 	static_cast<Boss2*>(newEnemy4)->SetPlayer(player);
-		 	enemys.push_back(newEnemy4);
-		 }
-	}
-	else if (currentStageNum == 3)
-	{
-		EnemyBase* newEnemy1 = new Enemy7();
-		if (newEnemy1 != nullptr)
-		{
-			newEnemy1->SystemInit(this);
-			newEnemy1->GameInit();
-			enemys.push_back(newEnemy1);
-		}
-		EnemyBase* newEnemy2 = new Enemy8();
-		if (newEnemy2 != nullptr)
-		{
-			newEnemy2->SystemInit(this);
-			newEnemy2->GameInit();
-			enemys.push_back(newEnemy2);
-		}
-		EnemyBase* newEnemy3 = new Enemy9();
-		if (newEnemy3 != nullptr)
-		{
-			newEnemy3->SystemInit(this);
-			newEnemy3->GameInit();
-			enemys.push_back(newEnemy3);
-		}
-		 EnemyBase* newEnemy4 = new Boss3();
-		 if (newEnemy4 != nullptr)
-		 {
-		 	newEnemy4->SystemInit(this);
-		 	newEnemy4->GameInit();
-		 	static_cast<Boss1*>(newEnemy4)->SetPlayer(player);
-		 	enemys.push_back(newEnemy4);
-		 }
+		// CSVファイルが指定されていない場合のエラーハンドリング
+		AppLogAdd("Error: No CSV file specified for enemy spawn data.\n");
 	}
 
 	isClearTriggered = false;
@@ -247,7 +154,7 @@ void GameScene::CollisionCheckPB()
 
 void GameScene::CollisionCheckPE()
 {
-	clsDx();
+	clsDx(); //　プリントクリア
 
 	if (player != nullptr)
 	{
@@ -319,8 +226,11 @@ void GameScene::CollisionCheckEB()
 						  if (melon != nullptr)
 						  {
 							  SoundManager::GetInstance().PlaySE("damage");
-							  enemys[i]->SetDamage(3); 
-						  	
+							  enemys[i]->SetDamage(3);  
+								if (enemys[i]->GetAlive() == false && enemys[i]->EoB > 5)
+								{
+								  	isClearTriggered = true;
+						  		}
 						  	// メロンパンだった場合は破裂させる（内部で小さなパンが生成され、自身は死亡する）
 						  	melon->Explode();
 						  }
@@ -332,13 +242,17 @@ void GameScene::CollisionCheckEB()
 							  }
 							  SoundManager::GetInstance().PlaySE("damage");
 							  enemys[i]->SetDamage(1);
-							  // ミニメロンパンだった場合はそのまま消す
+							  // 繝溘ル繝｡繝ｭ繝ｳ繝代Φ縺縺｣縺溷ｴ蜷医�縺昴�縺ｾ縺ｾ豸医☆
 							  miniMelon->Kill();
 						  }
 						  else
 						  {
 							  SoundManager::GetInstance().PlaySE("damage");
 							  enemys[i]->SetDamage(1); 
+							  if (enemys[i]->GetAlive() == false && enemys[i]->EoB > 5)
+							  {
+								  isClearTriggered = true;
+							  }
 						  	// 通常のパンだった場合はそのまま消す
 						  	bread->Kill();
 						  }
@@ -481,7 +395,24 @@ void GameScene::Update(void)
 		}
 	}
 
+	for (auto& spawn : enemySpawnList)
+	{
+		// まだ生成されておらず、カメラの右端（画面外の少し先）に近づいたら生成
+		if (!spawn.isSpawned && spawn.spawnX < cameraX + SCREEN_WIDTH + 100)
+		{
+			// spawn.enemyTypeに応じて適切なEnemyBase派生クラスのインスタンスを生成
+			EnemyBase* newEnemy = CreateEnemyFromType(spawn.enemyType);
 
+			if (newEnemy != nullptr)
+			{
+				newEnemy->SystemInit(this);
+				newEnemy->GameInit(Vector2F(spawn.spawnX, spawn.spawnY));
+				enemys.push_back(newEnemy);
+			}
+
+			spawn.isSpawned = true; // 生成済みフラグを立てる
+		}
+	}
 
 	if (player != nullptr && !player->IsInvincible())
 	{
@@ -749,4 +680,118 @@ bool GameScene::Release(void)
 #endif
 	return true;
 
+}
+
+void GameScene::LoadEnemyCSV(const std::string& filePath) // CSVファイルから敵のスポーンデータを読み込む関数
+{
+	std::ifstream file(filePath);
+	if (!file.is_open())
+	{
+		// 【デバッグ】ファイルが開けなかったエラーをVisual Studioの出力に出す
+		AppLogAdd("--- [ERROR] CSVファイルが開けませんでした: %s ---\n", filePath.c_str());
+		return;
+	}
+
+	// 【デバッグ】ファイルが開けたことを知らせる
+	AppLogAdd("--- [SUCCESS] CSVファイルの読み込みを開始します: %s ---\n", filePath.c_str());
+	
+	std::string line;
+	int row = 0; // 行（Y方向のマス目）
+	int totalEnemies = 0; // 【デバッグ用】見つかった敵の総カウント
+
+	while (std::getline(file, line))
+	{
+		if (line.empty()) continue;
+
+		std::stringstream ss(line);
+		std::string token;
+		int col = 0; // 列（X方向のマス目）
+
+		while (std::getline(ss, token, ','))
+		{
+			int enemyType = std::stoi(token);
+
+			// -1 以外（＝敵が配置されているマス）の場合
+			if (enemyType != -1)
+			{
+				EnemySpawnDate spawnData;
+				spawnData.enemyType = enemyType;
+
+				// マス目の位置からピクセル座標に変換（マスの中心に配置されるよう+CHIP_SIZE/2）
+				spawnData.spawnX = static_cast<float>(col * CHIP_SIZE + CHIP_SIZE / 2);
+				spawnData.spawnY = static_cast<float>(row * CHIP_SIZE + CHIP_SIZE / 2);
+				spawnData.isSpawned = false; // まだ画面に出ていない
+
+				// 出現予定リストに追加
+				enemySpawnList.push_back(spawnData);
+				totalEnemies++; // カウントを増やす
+
+				// 【デバッグ】敵を1体読み込むたびに、IDと計算された座標を出力する
+				AppLogAdd("  [Enemy Found] Type:%d | Row:%d, Col:%d | SpawnPos(X:%.1f, Y:%.1f)\n",
+					enemyType, row, col, spawnData.spawnX, spawnData.spawnY);
+
+			}
+			col++;
+		}
+		row++;
+	}
+	file.close();
+
+	// 【デバッグ】最終的な読み込み結果を出力する
+	AppLogAdd("--- [FINISH] CSV読み込み完了。総行数:%d | 登録された敵の総数:%d ---\n", row, totalEnemies);
+}
+
+EnemyBase* GameScene::CreateEnemyFromType(int enemyType) 
+{
+	EnemyBase* newEnemy = nullptr;
+
+	switch (enemyType)
+	{
+		// ==========================================
+		// ■ ステージ1 の敵定義
+		// ==========================================
+	case 1:  newEnemy = new Enemy1(); break; // ザコ1
+	case 2:  newEnemy = new Enemy2(); break; // ザコ2
+	case 3:  newEnemy = new Enemy3(); break; // ザコ3
+	case 10:                                  // ボス1
+	{
+		Boss1* boss = new Boss1();
+		boss->SetPlayer(player);
+		newEnemy = boss;
+	}
+	break;
+
+	// ==========================================
+	// ■ ステージ2 の敵定義
+	// ==========================================
+	case 4:  newEnemy = new Enemy4(); break; // ザコ4
+	case 5:  newEnemy = new Enemy5(); break; // ザコ5
+	case 6:  newEnemy = new Enemy6(); break; // ザコ6
+	case 11:                                  // ボス2
+	{
+		Boss2* boss = new Boss2();
+		boss->SetPlayer(player);
+		newEnemy = boss;
+	}
+	break;
+
+	// ==========================================
+	// ■ ステージ3 の敵定義
+	// ==========================================
+	case 7:  newEnemy = new Enemy7(); break; // ザコ7
+	case 8:  newEnemy = new Enemy8(); break; // ザコ8
+	case 9:  newEnemy = new Enemy9(); break; // ザコ9
+	case 12:                                  // ボス3
+	{
+		Boss3* boss = new Boss3();
+		boss->SetPlayer(player);
+		newEnemy = boss;
+	}
+	break;
+
+	default:
+		break; // 想定外のID（-1など）は何もしない
+	}
+
+	return newEnemy;
 }

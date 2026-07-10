@@ -8,7 +8,6 @@
 void Boss3::GameInit(void)
 {
 	EnemyBase::GameInit(Vector2F(6200.0f, 1225.0f));
-	EoB = 10; // ボスとして設定
 	BakHP = hpMax; // 初期HPを保存
 }
 
@@ -22,6 +21,8 @@ void Boss3::SetEnemyParam(void)
 	speed = 2.0f;
 	// 敵のヒットポイント最大値
 	hpMax = 10;
+	// ボスとして設定
+	eob = 10;
 }
 
 void Boss3::Update(void)
@@ -56,8 +57,11 @@ void Boss3::Update(void)
 	if (PY < pos.y) {
 		pos.y -= speed; // 上方向への加速
 	}
-	else {
+	else if (PY > pos.y) {
 		pos.y += speed; // 下方向への加速
+	}
+	else {
+		pos.y = PY; // ガクつかないよう同じ座標に合わせる
 	}
 
 	if (BakHP != EnemyBase::hp ||(PX == pos.x && PY == pos.y))
@@ -66,13 +70,13 @@ void Boss3::Update(void)
 		worp = rand() % 2; // 0か1をランダムに生成
 		if (worp == 0)
 		{
-			pos.x = PX + 800;
-			pos.y = PY + 800;
+			pos.x = PX + 300 + (50 * speed);
+			pos.y = PY + 300 + (50 * speed);
 		}
 		else
 		{
-			pos.x = PX - 800;
-			pos.y = PY - 800;
+			pos.x = PX - 300 - (50 * speed);
+			pos.y = PY - 300 - (50 * speed);
 		}
 		BakHP = EnemyBase::hp;
 	}

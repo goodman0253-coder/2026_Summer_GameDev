@@ -70,6 +70,7 @@ protected:
 	int dir; // 敵が向いている方向
 	int animCounter; // アニメーションカウンター
 	
+	int eob; // 通常敵かボスか
 	int hpMax; // ヒットポイント最大値
 	bool aliveFlg; // 生存フラグ
 	int invincibleTimer; // 無敵時間タイマー（フレーム単位）

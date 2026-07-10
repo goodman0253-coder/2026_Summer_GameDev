@@ -1,16 +1,21 @@
-﻿#include <DxLib.h>
+#include <DxLib.h>
 #include "Application.h"
 #include "SceneManager.h"
 #include "InputManager.h"
 #include "SoundManager.h"
+#include "FpsControl.h"
+
+
 
 Application::Application()
 {
-
+	// コンストラクタ処理
 }
 
 Application::~Application()
 {
+	// デストラクタはクラス名を使って正しく定義することで
+	// "名前の後に '::~' を付けることができるのはクラス名または名前空間名だけです" エラーを解消します
 	SoundManager::GetInstance().ReleaseAll();
 }
 
@@ -25,6 +30,10 @@ bool Application::SystemInit(void)
 	SetDrawScreen(DX_SCREEN_BACK);
 
 	ChangeWindowMode(false);
+
+	//FPS初期化
+	fps = new FpsControl;
+	fps->Init();
 	return true;
 }
 
@@ -54,7 +63,7 @@ void Application::Run()
 		// 裏画面の内容を表画面に反映
 		ScreenFlip();
 
-		// 💡 144Hzや240Hzなどのゲーミングモニター環境でも強制的に60FPSに抑えるウエイト処理
+		// ?? 144Hzや240Hzなどのゲーミングモニター環境でも強制的に60FPSに抑えるウエイト処理
 		LONGLONG endTime = GetNowHiPerformanceCount();
 		LONGLONG processTime = endTime - startTime;
 
@@ -70,12 +79,24 @@ void Application::Run()
 
 		// 次のフレームの開始時間を記録
 		startTime = GetNowHiPerformanceCount();
+
+		if (fps)
+		{
+			fps->CalcFrameRate();   //フレームレート計算
+			fps->DrawFrameRate();   //フレームレート描画
+		}
 	}
 }
 
 bool Application::Release(void)
-{ 
-   	if (DxLib_End() == -1)return false;
+{
+	//フレームレート解放
+	if (fps)
+	{
+		delete fps;
+		fps = nullptr;
+	}
+	if (DxLib_End() == -1)return false;
 	return true;
 }
 

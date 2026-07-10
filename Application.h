@@ -7,6 +7,7 @@ class GameClearScene;
 class GameOverScene;
 class SceneManager;
 class InputManager;
+class FpsControl;
 
 class Application
 {
@@ -28,6 +29,7 @@ private:
 	void IdentityInit();
 
 	SceneManager* sceneManager = nullptr;
+	FpsControl* fps = nullptr;
 
 };
 

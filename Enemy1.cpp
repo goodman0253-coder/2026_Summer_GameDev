@@ -3,6 +3,12 @@
 #include "EnemyBulletBase.h"
 #include "Stage1_EnemyA_Bullet.h"
 #include <DxLib.h>
+
+void Enemy1::GameInit(void)
+{
+
+}
+
 void Enemy1::SetEnemyParam(void)
 {
 	// 敵の画像ファイル名
@@ -13,6 +19,8 @@ void Enemy1::SetEnemyParam(void)
 	speed = 0.0f;
 	// 敵のヒットポイント最大値
 	hpMax = 3;
+	// ボスではない
+	eob = 0;
 }
 
 void Enemy1::Update(void)
