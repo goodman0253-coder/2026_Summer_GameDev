@@ -128,14 +128,14 @@ void Stage::Initialize(int stageNum)
         LoadDivGraph("Data/MAP-Office.png", xNum * yNumO, xNum, yNumO, TILE_SIZE, TILE_SIZE, tileImages[LAYER_OBJECTO]);
       
 
-        LoadMapCSV("Data/MAP03BACKV1C.csv", LAYER_BACKGROUNDC); 
-        LoadMapCSV("Data/MAP03BACKV1SE.csv", LAYER_BACKGROUNDSE);
-        LoadMapCSV("Data/MAP03BACKV1TE.csv", LAYER_BACKGROUNDTE);
-        LoadMapCSV("Data/MAP03MIDV1SE.csv", LAYER_MIDDLEGROUNDSE);
-        LoadMapCSV("Data/MAP03MIDV1TE.csv", LAYER_MIDDLEGROUNDTE);
-        LoadMapCSV("Data/MAP03OBJV1C.csv", LAYER_OBJECTC);
-        LoadMapCSV("Data/MAP03OBJV1O.csv", LAYER_OBJECTO); 
-        LoadMapCSV("Data/MAP03OBJV1TE.csv", LAYER_OBJECTTE);
+        LoadMapCSV("Data/MAP03BACKV2C.csv", LAYER_BACKGROUNDC); 
+        LoadMapCSV("Data/MAP03BACKV2SE.csv", LAYER_BACKGROUNDSE);
+        LoadMapCSV("Data/MAP03BACKV2TE.csv", LAYER_BACKGROUNDTE);
+        LoadMapCSV("Data/MAP03MIDV2SE.csv", LAYER_MIDDLEGROUNDSE);
+        LoadMapCSV("Data/MAP03MIDV2TE.csv", LAYER_MIDDLEGROUNDTE);
+        LoadMapCSV("Data/MAP03OBJV2C.csv", LAYER_OBJECTC);
+        LoadMapCSV("Data/MAP03OBJV2O.csv", LAYER_OBJECTO); 
+        LoadMapCSV("Data/MAP03OBJV2TE.csv", LAYER_OBJECTTE);
 
         LoadCollisionCSV("Data/AGS_Map_Street_Collision.csv");
     }
@@ -167,7 +167,7 @@ void Stage::LoadMapCSV(const std::string& filename, eMapLayer Layer)
     }
 }
 
-void Stage::LoadCollisionCSV(const std::string& filename)
+void Stage::LoadCollisionCSV (const std::string& filename)
 {
     std::ifstream file(filename);
     if (!file.is_open()) {
