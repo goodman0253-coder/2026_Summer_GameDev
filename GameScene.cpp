@@ -242,7 +242,6 @@ void GameScene::CollisionCheckEB()
 							  }
 							  SoundManager::GetInstance().PlaySE("damage");
 							  enemys[i]->SetDamage(1);
-		
 							  miniMelon->Kill();
 						  }
 						  else
