@@ -174,7 +174,7 @@ void Player::Update()
 	if ((InputManager::GetInstance().IsTrgDown(KEY_INPUT_V) || InputManager::GetInstance().IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::RIGHT)) && shotBreadTimers[breadIdx] <= 0)
 	{
 		float spawnX = playerPosx;
-		float spawnY = playerPosy;
+		float spawnY = playerPosy + 24;
 
 		BreadBase* newBread = nullptr;
 

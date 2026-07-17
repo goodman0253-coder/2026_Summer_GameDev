@@ -242,7 +242,7 @@ void GameScene::CollisionCheckEB()
 							  }
 							  SoundManager::GetInstance().PlaySE("damage");
 							  enemys[i]->SetDamage(1);
-							  // 繝溘ル繝｡繝ｭ繝ｳ繝代Φ縺縺｣縺溷ｴ蜷医�縺昴�縺ｾ縺ｾ豸医☆
+		
 							  miniMelon->Kill();
 						  }
 						  else
@@ -506,13 +506,13 @@ void GameScene::Draw(void)
 	{
 		if (stage != nullptr && player != nullptr)
 		{
-			stage->Draw(cameraX, cameraY, LAYER_BACKGROUNDC);
 			stage->Draw(cameraX, cameraY, LAYER_BACKGROUNDSE);
 			stage->Draw(cameraX, cameraY, LAYER_BACKGROUNDTE);
+			stage->Draw(cameraX, cameraY, LAYER_BACKGROUNDC);
 			stage->Draw(cameraX, cameraY, LAYER_MIDDLEGROUNDSE);
 			stage->Draw(cameraX, cameraY, LAYER_MIDDLEGROUNDTE);
-			stage->Draw(cameraX, cameraY, LAYER_OBJECTC);
 			stage->Draw(cameraX, cameraY, LAYER_OBJECTO);
+			stage->Draw(cameraX, cameraY, LAYER_OBJECTC);
 			stage->Draw(cameraX, cameraY, LAYER_OBJECTTE);
 		}
 	}
