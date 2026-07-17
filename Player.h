@@ -30,6 +30,10 @@ public:
 
 	void Jump();
 
+	// 外部からプレイヤーの幅と高さを取得するための関数
+	int GetWid()const { return PLAYER_WID; }
+	int GetHig()const { return PLAYER_HIG; }
+
     // 外部（GameSceneなど）から体力を取得するための関数
     int GetHp() const { return hp; }
 

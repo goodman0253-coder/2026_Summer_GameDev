@@ -18,7 +18,7 @@ void Boss3::SetEnemyParam(void)
 	// 敵の画像サイズ
 	size = { 128, 128 };
 	// 敵の移動速度
-	speed = 2.0f;
+	speed = 10.5f;
 	// 敵のヒットポイント最大値
 	hpMax = 10;
 	// ボスとして設定
@@ -37,31 +37,41 @@ void Boss3::Update(void)
 	Vector2F nowPos = this->pos; // 敵の現在位置を取得
 
 	speed = 10.5 - BakHP; // HPが減るごとに加速
-
+	int PH = (player != nullptr) ? player->GetHig() : 0;
+	int PW = (player != nullptr) ? player->GetWid() : 0;
 	// プレイヤーの方向を向くように設定
 	int PX = (player != nullptr) ? player->GetPosX() : 0;
 	int PY = (player != nullptr) ? player->GetPosY() : 0;
+
+	PX += PW / 2; // プレイヤーの中心座標を取得
+	PY += PH / 2; // プレイヤーの中心座標を取得
+
 	Vector2F playerDir = Vector2F(PX - pos.x, 0.0f);
 	this->setMoveDirection(playerDir);
 
 	if (player == nullptr) { player = gInst->GetLpPlayer(); }
 
-	// 移動処理のロジック修正
-	if (PX < pos.x) {
-		pos.x -= speed; // 加速度を少し抑える
+	// 移動処理のロジック
+	if (PX - pos.x > -10 && PX - pos.x < 10)
+	{
+		// プレイヤー座標との差が-10から10の範囲内の場合、Y座標は変化させない
+	}
+	else if (PX < pos.x) {
+		pos.x -= speed;
 	}
 	else {
 		pos.x += speed;
 	}
 
-	if (PY < pos.y) {
+	if (PY - pos.y > -10 && PY - pos.y < 10)
+	{
+		// プレイヤー座標との差が-10から10の範囲内の場合、Y座標は変化させない
+	}
+	else if (PY < pos.y) {
 		pos.y -= speed; // 上方向への加速
 	}
 	else if (PY > pos.y) {
 		pos.y += speed; // 下方向への加速
-	}
-	else {
-		pos.y = PY; // ガクつかないよう同じ座標に合わせる
 	}
 
 	if (BakHP != EnemyBase::hp ||(PX == pos.x && PY == pos.y))

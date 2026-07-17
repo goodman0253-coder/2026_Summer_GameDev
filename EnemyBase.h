@@ -69,7 +69,7 @@ protected:
 	Vector2F pos; // 敵表示座標
 	int dir; // 敵が向いている方向
 	int animCounter; // アニメーションカウンター
-	
+
 	int eob; // 通常敵かボスか
 	int hpMax; // ヒットポイント最大値
 	bool aliveFlg; // 生存フラグ

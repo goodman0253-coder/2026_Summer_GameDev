@@ -59,7 +59,7 @@ void Enemy9::Update(void)
 	pos.x += nowspeed;
 	shotTimer++;
 
-	if (shotTimer >= 30)
+	if (shotTimer >= 60)
 	{
 		Vector2F bulletVel = { 0.0f, 5.0f }; // 弾の速度ベクト
 		EnemyBulletBase* newBullet = new BulletST3C();
