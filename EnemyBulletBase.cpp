@@ -4,7 +4,7 @@
 #include <DxLib.h>
 
 // EnemyBulletBaseƒNƒ‰ƒX‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
-EnemyBulletBase::EnemyBulletBase() :gInst(nullptr), imgHandle(-1), aliveFlg(true) {}
+EnemyBulletBase::EnemyBulletBase() :gInst(nullptr), imgHandle(-1), aliveFlg(true), isRotation(true) {}
 EnemyBulletBase::~EnemyBulletBase(void)
 {
 }
@@ -25,6 +25,7 @@ void EnemyBulletBase::GameInit(Vector2F spoanPos, Vector2F vel) // ƒQ[ƒ€‹N“®E
 	pos = spoanPos;
 	velocity = vel;
 	aliveFlg = true;
+	aliveTimer = 180.0f;
 }
 
 void EnemyBulletBase::Update(void) // XVˆ—
@@ -38,8 +39,13 @@ void EnemyBulletBase::Update(void) // XVˆ—
 	float camY = gInst->GetCameraY();
 
 	// ƒJƒƒ‰‚ÌŠO‚Éo‚½‚çÁ‚¦‚é
-	if (pos.x < camX - 200 || pos.x > camX + 1920 + 200 ||
-		pos.y < camY - 200 || pos.y > camY + 1080 + 200)
+	if (pos.x < camX - 20 || pos.x > camX + 1280 + 20 ||
+		pos.y < camY - 20 || pos.y > camY + 720 + 20)
+	{
+		aliveFlg = false;
+	}
+	aliveTimer -= 1.0f;
+	if (aliveTimer <= 0.0f)
 	{
 		aliveFlg = false;
 	}
@@ -50,7 +56,13 @@ void EnemyBulletBase::Draw(void) // •`‰æˆ—
 	float camX = gInst->GetCameraX();	//ƒJƒƒ‰À•WX
 	float camY = gInst->GetCameraY();	//ƒJƒƒ‰À•WY
 
-	double angle = atan2(velocity.y, velocity.x);// ƒ‰ƒWƒAƒ“‚ğ‹‚ß‚é
+	double angle = 0.0;
+
+	if (isRotation)
+	{
+		angle = atan2(velocity.y, velocity.x); // ƒ‰ƒWƒAƒ“‚ğ‹‚ß‚é
+	}
+
 	DrawRotaGraph(static_cast<int>(pos.x - camX),
 					static_cast<int>(pos.y - camY),
 					1.0, angle,

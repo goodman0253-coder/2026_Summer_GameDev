@@ -14,36 +14,36 @@ void Boss1::GameInit(void)
 
 void Boss1::SetEnemyParam(void)
 {
-	// æ•µã®ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«å
+	// “G‚Ì‰æ‘œƒtƒ@ƒCƒ‹–¼
 	imgFName = "stage1_boss.png";
-	// æ•µã®ç”»åƒã‚µã‚¤ã‚º
+	// “G‚Ì‰æ‘œƒTƒCƒY
  	size = { 128, 128 };
-	// æ•µã®ç§»å‹•é€Ÿåº¦
+	// “G‚ÌˆÚ“®‘¬“x
 	speed = 0.0f;
-	// æ•µã®ãƒ’ãƒƒãƒˆãƒã‚¤ãƒ³ãƒˆæœ€å¤§å€¤
+	// “G‚Ìƒqƒbƒgƒ|ƒCƒ“ƒgÅ‘å’l
 	hpMax = 15;
-	// ãƒœã‚¹ã¨ã—ã¦è¨­å®š
+	// ƒ{ƒX‚Æ‚µ‚Äİ’è
 	eob = 10;
 }
 
 bool Boss1::CheckGrounded(float checkX, float checkY)
 {
-	// EnemyBaseã«ä¿å­˜ã•ã‚Œã¦ã„ã‚‹GameSceneã®ãƒã‚¤ãƒ³ã‚¿ï¼ˆgameSceneç­‰ï¼‰ã‹ã‚‰Stageã‚’å–å¾—
-	// â€»ã‚‚ã—EnemyBaseå†…ã®å¤‰æ•°åãŒç•°ãªã‚‹å ´åˆã¯ã€ç’°å¢ƒã«åˆã‚ã›ã¦èª¿æ•´ã—ã¦ãã ã•ã„ã€‚
+	// EnemyBase‚É•Û‘¶‚³‚ê‚Ä‚¢‚éGameScene‚Ìƒ|ƒCƒ“ƒ^igameScene“™j‚©‚çStage‚ğæ“¾
+	// ¦‚à‚µEnemyBase“à‚Ì•Ï”–¼‚ªˆÙ‚È‚éê‡‚ÍAŠÂ‹«‚É‡‚í‚¹‚Ä’²®‚µ‚Ä‚­‚¾‚³‚¢B
 	if (this->gInst == nullptr) return false;
 	Stage* stage = this->gInst->GetLpStage();
 	if (stage == nullptr) return false;
 
-	// ãƒœã‚¹ã®ä¸­å¿ƒä½ç½®ã‹ã‚‰å·¦å³ã®è¶³å…ƒ2ç‚¹ï¼ˆå·¦ä¸‹ãƒ»å³ä¸‹ï¼‰ã‚’å‰²ã‚Šå‡ºã™
+	// ƒ{ƒX‚Ì’†SˆÊ’u‚©‚ç¶‰E‚Ì‘«Œ³2“_i¶‰ºE‰E‰ºj‚ğŠ„‚èo‚·
 	float halfW = size.x / 2.0f;
 	float halfH = size.y / 2.0f;
 
-	// å°‘ã—å†…å´ï¼ˆéŠã³ã‚’æŒãŸã›ã‚‹ï¼‰ã‚’ãƒã‚§ãƒƒã‚¯
+	// ­‚µ“à‘¤i—V‚Ñ‚ğ‚½‚¹‚éj‚ğƒ`ƒFƒbƒN
 	float footLeftX = checkX - halfW + 4.0f;
 	float footRightX = checkX + halfW - 4.0f;
-	float footY = checkY + halfH; // ãƒœã‚¹ã®æœ€ä¸‹éƒ¨
+	float footY = checkY + halfH; // ƒ{ƒX‚ÌÅ‰º•”
 
-	// å·¦ä¸‹ã€ã¾ãŸã¯å³ä¸‹ãŒå£ãƒãƒƒãƒ—ã«è§¦ã‚Œã¦ã„ã‚Œã°åœ°é¢ã®ã‚³ã‚³ã‚¢ãƒ¼ãƒ«ï¼ˆæ¥è§¦ï¼‰ã¨åˆ¤å®š
+	// ¶‰ºA‚Ü‚½‚Í‰E‰º‚ª•Çƒ`ƒbƒv‚ÉG‚ê‚Ä‚¢‚ê‚Î’n–Ê‚ÌƒRƒRƒA[ƒ‹iÚGj‚Æ”»’è
 	if (stage->CheckCollision(footLeftX, footY) || stage->CheckCollision(footRightX, footY))
 	{
 		return true;
@@ -60,54 +60,56 @@ void Boss1::Update(void)
 		return;
 	}
 
-	Vector2F nowPos = this->pos; // æ•µã®ç¾åœ¨ä½ç½®ã‚’å–å¾—
+	Vector2F nowPos = this->pos; // “G‚ÌŒ»İˆÊ’u‚ğæ“¾
 
-	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹å‘ã‚’å‘ãã‚ˆã†ã«è¨­å®š
+	// ƒvƒŒƒCƒ„[‚Ì•ûŒü‚ğŒü‚­‚æ‚¤‚Éİ’è
 	int PX = (player != nullptr) ? player->GetPosX() : 0;
 	Vector2F playerDir = Vector2F(PX - pos.x, 0.0f);
 	this->setMoveDirection(playerDir);
 
+
+
 	if (isJumping)
 	{
-		// ç©ºä¸­ã§ã®é‡åŠ›å‡¦ç†
+		// ‹ó’†‚Å‚Ìd—Íˆ—
 		if (jumpVy < 0.0f)
 		{
 			jumpVy += GRAVITY;
 		}
 		else
 		{
-			jumpVy += GRAVITY * 2.5f; // è½ä¸‹æ™‚ã¯å°‘ã—é‡åŠ›ã‚’å¼·ã
+			jumpVy += GRAVITY * 2.5f; // —‰º‚Í­‚µd—Í‚ğ‹­‚­
 		}
 	}
 	else
 	{
-		// åœ°ä¸Šã«ã„ã‚‹æ™‚ã§ã‚‚ã€åºŠãŒãªããªã£ãŸã‚‰è½ä¸‹ã•ã›ã‚‹ãŸã‚ã®å‡¦ç†
+		// ’nã‚É‚¢‚é‚Å‚àA°‚ª‚È‚­‚È‚Á‚½‚ç—‰º‚³‚¹‚é‚½‚ß‚Ìˆ—
 		jumpVy += GRAVITY;
 	}
 
-	// ç§»å‹•é‡ã‚’åº§æ¨™ã«ä»®é©ç”¨
+	// ˆÚ“®—Ê‚ğÀ•W‚É‰¼“K—p
 	pos.x += jumpVx;
 	pos.y += jumpVy;
 
-	// --- è¶³å…ƒã®ã‚³ãƒªã‚¸ãƒ§ãƒ³åˆ¤å®š ---
+	// --- ‘«Œ³‚ÌƒRƒŠƒWƒ‡ƒ“”»’è ---
 	if (CheckGrounded(pos.x, pos.y))
 	{
-		// åœ°é¢ã«ã‚ã‚Šè¾¼ã¾ãªã„ã‚ˆã†ã«ä½ç½®ã‚’èª¿æ•´ï¼ˆã‚¿ã‚¤ãƒ«ã‚µã‚¤ã‚º 32 ãƒ”ã‚¯ã‚»ãƒ«å˜ä½ã«ã‚¹ãƒŠãƒƒãƒ—ï¼‰
+		// ’n–Ê‚É‚ß‚è‚Ü‚È‚¢‚æ‚¤‚ÉˆÊ’u‚ğ’²®iƒ^ƒCƒ‹ƒTƒCƒY 32 ƒsƒNƒZƒ‹’PˆÊ‚ÉƒXƒiƒbƒvj
 		float halfH = size.y / 2.0f;
 		float footY = pos.y + halfH;
 		int tileY = (int)floorf(footY / 32.0f);
 
-		// åœ°é¢ã®è¡¨é¢ã®Yåº§æ¨™ã«ãƒœã‚¹ã‚’åˆã‚ã›ã‚‹
+		// ’n–Ê‚Ì•\–Ê‚ÌYÀ•W‚Éƒ{ƒX‚ğ‡‚í‚¹‚é
 		pos.y = (tileY * 32.0f) - halfH;
 
-		// ç€åœ°å®Œäº†å‡¦ç†
+		// ’…’nŠ®—¹ˆ—
 		jumpVy = 0.0f;
 		jumpVx = 0.0f;
 		isJumping = false;
 	}
 	else
 	{
-		// è¶³å…ƒã«åºŠãŒãªã„å ´åˆã¯ç©ºä¸­çŠ¶æ…‹ã«ã™ã‚‹
+		// ‘«Œ³‚É°‚ª‚È‚¢ê‡‚Í‹ó’†ó‘Ô‚É‚·‚é
 		isJumping = true;
 	}
 

@@ -9,6 +9,7 @@ bool BulletST1C::SystemInit(GameScene* gs)
 
 	imgHandle = LoadGraph("image/Stage1_EnemyC_Bulled.png");
 	size = { 16, 16 };
+    isRotation = false;
 	return (imgHandle != -1);
 }
 

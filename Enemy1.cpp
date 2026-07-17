@@ -32,6 +32,7 @@ void Enemy1::Update(void)
 		return;
 	}
 
+
 	shotTimer++;
 
 	if (shotTimer % 120 == 0)

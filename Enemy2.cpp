@@ -32,6 +32,7 @@ void Enemy2::Update(void)
 		return;
 	}
 
+
 	shotTimer++;
 
 	if (animCounter == EnemyBase::ANIM_INTERVAL)

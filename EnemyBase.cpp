@@ -53,23 +53,20 @@ void EnemyBase::GameInit(Vector2F spawnPos) // ƒQ[ƒ€‹N“®EÄŠJ‚É•K‚¸ŒÄ‚Ño‚·
 
 void EnemyBase::Update(void) // XVˆ—
 {
-	// €‚ñ‚Å‚¢‚é‚Æ‚«‚ÍÁ‚µ‚ÄXV‚µ‚È‚¢
-	if (hp <= 0 && aliveFlg == false) 
+	if (hp <= 0)
 	{
-		return;
+		aliveFlg = false;
+		return; // ‚±‚êˆÈã‰½‚à‚µ‚È‚¢
 	}
-	// ƒAƒjƒ[ƒVƒ‡ƒ“ƒJƒEƒ“ƒ^‚Ìis
-	animCounter++;
-	animNo = (animCounter / ANIM_INTERVAL) % ANIM_NUMS; //Œ»İ•\¦‚µ‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“”Ô†
-	if (animCounter >= ANIM_INTERVAL * ANIM_NUMS)animCounter = 0; // ƒJƒEƒ“ƒ^‚ÌƒŠƒZƒbƒg
+
 	
 	// ƒJƒƒ‰À•W‚Ìæ“¾
 	float camX = gInst->GetCameraX();
 	float camY = gInst->GetCameraY();
 
 	// ƒJƒƒ‰‚ÌŠO‚Éo‚½‚çÁ‚¦‚é
-	if(pos.x < camX -200 || pos.x > camX + 1920 +200 ||
-		pos.y < camY - 200 || pos.y > camY + 1080 + 200)
+	if(pos.x < camX -400 || pos.x > camX + 1280 +400 ||
+		pos.y < camY - 400 || pos.y > camY + 720 + 400)
 	{
 		aliveFlg = false;
 	}
@@ -82,10 +79,21 @@ void EnemyBase::Update(void) // XVˆ—
 		}
 	}
 
+	if (aliveFlg == false)
+	{
+		return;
+	}
+
+	// ƒAƒjƒ[ƒVƒ‡ƒ“ƒJƒEƒ“ƒ^‚Ìis
+	animCounter++;
+	animNo = (animCounter / ANIM_INTERVAL) % ANIM_NUMS; //Œ»İ•\¦‚µ‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“”Ô†
+	if (animCounter >= ANIM_INTERVAL * ANIM_NUMS)animCounter = 0; // ƒJƒEƒ“ƒ^‚ÌƒŠƒZƒbƒg
+
 	if (invincibleTimer > 0)
 	{
 		invincibleTimer--; // 1ƒtƒŒ[ƒ€‚²‚Æ‚É1Œ¸‚ç‚·i60ƒtƒŒ[ƒ€ = 1•bj
 	}
+	;
 }
 
 void EnemyBase::Draw(void) // •`‰æˆ—

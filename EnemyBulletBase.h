@@ -29,5 +29,7 @@ protected:
 	Vector2 size; // 弾の当たり判定サイズ
 	int imgHandle; // 弾の画像ハンドル番号
 	bool aliveFlg; // 生存状態
+	float aliveTimer; // 生存時間
+	bool isRotation; // 向き（回転）を変えるかどうかのフラグ
 
 };
