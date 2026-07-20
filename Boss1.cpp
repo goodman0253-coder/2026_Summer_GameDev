@@ -2,7 +2,7 @@
 #include "GameScene.h"
 #include "Player.h"
 #include "Stage.h"
-#include<DXLib.h>
+#include <DxLib.h>
 #include <math.h>
 
 

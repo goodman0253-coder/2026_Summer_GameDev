@@ -147,6 +147,8 @@
     <ClCompile Include="Boss3.cpp" />
     <ClCompile Include="Bread.cpp" />
     <ClCompile Include="BreadBase.cpp" />
+    <ClCompile Include="Croissant.cpp" />
+    <ClCompile Include="CroissantRecipe.cpp" />
     <ClCompile Include="Enemy1.cpp" />
     <ClCompile Include="Enemy2.cpp" />
     <ClCompile Include="Enemy3.cpp" />
@@ -195,6 +197,8 @@
     <ClInclude Include="Boss3.h" />
     <ClInclude Include="Bread.h" />
     <ClInclude Include="BreadBase.h" />
+    <ClInclude Include="Croissant.h" />
+    <ClInclude Include="CroissantRecipe.h" />
     <ClInclude Include="Enemy1.h" />
     <ClInclude Include="Enemy2.h" />
     <ClInclude Include="Enemy3.h" />

@@ -4,8 +4,7 @@
 #include <DxLib.h>
 #include <cmath> // cosf, sinf を使うため
 
-Melonpan::Melonpan(float startX, float startY, AsoUtility::DIR direction, GameScene* scene)
-    : BreadBase(startX, startY, direction) // ベースクラスのコンストラクタ呼び出し
+Melonpan::Melonpan(float startX, float startY, AsoUtility::DIR direction, GameScene* scene): BreadBase(startX, startY, direction) // ベースクラスのコンストラクタ呼び出し
 {
     gameSceneRef = scene;
 
@@ -13,7 +12,7 @@ Melonpan::Melonpan(float startX, float startY, AsoUtility::DIR direction, GameSc
     width = 32;
     height = 32;
 
-    // 💡 通常のメロンパン画像を読み込む
+    // 通常のメロンパン画像を読み込む
     imageHandle = LoadGraph("image/melonpan.png");
 
     lifeTimer = 90;

@@ -7,6 +7,7 @@
 #include "BreadBase.h"
 #include "Bread.h"
 #include "Melonpan.h"
+#include "Croissant.h"
 #include "GameScene.h"
 #include "Stage.h"
 #include "SoundManager.h"
@@ -193,6 +194,12 @@ void Player::Update()
 		case BREAD_TYPE::MELONPAN:
 		{
 			newBread = new Melonpan(spawnX, spawnY, playerDir, gameScene);
+			shotBreadTimers[breadIdx] = MAX_COOL_TIME[breadIdx];
+		}
+		break;
+		case BREAD_TYPE::CROISSANT: 
+		{
+			newBread = new Croissant(spawnX, spawnY, playerDir, this);
 			shotBreadTimers[breadIdx] = MAX_COOL_TIME[breadIdx];
 		}
 		break;

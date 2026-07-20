@@ -15,16 +15,16 @@
       <Filter>GameObject\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="BreadBase.cpp">
-      <Filter>GameObject\Player\Bread</Filter>
+      <Filter>GameObject\Bread</Filter>
     </ClCompile>
     <ClCompile Include="Bread.cpp">
-      <Filter>GameObject\Player\Bread\Bread</Filter>
+      <Filter>GameObject\Bread\Bread</Filter>
     </ClCompile>
     <ClCompile Include="Melonpan.cpp">
-      <Filter>GameObject\Player\Bread\Melonpan</Filter>
+      <Filter>GameObject\Bread\Melonpan</Filter>
     </ClCompile>
     <ClCompile Include="MiniMelonpan.cpp">
-      <Filter>GameObject\Player\Bread\Melonpan</Filter>
+      <Filter>GameObject\Bread\Melonpan</Filter>
     </ClCompile>
     <ClCompile Include="Enemy1.cpp">
       <Filter>GameObject\Enemy</Filter>
@@ -111,6 +111,12 @@
     <ClCompile Include="FpsControl.cpp">
       <Filter>Application</Filter>
     </ClCompile>
+    <ClCompile Include="Croissant.cpp">
+      <Filter>GameObject\Bread\Croissant</Filter>
+    </ClCompile>
+    <ClCompile Include="CroissantRecipe.cpp">
+      <Filter>GameObject\Recipe\Croissant</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -129,16 +135,16 @@
       <Filter>GameObject\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="BreadBase.h">
-      <Filter>GameObject\Player\Bread</Filter>
+      <Filter>GameObject\Bread</Filter>
     </ClInclude>
     <ClInclude Include="Bread.h">
-      <Filter>GameObject\Player\Bread\Bread</Filter>
+      <Filter>GameObject\Bread\Bread</Filter>
     </ClInclude>
     <ClInclude Include="MiniMelonpan.h">
-      <Filter>GameObject\Player\Bread\Melonpan</Filter>
+      <Filter>GameObject\Bread\Melonpan</Filter>
     </ClInclude>
     <ClInclude Include="Melonpan.h">
-      <Filter>GameObject\Player\Bread\Melonpan</Filter>
+      <Filter>GameObject\Bread\Melonpan</Filter>
     </ClInclude>
     <ClInclude Include="EnemyBase.h">
       <Filter>GameObject\Enemy</Filter>
@@ -225,6 +231,12 @@
     <ClInclude Include="FpsControl.h">
       <Filter>Application</Filter>
     </ClInclude>
+    <ClInclude Include="Croissant.h">
+      <Filter>GameObject\Bread\Croissant</Filter>
+    </ClInclude>
+    <ClInclude Include="CroissantRecipe.h">
+      <Filter>GameObject\Recipe\Croissant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Application">
@@ -248,15 +260,6 @@
     <Filter Include="GameObject\Recipe">
       <UniqueIdentifier>{b10989af-d847-47aa-8819-0c7ae3d947a8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject\Player\Bread">
-      <UniqueIdentifier>{e568b85c-ae52-4e1e-a5ff-4238a207a587}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Player\Bread\Bread">
-      <UniqueIdentifier>{7a66ef89-71ff-4f03-9d4e-9d97d94a2001}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Player\Bread\Melonpan">
-      <UniqueIdentifier>{afba3272-f8a4-4441-82d3-9e883e73575c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameObject\Enemy\Bullet">
       <UniqueIdentifier>{f49c2ef2-a149-4bb1-847a-9551b0d9fecd}</UniqueIdentifier>
     </Filter>
@@ -274,6 +277,21 @@
     </Filter>
     <Filter Include="SoundManager">
       <UniqueIdentifier>{7171dfbb-7f20-4210-aca3-a5ec97647517}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Bread">
+      <UniqueIdentifier>{e568b85c-ae52-4e1e-a5ff-4238a207a587}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Bread\Bread">
+      <UniqueIdentifier>{7a66ef89-71ff-4f03-9d4e-9d97d94a2001}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Bread\Melonpan">
+      <UniqueIdentifier>{afba3272-f8a4-4441-82d3-9e883e73575c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Bread\Croissant">
+      <UniqueIdentifier>{dfa564d5-aa90-4ac7-a359-c281c85e23b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Recipe\Croissant">
+      <UniqueIdentifier>{2132c942-4fdb-442d-b547-0e2fe417ae43}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
