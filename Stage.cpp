@@ -80,15 +80,15 @@ void Stage::Initialize(int stageNum)
         LoadDivGraph("Data/ST-Schl-Gym.png", xNum * yNumG, xNum, yNumG, TILE_SIZE, TILE_SIZE, tileImages[LAYER_FOREGROUNDSG]);
         LoadDivGraph("Data/ST-Schl-I01.png", xNum * yNumI, xNum, yNumI, TILE_SIZE, TILE_SIZE, tileImages[LAYER_OBJECTSI]);
 
-        LoadMapCSV("Data/MAP01BACKV6E.csv", LAYER_BACKGROUNDSE); // 背景用CSV
-        LoadMapCSV("Data/MAP01MIDV6E.csv", LAYER_MIDDLEGROUNDSE); // 中景用CSV（今のメインマップ）
-        LoadMapCSV("Data/MAP01OBJV6E.csv", LAYER_OBJECTSE); // 障害物用CSV
-        LoadMapCSV("Data/MAP01FOREV6E.csv", LAYER_FOREGROUNDSE); // 前景用CSV
-        LoadMapCSV("Data/MAP01BACKV6G.csv", LAYER_BACKGROUNDSG); // 背景用CSV
-        LoadMapCSV("Data/MAP01MIDV6G.csv", LAYER_MIDDLEGROUNDSG); // 中景用CSV（今のメインマップ）
-        LoadMapCSV("Data/MAP01OBJV6G.csv", LAYER_OBJECTSG); // 障害物用CSV
-        LoadMapCSV("Data/MAP01FOREV6G.csv", LAYER_FOREGROUNDSG); // 前景用CSV
-        LoadMapCSV("Data/MAP01OBJV6I.csv", LAYER_OBJECTSI); // 障害物用CSV
+        LoadMapCSV("Data/MAP01BACKV7E.csv", LAYER_BACKGROUNDSE); // 背景用CSV
+        LoadMapCSV("Data/MAP01MIDV7E.csv", LAYER_MIDDLEGROUNDSE); // 中景用CSV
+        LoadMapCSV("Data/MAP01OBJV7E.csv", LAYER_OBJECTSE); // 障害物用CSV
+        LoadMapCSV("Data/MAP01FOREV7E.csv", LAYER_FOREGROUNDSE); // 前景用CSV
+        LoadMapCSV("Data/MAP01BACKV7G.csv", LAYER_BACKGROUNDSG); // 背景用CSV
+        LoadMapCSV("Data/MAP01MIDV7G.csv", LAYER_MIDDLEGROUNDSG); // 中景用CSV
+        LoadMapCSV("Data/MAP01OBJV7G.csv", LAYER_OBJECTSG); // 障害物用CSV
+        LoadMapCSV("Data/MAP01FOREV7G.csv", LAYER_FOREGROUNDSG); // 前景用CSV
+        LoadMapCSV("Data/MAP01OBJV7I.csv", LAYER_OBJECTSI); // 障害物用CSV
         // ステージ1の当たり判定CSVをロード
         LoadCollisionCSV("Data/AGS_Map_School_Collision.csv");
     }
