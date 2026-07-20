@@ -122,6 +122,7 @@ private:
     {
         45,  // NORMAL のクールタイム
         120, //Melonoanのクールタイム
+		90   // Croissant のクールタイム
     };
     int breadIdx; 
 

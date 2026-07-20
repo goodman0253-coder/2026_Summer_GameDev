@@ -24,6 +24,8 @@
 #include "Melonpan.h"
 #include "MelonpanRecipe.h"
 #include "MiniMelonpan.h"
+#include "Croissant.h"
+#include "CroissantRecipe.h"
 #include "SoundManager.h"
 
 GameScene::GameScene()
@@ -100,6 +102,7 @@ bool GameScene::GameInit(void)
 	SoundManager::GetInstance().PlayBGM("gameScene");
 
 	AddRecipe(new MelonRecipe(1500.0f, 1150.0f));
+	AddRecipe(new CroissantRecipe(500.0f, 1150.0f));
 
 	return true;
 }
@@ -223,6 +226,7 @@ void GameScene::CollisionCheckEB()
 						{
 						  Melonpan* melon = dynamic_cast<Melonpan*>(bread);
 						  MiniMelonpan* miniMelon = dynamic_cast<MiniMelonpan*>(bread);
+						  Croissant* croissant = dynamic_cast<Croissant*>(bread);
 						  if (melon != nullptr)
 						  {
 							  SoundManager::GetInstance().PlaySE("damage");
@@ -243,6 +247,12 @@ void GameScene::CollisionCheckEB()
 							  SoundManager::GetInstance().PlaySE("damage");
 							  enemys[i]->SetDamage(1);
 							  miniMelon->Kill();
+						  }
+						  else if (croissant != nullptr)
+						  {
+							  SoundManager::GetInstance().PlaySE("damage");
+							  enemys[i]->SetDamage(2);
+							  croissant->Kill();
 						  }
 						  else
 						  {
@@ -619,6 +629,10 @@ void GameScene::Draw(void)
 		else if (currentTypeIdx == 1) // MELONPAN
 		{
 			breadImg = LoadGraph("image/melonpan.png");
+		}
+		else if (currentTypeIdx == 2) // CROISSANT 
+		{
+			breadImg = LoadGraph("image/croissant.png");
 		}
 
 		int roundRadius = 12;

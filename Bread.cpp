@@ -1,4 +1,4 @@
-#include "DxLib.h"
+#include <DxLib.h>
 #include "BreadBase.h"
 #include "Bread.h"
 
@@ -8,8 +8,8 @@ Bread::Bread(float startX, float startY, AsoUtility::DIR direction)
 {
     // 基本のパン固有の画像を読み込む（事前に一括読み込みして使い回すのが理想ですが、簡易的に）
     imageHandle = LoadGraph("image/bread.png");
-    width = 16;
-    height = 16;
+    width = 24;
+    height = 24;
 }
 
 Bread::~Bread()
