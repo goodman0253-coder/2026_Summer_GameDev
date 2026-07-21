@@ -47,6 +47,7 @@ void EnemyBase::GameInit(Vector2F spawnPos) // ƒQ[ƒ€‹N“®EÄŠJ‚É•K‚¸ŒÄ‚Ño‚·
 	pos = spawnPos;
 	animCounter = 0;
 	aliveFlg = true;
+	hasAppearedOnScreen = false;
 	hp = hpMax;
 	EoB = eob;
 }
@@ -64,15 +65,30 @@ void EnemyBase::Update(void) // XVˆ—
 	float camX = gInst->GetCameraX();
 	float camY = gInst->GetCameraY();
 
-	// ƒJƒƒ‰‚ÌŠO‚Éo‚½‚çÁ‚¦‚é
-	if(pos.x < camX -400 || pos.x > camX + 1280 +400 ||
-		pos.y < camY - 400 || pos.y > camY + 720 + 400)
+	if (EoB == 0)
 	{
-		aliveFlg = false;
+		// ƒJƒƒ‰‚ÌŠO‚Éo‚½‚çÁ‚¦‚é
+		if (pos.x < camX - 400 || pos.x > camX + 1280 + 400 ||
+			pos.y < camY - 400 || pos.y > camY + 720 + 400)
+		{
+			aliveFlg = false;
+		}
+		else
+		{
+			// ƒJƒƒ‰‚Ì’†‚É‚¢‚é‚Æ‚«‚ÍXVˆ—‚ğs‚¤
+			if (hp > 0)
+			{
+				aliveFlg = true;
+			}
+		}
+
+		if (aliveFlg == false)
+		{
+			return;
+		}
 	}
 	else
 	{
-		// ƒJƒƒ‰‚Ì’†‚É‚¢‚é‚Æ‚«‚ÍXVˆ—‚ğs‚¤
 		if (hp > 0)
 		{
 			aliveFlg = true;
@@ -101,21 +117,25 @@ void EnemyBase::Draw(void) // •`‰æˆ—
 	// €‚ñ‚Å‚¢‚é‚Æ‚«‚ÍÁ‚µ‚Ä•`‰æ‚µ‚È‚¢
 	if (!aliveFlg)return;
 
+	bool skipSprite = false;
 	if (IsInvincible())
 	{
 		if ((invincibleTimer / 4) % 2 == 0)
 		{
-			return; // ‚±‚ÌƒtƒŒ[ƒ€‚Í•`‰æ‚ğƒXƒLƒbƒvi”ñ•\¦‚É‚µ‚Ä“_–Å‚ğ•\Œ»j
+			skipSprite = true; // ‚±‚ÌƒtƒŒ[ƒ€‚Í–{‘Ì‚Ì•`‰æ‚ğƒXƒLƒbƒv
 		}
 	}
 
 	float stposX = gInst->GetCameraX();	//ƒJƒƒ‰À•WX
 	float stposY = gInst->GetCameraY();	//ƒJƒƒ‰À•WY
 
-	// printfDx("•\¦");
-	DrawGraph(pos.x - size.x / 2 - stposX,
-		pos.y - size.y / 2 - stposY,
-		img[dir][animNo], true);
+	// “G‚Ì‰æ‘œ‚ğ•`‰æ‚·‚é
+	if (!skipSprite)
+	{
+		DrawGraph(pos.x - size.x / 2 - stposX,
+			pos.y - size.y / 2 - stposY,
+			img[dir][animNo], true);
+	}
 
 	//// “–‚½‚è”»’è‚Ì‰Â‹‰»iƒfƒoƒbƒO—pj
 	//if (EoB == 0);
@@ -134,10 +154,64 @@ void EnemyBase::Draw(void) // •`‰æˆ—
 	
 
 	// “G‚Ì‚Ì‚±‚èHP‚ğ•\¦‚·‚éiƒfƒoƒbƒO—pj
-	DrawFormatString(pos.x - stposX, pos.y - size.y / 2 - 20 - stposY, GetColor(255, 255, 255), "HP: %d", hp);
+	//DrawFormatString(pos.x - stposX, pos.y - size.y / 2 - 20 - stposY, GetColor(255, 255, 255), "HP: %d", hp);
 
 	// ¶€‚ğ•\¦iƒfƒoƒbƒO—pj
-	 DrawFormatString(pos.x - stposX, pos.y + size.y / 2 + 5 - stposY, GetColor(255, 255, 255), "Alive: %s", aliveFlg ? "True" : "False");
+	//DrawFormatString(pos.x - stposX, pos.y + size.y / 2 + 5 - stposY, GetColor(255, 255, 255), "Alive: %s", aliveFlg ?"True" : "False");
+
+	 // ƒ{ƒX‚Ìê‡A‰æ–Ê‰Eã‚É‘Ì—ÍƒQ[ƒW‚ğ•\¦‚·‚é
+	 if (EoB > 0)
+	 {
+		 float camX = gInst->GetCameraX();
+		 float camY = gInst->GetCameraY();
+
+		 // ‰æ–ÊƒTƒCƒY‚ğæ“¾
+		 float screenW = 1280.0f;
+		 float screenH = 720.0f;
+
+		 // ƒ{ƒX‚ª‰æ–Ê“à‚É‰f‚Á‚Ä‚¢‚é‚©‚ğ”»’è
+		 bool isVisibleX = (pos.x + size.x / 2.0f > camX) && (pos.x - size.x / 2.0f < camX + screenW);
+		 bool isVisibleY = (pos.y + size.y / 2.0f > camY) && (pos.y - size.y / 2.0f < camY + screenH);
+
+		 if (isVisibleX && isVisibleY)
+		 {
+			 hasAppearedOnScreen = true;
+		 }
+
+		 // ‰æ–Ê“à‚Éˆê“x‚Å‚à‰f‚Á‚½‚±‚Æ‚ª‚ ‚ê‚ÎƒQ[ƒW‚ğ•`‰æ‚µ‘±‚¯‚é
+		 if (hasAppearedOnScreen)
+		 {
+			 int currentHp = hp;
+			 int maxHp = hpMax;
+			 int gaugeWidth = 300;
+			 int gaugeHeight = 24;
+
+			 int gaugeX = 1280 - gaugeWidth - 50;
+			 int gaugeY = 50;
+
+
+			 // HPƒQ[ƒW‚Ì”wŒi‚ğ•`‰æ
+			 DrawBox(gaugeX - 10, gaugeY - 35, gaugeX + gaugeWidth + 10, gaugeY + gaugeHeight + 10, GetColor(0, 0, 0), TRUE);
+			 // HPƒQ[ƒW‚Ì˜g‚ğ•`‰æ
+			 DrawBox(gaugeX, gaugeY, gaugeX + gaugeWidth, gaugeY + gaugeHeight, GetColor(255, 255, 255), FALSE);
+
+			 DrawFormatString(gaugeX, gaugeY - 25, GetColor(255, 255, 255), "Boss HP  %d / %d", currentHp, maxHp);
+
+			 // Œ»İ‚ÌHP‚É‰‚¶‚½ƒQ[ƒW‚Ì•‚ğŒvZ
+			 int currentBarWidth = (int)((float)currentHp / (float)maxHp * gaugeWidth);
+			 if (currentBarWidth < 0) currentBarWidth = 0;
+
+			 // HPƒQ[ƒW‚ÌF‚ğŒˆ’è
+			 unsigned int barColor = (currentHp <= maxHp / 4) ? GetColor(255, 0, 0) : GetColor(0, 255, 0);
+
+			 // Œ»İ‚ÌHP‚É‰‚¶‚½ƒQ[ƒW‚ğ•`‰æ
+			 if (currentBarWidth > 0)
+			 {
+				 DrawBox(gaugeX + 2, gaugeY + 2, gaugeX + currentBarWidth - 2, gaugeY + gaugeHeight - 2, barColor, TRUE);
+			 }
+		 }
+	 }
+
 }
 
 bool EnemyBase::Release(void) // ‰ğ•úˆ—(ÅŒã‚Ì‚P‰ñ‚Ì‚İÀs)

@@ -77,6 +77,7 @@ protected:
 
 	// 敵の画像ファイル名
 	std::string imgFName;
+	bool hasAppearedOnScreen; // 敵が画面内に出現したかどうかのフラグ(ボスの体力ゲージ表示用)
 	// 敵の移動速度
 	float speed;
 };
