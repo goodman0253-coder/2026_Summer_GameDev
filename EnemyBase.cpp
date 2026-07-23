@@ -1,12 +1,15 @@
 #include "EnemyBase.h"
 #include "Player.h"
 #include "Stage.h"
+#include "EnemyDeathStar.h"
 #include <DxLib.h>
 #include "GameScene.h"
 
 EnemyBase::EnemyBase()
 {
-
+	for (int i = 0; i < MAX_STARS; i++) {
+		stars[i] = nullptr;
+	}
 }
 
 EnemyBase::~EnemyBase(void)
@@ -19,18 +22,22 @@ bool EnemyBase::SystemInit(GameScene* gs) // ‰Šú‰»ˆ—(Å‰‚Ì‚P‰ñ‚Ì‚İÀs)
 	printfDx("ˆê‰ñ–ÚEnemyBaseSystemInit(): imgFName=%s size=%d,%d\n", imgFName.c_str(), size.x, size.y);
 
 	gInst = gs;
+
 	// “GƒLƒƒƒ‰ŒÂ•Ê‚Ìƒpƒ‰ƒ[ƒ^İ’èˆ—
 	SetEnemyParam();
+
 	std::string path = "image/";
+
 	path += imgFName;
-	printfDx("“ñ‰ñ–ÚEnemyBaseSystemInit(): imgFName=%s size=%d,%d\n", imgFName.c_str(), size.x, size.y);
+
 	int err = LoadDivGraph(path.c_str(), CHARA_MAX,
 		static_cast<int>(AsoUtility::DIR::MAX), ANIM_NUMS,
 		size.x, size.y, img[0]);
 
-	printfDx("O‰ñ–ÚEnemyBaseSystemInit(): LoadDivGraph result=%d path=%s\n", err, path.c_str());
 	if (err == -1)return false;
+
 	dir = 0;
+
 	return true;
 }
 
@@ -47,6 +54,7 @@ void EnemyBase::GameInit(Vector2F spawnPos) // ƒQ[ƒ€‹N“®EÄŠJ‚É•K‚¸ŒÄ‚Ño‚·
 	pos = spawnPos;
 	animCounter = 0;
 	aliveFlg = true;
+	hasAppearedOnScreen = false;
 	hp = hpMax;
 	EoB = eob;
 }
@@ -56,23 +64,33 @@ void EnemyBase::Update(void) // XVˆ—
 	if (hp <= 0)
 	{
 		aliveFlg = false;
-		return; // ‚±‚êˆÈã‰½‚à‚µ‚È‚¢
 	}
 
-	
+
 	// ƒJƒƒ‰À•W‚Ìæ“¾
 	float camX = gInst->GetCameraX();
 	float camY = gInst->GetCameraY();
 
-	// ƒJƒƒ‰‚ÌŠO‚Éo‚½‚çÁ‚¦‚é
-	if(pos.x < camX -400 || pos.x > camX + 1280 +400 ||
-		pos.y < camY - 400 || pos.y > camY + 720 + 400)
+	if (EoB == 0)
 	{
-		aliveFlg = false;
+		// ƒJƒƒ‰‚ÌŠO‚Éo‚½‚çÁ‚¦‚é
+		if (pos.x < camX - 400 || pos.x > camX + 1280 + 400 ||
+			pos.y < camY - 400 || pos.y > camY + 720 + 400)
+		{
+			aliveFlg = false;
+		}
+		else
+		{
+			// ƒJƒƒ‰‚Ì’†‚É‚¢‚é‚Æ‚«‚ÍXVˆ—‚ğs‚¤
+			if (hp > 0)
+			{
+				aliveFlg = true;
+				dir = 0;
+			}
+		}
 	}
 	else
 	{
-		// ƒJƒƒ‰‚Ì’†‚É‚¢‚é‚Æ‚«‚ÍXVˆ—‚ğs‚¤
 		if (hp > 0)
 		{
 			aliveFlg = true;
@@ -81,7 +99,7 @@ void EnemyBase::Update(void) // XVˆ—
 
 	if (aliveFlg == false)
 	{
-		return;
+		dir = 1;
 	}
 
 	// ƒAƒjƒ[ƒVƒ‡ƒ“ƒJƒEƒ“ƒ^‚Ìis
@@ -93,29 +111,36 @@ void EnemyBase::Update(void) // XVˆ—
 	{
 		invincibleTimer--; // 1ƒtƒŒ[ƒ€‚²‚Æ‚É1Œ¸‚ç‚·i60ƒtƒŒ[ƒ€ = 1•bj
 	}
-	;
+
+	for (int i = 0; i < MAX_STARS; i++) {
+		if (stars[i] != nullptr) {
+			stars[i]->Update();
+		}
+	}
 }
 
 void EnemyBase::Draw(void) // •`‰æˆ—
 {
-	// €‚ñ‚Å‚¢‚é‚Æ‚«‚ÍÁ‚µ‚Ä•`‰æ‚µ‚È‚¢
-	if (!aliveFlg)return;
 
+	bool skipSprite = false;
 	if (IsInvincible())
 	{
 		if ((invincibleTimer / 4) % 2 == 0)
 		{
-			return; // ‚±‚ÌƒtƒŒ[ƒ€‚Í•`‰æ‚ğƒXƒLƒbƒvi”ñ•\¦‚É‚µ‚Ä“_–Å‚ğ•\Œ»j
+			skipSprite = true; // ‚±‚ÌƒtƒŒ[ƒ€‚Í–{‘Ì‚Ì•`‰æ‚ğƒXƒLƒbƒv
 		}
 	}
 
 	float stposX = gInst->GetCameraX();	//ƒJƒƒ‰À•WX
 	float stposY = gInst->GetCameraY();	//ƒJƒƒ‰À•WY
 
-	// printfDx("•\¦");
-	DrawGraph(pos.x - size.x / 2 - stposX,
-		pos.y - size.y / 2 - stposY,
-		img[dir][animNo], true);
+	// “G‚Ì‰æ‘œ‚ğ•`‰æ‚·‚é
+	if (!skipSprite)
+	{
+		DrawGraph(pos.x - size.x / 2 - stposX,
+			pos.y - size.y / 2 - stposY,
+			img[dir][animNo], true);
+	}
 
 	//// “–‚½‚è”»’è‚Ì‰Â‹‰»iƒfƒoƒbƒO—pj
 	//if (EoB == 0);
@@ -134,14 +159,83 @@ void EnemyBase::Draw(void) // •`‰æˆ—
 	
 
 	// “G‚Ì‚Ì‚±‚èHP‚ğ•\¦‚·‚éiƒfƒoƒbƒO—pj
-	DrawFormatString(pos.x - stposX, pos.y - size.y / 2 - 20 - stposY, GetColor(255, 255, 255), "HP: %d", hp);
+	//DrawFormatString(pos.x - stposX, pos.y - size.y / 2 - 20 - stposY, GetColor(255, 255, 255), "HP: %d", hp);
 
 	// ¶€‚ğ•\¦iƒfƒoƒbƒO—pj
-	 DrawFormatString(pos.x - stposX, pos.y + size.y / 2 + 5 - stposY, GetColor(255, 255, 255), "Alive: %s", aliveFlg ? "True" : "False");
+	//DrawFormatString(pos.x - stposX, pos.y + size.y / 2 + 5 - stposY, GetColor(255, 255, 255), "Alive: %s", aliveFlg ?"True" : "False");
+
+	 // ƒ{ƒX‚Ìê‡A‰æ–Ê‰Eã‚É‘Ì—ÍƒQ[ƒW‚ğ•\¦‚·‚é
+	 if (EoB > 0)
+	 {
+		 float camX = gInst->GetCameraX();
+		 float camY = gInst->GetCameraY();
+
+		 // ‰æ–ÊƒTƒCƒY‚ğæ“¾
+		 float screenW = 1280.0f;
+		 float screenH = 720.0f;
+
+		 // ƒ{ƒX‚ª‰æ–Ê“à‚É‰f‚Á‚Ä‚¢‚é‚©‚ğ”»’è
+		 bool isVisibleX = (pos.x + size.x / 2.0f > camX) && (pos.x - size.x / 2.0f < camX + screenW);
+		 bool isVisibleY = (pos.y + size.y / 2.0f > camY) && (pos.y - size.y / 2.0f < camY + screenH);
+
+		 if (isVisibleX && isVisibleY)
+		 {
+			 hasAppearedOnScreen = true;
+		 }
+
+		 // ‰æ–Ê“à‚Éˆê“x‚Å‚à‰f‚Á‚½‚±‚Æ‚ª‚ ‚ê‚ÎƒQ[ƒW‚ğ•`‰æ‚µ‘±‚¯‚é
+		 if (hasAppearedOnScreen)
+		 {
+			 int currentHp = hp;
+			 int maxHp = hpMax;
+			 int gaugeWidth = 300;
+			 int gaugeHeight = 24;
+
+			 int gaugeX = 1280 - gaugeWidth - 50;
+			 int gaugeY = 50;
+
+
+			 // HPƒQ[ƒW‚Ì”wŒi‚ğ•`‰æ
+			 DrawBox(gaugeX - 10, gaugeY - 35, gaugeX + gaugeWidth + 10, gaugeY + gaugeHeight + 10, GetColor(0, 0, 0), TRUE);
+			 // HPƒQ[ƒW‚Ì˜g‚ğ•`‰æ
+			 DrawBox(gaugeX, gaugeY, gaugeX + gaugeWidth, gaugeY + gaugeHeight, GetColor(255, 255, 255), FALSE);
+
+			 DrawFormatString(gaugeX, gaugeY - 25, GetColor(255, 255, 255), "Boss HP  %d / %d", currentHp, maxHp);
+
+			 // Œ»İ‚ÌHP‚É‰‚¶‚½ƒQ[ƒW‚Ì•‚ğŒvZ
+			 int currentBarWidth = (int)((float)currentHp / (float)maxHp * gaugeWidth);
+			 if (currentBarWidth < 0) currentBarWidth = 0;
+
+			 // HPƒQ[ƒW‚ÌF‚ğŒˆ’è
+			 unsigned int barColor = (currentHp <= maxHp / 4) ? GetColor(255, 0, 0) : GetColor(0, 255, 0);
+
+			 // Œ»İ‚ÌHP‚É‰‚¶‚½ƒQ[ƒW‚ğ•`‰æ
+			 if (currentBarWidth > 0)
+			 {
+				 DrawBox(gaugeX + 2, gaugeY + 2, gaugeX + currentBarWidth - 2, gaugeY + gaugeHeight - 2, barColor, TRUE);
+			 }
+		 }
+	 }
+
+	 // ¯‚ª‘¶İ‚µ‚Ä‚¢‚ê‚Î•`‰æˆ—‚ğŒÄ‚Ô
+	 for (int i = 0; i < MAX_STARS; i++) {
+		 if (stars[i] != nullptr) {
+			 stars[i]->Draw();
+		 }
+	 }
 }
 
 bool EnemyBase::Release(void) // ‰ğ•úˆ—(ÅŒã‚Ì‚P‰ñ‚Ì‚İÀs)
 {
+	// ¯‚ÌŠJ•ú
+	for (int i = 0; i < MAX_STARS; i++) {
+		if (stars[i] != nullptr) {
+			stars[i]->Release();
+			delete stars[i];
+			stars[i] = nullptr;
+		}
+	}
+
 	// “G‰æ‘œ‚Ì‰ğ•ú
 	bool bval = true;
 	for (int dir = static_cast<int>(AsoUtility::DIR::MAX) - 1; dir >= 0; dir--) {
@@ -175,6 +269,15 @@ void EnemyBase::SetDamage(int dp)
 	hp -= dp;
 	if (hp <= 0) {
 		hp = 0;
+		for (int i = 0; i < MAX_STARS; i++) {
+			if (stars[i] == nullptr) {
+				stars[i] = new Star();
+				stars[i]->SystemInit(gInst);
+				stars[i]->SetPos(pos);
+			}
+		}
+		
+
 		aliveFlg = false;
 	}
 
