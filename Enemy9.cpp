@@ -1,10 +1,11 @@
 #include "Enemy9.h"
-
 #include "Player.h"
 #include "GameScene.h"
 #include "EnemyBulletBase.h"
 #include "Stage3_EnemyC_Bullet.h"
 #include <DxLib.h>
+#include "Stage.h"
+#include <cmath>
 
 void Enemy9::GameInit(void)
 {
@@ -25,12 +26,51 @@ void Enemy9::SetEnemyParam(void)
 	eob = 0;
 }
 
+bool Enemy9::CheckGrounded(float checkX, float checkY)
+{
+	if (this->gInst == nullptr) return false;
+	Stage* stage = this->gInst->GetLpStage();
+	if (stage == nullptr) return false;
+
+	float halfW = size.x / 2.0f;
+	float halfH = size.y / 2.0f;
+
+	float footLeftX = checkX - halfW + 4.0f;
+	float footRightX = checkX + halfW - 4.0f;
+	float footY = checkY + halfH;
+
+	if (stage->CheckCollision(footLeftX, footY) || stage->CheckCollision(footRightX, footY))
+	{
+		return true;
+	}
+	return false;
+}
+
 void Enemy9::Update(void)
 {
 	EnemyBase::Update();
 
 	if (!GetAlive())
 	{
+		if (!CheckGrounded(pos.x, pos.y))
+		{
+			// 空中にいる間は落下させる
+			fallVy += 0.5f; // 重力加速度
+			pos.y += fallVy;
+
+			if (dir == 1) dir = 0;
+			else if (dir == 3) dir = 2;
+		}
+		else
+		{
+			fallVy = 0.0f;
+
+			float halfH = size.y / 2.0f;
+			float footY = pos.y + halfH;
+			int tileY = (int)floorf(footY / 32.0f);
+			pos.y = tileY * 32.0f - halfH;
+		}
+
 		return;
 	}
 
@@ -45,11 +85,11 @@ void Enemy9::Update(void)
 
 	// 移動処理のロジック修正
 	if (PX < pos.x) {
-		animNo = 0; // 左向き（例）
+		dir = 0; // 左向き（例）
 		nowspeed -= 0.5f; // 加速度を少し抑える
 	}
 	else {
-		animNo = 1; // 右向き
+		dir = 2; // 右向き
 		nowspeed += 0.5f;
 	}
 
