@@ -40,14 +40,13 @@ void Boss2::Update(void)
 
 	// プレイヤーの方向を向くように設定
 	int PX = (player != nullptr) ? player->GetPosX() : 0;
-	Vector2F playerDir = Vector2F(PX - pos.x, 0.0f);
-	this->setMoveDirection(playerDir);
-
 	if (PX < pos.x) {
 		pos.x -= speed; // 加速度を少し抑える
+		dir = 0; // 左向き
 	}
 	else {
 		pos.x += speed;
+		dir = 2; // 右向き
 	}
 	
 	if (BakHP != EnemyBase::hp)
