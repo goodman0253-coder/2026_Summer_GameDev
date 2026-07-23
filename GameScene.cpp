@@ -26,6 +26,8 @@
 #include "MiniMelonpan.h"
 #include "Croissant.h"
 #include "CroissantRecipe.h"
+#include "Donut.h"
+#include "DonutRecipe.h"
 #include "SoundManager.h"
 
 GameScene::GameScene()
@@ -101,9 +103,32 @@ bool GameScene::GameInit(void)
 
 	SoundManager::GetInstance().PlayBGM("gameScene");
 
-	AddRecipe(new MelonRecipe(1500.0f, 1150.0f));
-	AddRecipe(new CroissantRecipe(500.0f, 1150.0f));
 
+	buttunImageC = LoadGraph("Image/C.png");
+	buttunImageV = LoadGraph("Image/V.png");
+	RTImage = LoadGraph("Image/RT.png");
+	LTImage = LoadGraph("Image/LT.png");
+	attackUIImage = LoadGraph("Image/Bread_Attack.png");
+	changeUIImage = LoadGraph("Image/Bread_Change.png");
+
+	if (currentStageNum == 1)
+	{
+		AddRecipe(new MelonRecipe(2750.0f, 1150.0f));
+		AddRecipe(new CroissantRecipe(500.0f, 1150.0f));
+		AddRecipe(new DonutRecipe(1500.0f, 1050.0f));
+	}
+	if (currentStageNum == 2)
+	{
+		AddRecipe(new MelonRecipe(2500.0f, 1050.0f));
+		AddRecipe(new CroissantRecipe(500.0f, 1150.0f));
+		AddRecipe(new DonutRecipe(1500.0f, 1050.0f));
+	}
+	if (currentStageNum == 3)
+	{
+		AddRecipe(new MelonRecipe(2500.0f, 1050.0f));
+		AddRecipe(new CroissantRecipe(500.0f, 1150.0f));
+		AddRecipe(new DonutRecipe(1500.0f, 1050.0f));
+	}
 	return true;
 }
 
@@ -227,6 +252,7 @@ void GameScene::CollisionCheckEB()
 						  Melonpan* melon = dynamic_cast<Melonpan*>(bread);
 						  MiniMelonpan* miniMelon = dynamic_cast<MiniMelonpan*>(bread);
 						  Croissant* croissant = dynamic_cast<Croissant*>(bread);
+						  Donut* donut = dynamic_cast<Donut*>(bread);
 						  if (melon != nullptr)
 						  {
 							  SoundManager::GetInstance().PlaySE("damage");
@@ -253,6 +279,21 @@ void GameScene::CollisionCheckEB()
 							  SoundManager::GetInstance().PlaySE("damage");
 							  enemys[i]->SetDamage(2);
 							  croissant->Kill();
+						  }
+						  else if (donut != nullptr)
+						  {
+							  SoundManager::GetInstance().PlaySE("damage");
+
+							  // ドーナツの現在のサイズに応じたダメージを与える
+							  enemys[i]->SetDamage(donut->GetCurrentDamage());
+
+							  if (enemys[i]->GetAlive() == false && enemys[i]->EoB > 5)
+							  {
+								  isClearTriggered = true;
+							  }
+
+							  // ドーナツ消滅（貫通させたい場合は Kill() を呼ばない選択もアリ）
+							  donut->Kill();
 						  }
 						  else
 						  {
@@ -493,9 +534,9 @@ void GameScene::Draw(void)
 		{
 			stage->Draw(cameraX, cameraY, LAYER_BACKGROUNDSE);
 			stage->Draw(cameraX, cameraY, LAYER_BACKGROUNDSG);
-			stage->Draw(cameraX, cameraY, LAYER_OBJECTSE);
 			stage->Draw(cameraX, cameraY, LAYER_MIDDLEGROUNDSE);
 			stage->Draw(cameraX, cameraY, LAYER_MIDDLEGROUNDSG);
+			stage->Draw(cameraX, cameraY, LAYER_OBJECTSE);
 			stage->Draw(cameraX, cameraY, LAYER_OBJECTSG);
 			stage->Draw(cameraX, cameraY, LAYER_OBJECTSI);
 
@@ -581,8 +622,8 @@ void GameScene::Draw(void)
 	if (player != nullptr)
 	{
 		SetFontSize(24);
-		DrawFormatString(60, 200, GetColor(255, 255, 0), "Player X: %.1f, Y: %.1f", player->GetPosX(), player->GetPosY());
-		DrawFormatString(60, 230, GetColor(255, 255, 0), "Camera X: %.1f, Y: %.1f", cameraX, cameraY);
+		//DrawFormatString(60, 200, GetColor(255, 255, 0), "Player X: %.1f, Y: %.1f", player->GetPosX(), player->GetPosY());
+		//DrawFormatString(60, 230, GetColor(255, 255, 0), "Camera X: %.1f, Y: %.1f", cameraX, cameraY);
 
 
 		int currentHp = player->GetHp();
@@ -608,14 +649,79 @@ void GameScene::Draw(void)
 			DrawBox(gaugeX + 2, gaugeY + 2, gaugeX + currentBarWidth - 2, gaugeY + gaugeHeight - 2, barColor, TRUE);
 		}
 
-		if (player->IsInvincible())
-		{
-			SetFontSize(20);
-			DrawString(gaugeX, gaugeY - 70, "INVINCIBLE!!", GetColor(255, 0, 0));
-		}
 		int currentTypeIdx = static_cast<int>(player->GetCurrentBreadType());
-		int currentTimer = player->GetShotBreadTimer(currentTypeIdx);
-		int maxCoolTime = player->GetMaxCoolTime(currentTypeIdx);
+		int currentTimer = player->GetShotBreadTimer(currentTypeIdx); 
+		int maxCoolTime = player->GetMaxCoolTime(currentTypeIdx); 
+
+		// =========================================================
+		// 追加: 画面下に解放済みのパン一覧を表示（横並び）
+		// =========================================================
+		int listStartX = 420;                // HPゲージの右側に配置
+		int listStartY = SCREEN_HEIGHT - 90; // 画面下の高さ
+		int listIconSize = 64;               // 各パンのアイコンサイズ
+		int spacing = 16;                    // アイコン同士の間隔
+
+		int maxTypes = static_cast<int>(Player::BREAD_TYPE::MAX);
+
+		for (int i = 0; i < maxTypes; i++)
+		{
+			// パンが解放されているかチェック
+			bool isUnlocked = player->IsBreadUnlocked(i);
+
+			// 各パンの画像ハンドルを選択
+			int iconHandle = -1;
+			if (i == 0)      iconHandle = LoadGraph("image/bread.png");
+			else if (i == 1) iconHandle = LoadGraph("image/melonpan.png");
+			else if (i == 2) iconHandle = LoadGraph("image/croissant.png");
+			else if (i == 3) iconHandle = LoadGraph("image/donut.png");
+
+			int itemX = listStartX + i * (listIconSize + spacing);
+			int itemY = listStartY;
+
+			if (isUnlocked)
+			{
+				// 現在選択中のパンなら枠を黄色（ハイライト）、それ以外は白で表示[cite: 19]
+				unsigned int borderColor = (i == currentTypeIdx) ? GetColor(255, 255, 0) : GetColor(255, 255, 255);
+
+				// 黒背景枠
+				DrawRoundRect(itemX, itemY, itemX + listIconSize, itemY + listIconSize, 8, 8, GetColor(0, 0, 0), TRUE);
+
+				// パン画像を描画
+				if (iconHandle != -1)
+				{
+					DrawExtendGraph(itemX, itemY, itemX + listIconSize, itemY + listIconSize, iconHandle, TRUE);
+				}
+
+				// 各パンの個別クールタイム影表示
+				int cdTimer = player->GetShotBreadTimer(i);
+				int maxCD = player->GetMaxCoolTime(i);
+				if (cdTimer > 0 && maxCD > 0)
+				{
+					float rate = (float)cdTimer / (float)maxCD;
+					int shadowH = (int)(listIconSize * rate);
+
+					SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
+					DrawRoundRect(itemX, itemY + (listIconSize - shadowH), itemX + listIconSize, itemY + listIconSize, 8, 8, GetColor(0, 0, 0), TRUE);
+					SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+				}
+
+				// 外枠描画
+				DrawRoundRect(itemX, itemY, itemX + listIconSize, itemY + listIconSize, 8, 8, borderColor, FALSE);
+			}
+			else
+			{
+				// 未解放のパンは鍵マーク風（薄い暗色＋「?」マーク）で表現
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, 120);
+				DrawRoundRect(itemX, itemY, itemX + listIconSize, itemY + listIconSize, 8, 8, GetColor(30, 30, 30), TRUE);
+				DrawRoundRect(itemX, itemY, itemX + listIconSize, itemY + listIconSize, 8, 8, GetColor(120, 120, 120), FALSE);
+				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+				SetFontSize(24);
+				DrawString(itemX + 24, itemY + 18, "?", GetColor(180, 180, 180));
+			}
+		}
+
+
 
 		int uiX = SCREEN_WIDTH - 300;
 		int uiY = SCREEN_HEIGHT - 300;
@@ -634,6 +740,10 @@ void GameScene::Draw(void)
 		{
 			breadImg = LoadGraph("image/croissant.png");
 		}
+		else if (currentTypeIdx == 3) // DONUT
+		{
+			breadImg = LoadGraph("image/donut.png");
+		}
 
 		int roundRadius = 12;
 
@@ -643,6 +753,8 @@ void GameScene::Draw(void)
 		{
 			DrawExtendGraph(uiX, uiY, uiX + iconSize, uiY + iconSize, breadImg, TRUE);
 		}
+
+
 
 		if (currentTimer > 0 && maxCoolTime > 0)
 		{
@@ -659,6 +771,25 @@ void GameScene::Draw(void)
 		}
 
 		DrawRoundRect(uiX, uiY, uiX + iconSize, uiY + iconSize, roundRadius, roundRadius, GetColor(255, 255, 255), FALSE);
+
+
+
+		int btnSize = 64;
+
+		// Cキー（切り替え）の描画
+		DrawExtendGraph(uiX - 208, uiY + 112, uiX -208 + btnSize, uiY + 112 + btnSize, buttunImageV, TRUE);
+
+		// Vキー（攻撃/投げる）の描画
+		DrawExtendGraph(uiX - 208, uiY + 192, uiX - 208 + btnSize, uiY + 192 + btnSize, buttunImageC, TRUE);
+	
+		DrawExtendGraph(uiX - 272, uiY + 112, uiX - 272 + btnSize, uiY + 112 + btnSize, LTImage, TRUE);
+
+		DrawExtendGraph(uiX - 272, uiY + 192, uiX - 272 + btnSize, uiY + 192 + btnSize, RTImage, TRUE);
+
+		DrawExtendGraph(uiX - 112, uiY + 112, uiX - 112 + btnSize, uiY + 112 + btnSize, attackUIImage, TRUE);
+
+		DrawExtendGraph(uiX - 112, uiY + 192, uiX - 112 + btnSize, uiY + 192 + btnSize, changeUIImage, TRUE);
+
 	}
 
 }

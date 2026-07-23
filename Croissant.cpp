@@ -141,6 +141,6 @@ void Croissant::Draw(float camX, float camY)
 	{
 		// 回転描画：timerを使って毎フレーム回転角を増やす
 		double angle = (timer * 15.0) * DX_PI / 180.0;
-		DrawRotaGraph(drawX, drawY, 2, angle, imageHandle, TRUE);
+		DrawRotaGraph(drawX, drawY, 2.25, angle, imageHandle, TRUE);
 	}
 }

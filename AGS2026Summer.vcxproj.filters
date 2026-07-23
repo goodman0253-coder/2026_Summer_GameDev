@@ -117,6 +117,12 @@
     <ClCompile Include="CroissantRecipe.cpp">
       <Filter>GameObject\Recipe\Croissant</Filter>
     </ClCompile>
+    <ClCompile Include="Donut.cpp">
+      <Filter>GameObject\Bread\Donut</Filter>
+    </ClCompile>
+    <ClCompile Include="DonutRecipe.cpp">
+      <Filter>GameObject\Recipe\Donut</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -237,6 +243,12 @@
     <ClInclude Include="CroissantRecipe.h">
       <Filter>GameObject\Recipe\Croissant</Filter>
     </ClInclude>
+    <ClInclude Include="Donut.h">
+      <Filter>GameObject\Bread\Donut</Filter>
+    </ClInclude>
+    <ClInclude Include="DonutRecipe.h">
+      <Filter>GameObject\Recipe\Donut</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Application">
@@ -292,6 +304,12 @@
     </Filter>
     <Filter Include="GameObject\Recipe\Croissant">
       <UniqueIdentifier>{2132c942-4fdb-442d-b547-0e2fe417ae43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Bread\Donut">
+      <UniqueIdentifier>{9fd12935-89b4-42c2-b976-fe18f31f24f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Recipe\Donut">
+      <UniqueIdentifier>{0120d84a-923b-41b9-9ddc-45fbab2467b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

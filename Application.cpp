@@ -139,7 +139,7 @@ void Application::Draw(void)
 void Application::IdentityInit()
 {
 	auto& sm = SoundManager::GetInstance();
-	sm.LoadBGM("gameScene", "sound/searchlight.wav");
+	sm.LoadBGM("gameScene", "sound/natsuyasumi.wav");
 
 	sm.LoadSE("jump", "sound/Jump.mp3");
 	sm.LoadSE("throw", "sound/Throw.mp3");

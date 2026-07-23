@@ -33,6 +33,13 @@ private:
 	const int SCREEN_WIDTH = 1920;
 	const int SCREEN_HEIGHT = 1080;
 
+	int buttunImageC = -1;
+	int buttunImageV = -1;
+	int RTImage = -1;
+	int LTImage = -1;
+	int attackUIImage = -1;
+	int changeUIImage = -1;
+
 	// 仮のクリア条件とタイマー
 	bool isClearTriggered = false; // クリア条件が満たされたかどうか
 	int clearTimer = 0;            // クリア条件が満たされてからの経過フレーム数

@@ -15,10 +15,9 @@ BreadBase::BreadBase(float startX, float startY, AsoUtility::DIR direction)
     height = 16;
 
 
-    lifeTimer = 150;                  
+    lifeTimer = 120;                  
+    baseSpeed = 8.0f;
 
-    // 基本スピード
-    float baseSpeed = 8.0f;
 
     if (dir == AsoUtility::DIR::RIGHT)
     {

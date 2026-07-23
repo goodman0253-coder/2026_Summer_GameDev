@@ -149,6 +149,8 @@
     <ClCompile Include="BreadBase.cpp" />
     <ClCompile Include="Croissant.cpp" />
     <ClCompile Include="CroissantRecipe.cpp" />
+    <ClCompile Include="Donut.cpp" />
+    <ClCompile Include="DonutRecipe.cpp" />
     <ClCompile Include="Enemy1.cpp" />
     <ClCompile Include="Enemy2.cpp" />
     <ClCompile Include="Enemy3.cpp" />
@@ -199,6 +201,8 @@
     <ClInclude Include="BreadBase.h" />
     <ClInclude Include="Croissant.h" />
     <ClInclude Include="CroissantRecipe.h" />
+    <ClInclude Include="Donut.h" />
+    <ClInclude Include="DonutRecipe.h" />
     <ClInclude Include="Enemy1.h" />
     <ClInclude Include="Enemy2.h" />
     <ClInclude Include="Enemy3.h" />

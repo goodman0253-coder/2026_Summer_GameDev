@@ -5,7 +5,10 @@
 class BreadBase
 {
 protected:
-    
+
+    // 基本スピード
+    float baseSpeed ;
+
     float speedX;     // 移動速度
     bool isAlive;     // 生存フラグ（falseになったら消滅）
     int imageHandle;  // 画像用ハンドル
