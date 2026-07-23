@@ -99,7 +99,14 @@ void EnemyBase::Update(void) // 更新処理
 
 	if (aliveFlg == false)
 	{
-		dir = 1;
+		if (dir == 0)
+		{
+			dir = 1;
+		}
+		else
+		{
+			dir = 3;
+		}
 	}
 
 	// アニメーションカウンタの進行

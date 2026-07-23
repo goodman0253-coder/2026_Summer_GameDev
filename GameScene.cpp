@@ -259,13 +259,7 @@ void GameScene::CollisionCheckEB()
 							  enemys[i]->SetDamage(3);  
 								if (enemys[i]->GetAlive() == false && enemys[i]->EoB > 5)
 								{
-									// �{�X���j�㏭���҂�
-									for (int CLEARTIMER = 0; CLEARTIMER < 120; CLEARTIMER++)
-									{
-										if (CLEARTIMER > 90) {
-											isClearTriggered = true;
-										}
-									}
+									isClearTriggered = true;
 						  		}
 						  	// �������p���������ꍇ�͔j�􂳂���i�����ŏ����ȃp������������A���g�͎��S����j
 						  	melon->Explode();
@@ -290,7 +284,7 @@ void GameScene::CollisionCheckEB()
 						  {
 							  SoundManager::GetInstance().PlaySE("damage");
 
-							  // ドーナツの現在のサイズに応じたダメージを与える
+							  // ド�Eナツの現在のサイズに応じたダメージを与えめE
 							  enemys[i]->SetDamage(donut->GetCurrentDamage());
 
 							  if (enemys[i]->GetAlive() == false && enemys[i]->EoB > 5)
@@ -298,7 +292,7 @@ void GameScene::CollisionCheckEB()
 								  isClearTriggered = true;
 							  }
 
-							  // ドーナツ消滅（貫通させたい場合は Kill() を呼ばない選択もアリ）
+							  // ド�Eナツ消滁E��貫通させたぁE��合�E Kill() を呼ばなぁE��択もアリ�E�E
 							  donut->Kill();
 						  }
 						  else
@@ -307,13 +301,7 @@ void GameScene::CollisionCheckEB()
 							  enemys[i]->SetDamage(1); 
 							  if (enemys[i]->GetAlive() == false && enemys[i]->EoB > 5)
 							  {
-								  // �{�X���j�㏭���҂�
-								  for (int CLEARTIMER = 0; CLEARTIMER < 120; CLEARTIMER++)
-								  {
-									  if (CLEARTIMER > 90) {
-										  isClearTriggered = true;
-									  }
-								  }
+								  isClearTriggered = true;
 							  }
 						  	// �ʏ�̃p���������ꍇ�͂��̂܂܏���
 						  	bread->Kill();
@@ -514,11 +502,15 @@ void GameScene::Update(void)
 		
 	if (isClearTriggered)
 	{
+		clearTimer++;
 	
-		if(sceneManager != nullptr)
+		if (clearTimer >= 180)
 		{
-			sceneManager->ChangeScene(SCENE_GAMECLEAR);
-			return;
+			if (sceneManager != nullptr)
+			{
+				sceneManager->ChangeScene(SCENE_GAMECLEAR);
+				return;
+			}
 		}
 	
 	}
@@ -667,21 +659,21 @@ void GameScene::Draw(void)
 		int maxCoolTime = player->GetMaxCoolTime(currentTypeIdx); 
 
 		// =========================================================
-		// 追加: 画面下に解放済みのパン一覧を表示（横並び）
+		// 追加: 画面下に解放済みのパン一覧を表示�E�横並び�E�E
 		// =========================================================
 		int listStartX = 420;                // HPゲージの右側に配置
-		int listStartY = SCREEN_HEIGHT - 90; // 画面下の高さ
-		int listIconSize = 64;               // 各パンのアイコンサイズ
+		int listStartY = SCREEN_HEIGHT - 90; // 画面下�E高さ
+		int listIconSize = 64;               // 吁E��ンのアイコンサイズ
 		int spacing = 16;                    // アイコン同士の間隔
 
 		int maxTypes = static_cast<int>(Player::BREAD_TYPE::MAX);
 
 		for (int i = 0; i < maxTypes; i++)
 		{
-			// パンが解放されているかチェック
+			// パンが解放されてぁE��かチェチE��
 			bool isUnlocked = player->IsBreadUnlocked(i);
 
-			// 各パンの画像ハンドルを選択
+			// 吁E��ンの画像ハンドルを選抁E
 			int iconHandle = -1;
 			if (i == 0)      iconHandle = LoadGraph("image/bread.png");
 			else if (i == 1) iconHandle = LoadGraph("image/melonpan.png");
@@ -693,7 +685,7 @@ void GameScene::Draw(void)
 
 			if (isUnlocked)
 			{
-				// 現在選択中のパンなら枠を黄色（ハイライト）、それ以外は白で表示[cite: 19]
+				// 現在選択中のパンなら枠を黁E���E�ハイライト）、それ以外�E白で表示[cite: 19]
 				unsigned int borderColor = (i == currentTypeIdx) ? GetColor(255, 255, 0) : GetColor(255, 255, 255);
 
 				// 黒背景枠
@@ -705,7 +697,7 @@ void GameScene::Draw(void)
 					DrawExtendGraph(itemX, itemY, itemX + listIconSize, itemY + listIconSize, iconHandle, TRUE);
 				}
 
-				// 各パンの個別クールタイム影表示
+				// 吁E��ンの個別クールタイム影表示
 				int cdTimer = player->GetShotBreadTimer(i);
 				int maxCD = player->GetMaxCoolTime(i);
 				if (cdTimer > 0 && maxCD > 0)
@@ -723,7 +715,7 @@ void GameScene::Draw(void)
 			}
 			else
 			{
-				// 未解放のパンは鍵マーク風（薄い暗色＋「?」マーク）で表現
+				// 未解放のパンは鍵マ�Eク風�E�薄ぁE��色�E�、E」�Eーク�E�で表現
 				SetDrawBlendMode(DX_BLENDMODE_ALPHA, 120);
 				DrawRoundRect(itemX, itemY, itemX + listIconSize, itemY + listIconSize, 8, 8, GetColor(30, 30, 30), TRUE);
 				DrawRoundRect(itemX, itemY, itemX + listIconSize, itemY + listIconSize, 8, 8, GetColor(120, 120, 120), FALSE);
@@ -789,10 +781,10 @@ void GameScene::Draw(void)
 
 		int btnSize = 64;
 
-		// Cキー（切り替え）の描画
+		// Cキー�E��Eり替え）�E描画
 		DrawExtendGraph(uiX - 208, uiY + 112, uiX -208 + btnSize, uiY + 112 + btnSize, buttunImageV, TRUE);
 
-		// Vキー（攻撃/投げる）の描画
+		// Vキー�E�攻撁E投げる）�E描画
 		DrawExtendGraph(uiX - 208, uiY + 192, uiX - 208 + btnSize, uiY + 192 + btnSize, buttunImageC, TRUE);
 	
 		DrawExtendGraph(uiX - 272, uiY + 112, uiX - 272 + btnSize, uiY + 112 + btnSize, LTImage, TRUE);
@@ -803,6 +795,18 @@ void GameScene::Draw(void)
 
 		DrawExtendGraph(uiX - 112, uiY + 192, uiX - 112 + btnSize, uiY + 192 + btnSize, changeUIImage, TRUE);
 
+	}
+
+	if (isClearTriggered)
+	{
+		// clearTimer(0?180)�ɉ����āA�A���t�@�l(0?255)���v�Z����
+		int alpha = (int)(255.0f * ((float)clearTimer / 180.0f));
+		if (alpha > 255) alpha = 255;
+
+		// ��ʂ𔒂œh��Ԃ��i�A���t�@�l�ŏ��X�ɔZ������j
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+		DrawBox(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, GetColor(255, 255, 255), TRUE);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0); // �u�����h���[�h�����ɖ߂�
 	}
 
 }

@@ -6,6 +6,7 @@
 void Enemy7::GameInit(void)
 {
 	EnemyBase::GameInit(Vector2F(3400.0f, 1225.0f));
+	dir = 0;
 }
 
 void Enemy7::SetEnemyParam(void)
