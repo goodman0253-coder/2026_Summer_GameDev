@@ -10,6 +10,7 @@ protected:
     int imageHandle;            // 画像ハンドル
     bool isAlive;               // 生存フラグ（拾われたら false になる）
     Player::BREAD_TYPE unlockType; // 拾ったときに解放するパンの種類
+    int bordImg = -1;
 
 public:
     RecipeBase(float startX, float startY, Player::BREAD_TYPE type)
@@ -21,6 +22,8 @@ public:
         imageHandle = -1;
         isAlive = true;
         unlockType = type;
+
+		bordImg = LoadGraph("image/Recipe_bord.png");
     }
 
     virtual ~RecipeBase() {}
@@ -40,7 +43,9 @@ public:
         int drawX2 = drawX1 + width;
         int drawY2 = drawY1 + height;
 
+        DrawExtendGraph(drawX1 , drawY1 - 4, drawX2 , drawY2 + 4, bordImg, TRUE);
         DrawExtendGraph(drawX1, drawY1, drawX2, drawY2, imageHandle, TRUE);
+
     }
 
     // ゲッター関数群

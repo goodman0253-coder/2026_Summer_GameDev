@@ -40,6 +40,13 @@ public:
     // 無敵中かどうかを判定する関数（タイマーが0より大きければ無敵）
     bool IsInvincible() const { return invincibleTimer > 0; }
 
+    // 指定した種類のパンが解放されているか返す
+    bool IsBreadUnlocked(int breadTypeIdx) const
+    {
+        if (breadTypeIdx < 0 || breadTypeIdx >= static_cast<int>(BREAD_TYPE::MAX)) return false;
+        return isBreadUnlocked[breadTypeIdx];
+    }
+
     // ダメージを受ける関数
     void ApplyDamage();
 
@@ -61,6 +68,7 @@ public:
         NORMAL,   // 通常のパン
         MELONPAN,    // メロンパン
 		CROISSANT,  // クロワッサン
+		DONUT,      // ドーナツ
         MAX       // 種類の最大数（切り替えループ用）
     };
 
@@ -122,7 +130,8 @@ private:
     {
         45,  // NORMAL のクールタイム
         120, //Melonoanのクールタイム
-		90   // Croissant のクールタイム
+		60,   // Croissant のクールタイム
+		105  // Donut のクールタイム
     };
     int breadIdx; 
 

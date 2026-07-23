@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "BreadBase.h"
 
 class Player;
@@ -8,11 +8,11 @@ class Croissant : public BreadBase
 private:
 	enum class State
 	{
-		FORWARD, // ‰˜H
-		FORWARD_UP, // ‰˜Hã¸
-		UP, // ‰˜H
-		BACK_UP, // •œ˜Hã¸
-		RETURN   // •œ˜H
+		FORWARD, // å¾€è·¯
+		FORWARD_UP, // å¾€è·¯ä¸Šæ˜‡
+		UP, // å¾€è·¯
+		BACK_UP, // å¾©è·¯ä¸Šæ˜‡
+		RETURN   // å¾©è·¯
 	};
 
 
@@ -24,13 +24,13 @@ private:
 
 	float startX = 0.0f;
 	float startY = 0.0f;
-	float theta = 0.0f;       // ‹O“¹ŒvZ—p‚ÌŠp“xiƒ‰ƒWƒAƒ“j
-	float maxRangeX = 300.0f; // ‰¡‚É‚Ç‚ê‚­‚ç‚¢”ò‚Ô‚©iƒJ[ƒu‚Ì‰¡•j
-	float maxRangeY = 300.0f; // c‚É‚Ç‚ê‚­‚ç‚¢–c‚ç‚Ş‚©iƒJ[ƒu‚Ìc•j
-	int directionSign = 1;    // “Š‚°‚é•ûŒüi‰E: 1, ¶: -1j
+	float theta = 0.0f;       // è»Œé“è¨ˆç®—ç”¨ã®è§’åº¦ï¼ˆãƒ©ã‚¸ã‚¢ãƒ³ï¼‰
+	float maxRangeX = 300.0f; // æ¨ªã«ã©ã‚Œãã‚‰ã„é£›ã¶ã‹ï¼ˆã‚«ãƒ¼ãƒ–ã®æ¨ªå¹…ï¼‰
+	float maxRangeY = 300.0f; // ç¸¦ã«ã©ã‚Œãã‚‰ã„è†¨ã‚‰ã‚€ã‹ï¼ˆã‚«ãƒ¼ãƒ–ã®ç¸¦å¹…ï¼‰
+	int directionSign = 1;    // æŠ•ã’ã‚‹æ–¹å‘ï¼ˆå³: 1, å·¦: -1ï¼‰
 
 public:
-	// ?? ˆø”‚Ìdir‚ğ AsoUtility::DIR ‚É“ˆê
+	// å¼•æ•°ã®dirã‚’ AsoUtility::DIR ã«çµ±ä¸€
 	Croissant(float spawnX, float spawnY, AsoUtility::DIR direction, Player* player);
 	virtual ~Croissant() = default;
 

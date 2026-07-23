@@ -16,6 +16,20 @@ Melonpan::Melonpan(float startX, float startY, AsoUtility::DIR direction, GameSc
     imageHandle = LoadGraph("image/melonpan.png");
 
     lifeTimer = 90;
+	baseSpeed = 4.0f; // メロンパンは少し遅めに設定
+
+    if (dir == AsoUtility::DIR::RIGHT)
+    {
+        speedX = baseSpeed; // 4.0f
+    }
+    else if (dir == AsoUtility::DIR::LEFT)
+    {
+        speedX = -baseSpeed; // -4.0f
+    }
+    else
+    {
+        speedX = baseSpeed;
+    }
 }
 
 void Melonpan::Update()
