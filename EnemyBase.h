@@ -79,9 +79,12 @@ protected:
 	int hpMax; // ヒットポイント最大値
 	bool aliveFlg; // 生存フラグ
 	int invincibleTimer; // 無敵時間タイマー（フレーム単位）
+	int deathSeHandle = -1; // 効果音ハンドル番号
 
 	// 敵の画像ファイル名
 	std::string imgFName;
+	std::string BossSEName;
+	int BossActionSE = -1;
 	bool hasAppearedOnScreen; // 敵が画面内に出現したかどうかのフラグ(ボスの体力ゲージ表示用)
 	// 敵の移動速度
 	float speed;

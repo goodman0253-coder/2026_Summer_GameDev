@@ -21,6 +21,7 @@ private:
 	int JumpPow = 20;
 	int nowJumpPow = 0;
 	int widJumpPow = 0;
+	int SECN = 0;
 	Player* player = nullptr;
 };
 

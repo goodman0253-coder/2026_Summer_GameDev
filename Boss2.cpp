@@ -9,7 +9,6 @@
 
 void Boss2::GameInit(void)
 {
-	EnemyBase::GameInit(Vector2F(6200.0f, 1225.0f));
 	BakHP = hpMax; // 初期HPを保存
 }
 
@@ -25,6 +24,8 @@ void Boss2::SetEnemyParam(void)
 	hpMax = 20;
 	// ボスとして設定
 	eob = 10;
+	// 固有音声を設定
+	BossSEName = "Sound/Boss2.wav";
 }
 
 void Boss2::Update(void)
@@ -62,6 +63,7 @@ void Boss2::Update(void)
 				Vector2F bulletVel;
 				bulletVel.x = cos(angle) * 2.0f; // 弾の速度を設定
 				bulletVel.y = sin(angle) * 2.0f;
+				PlaySoundMem(BossActionSE, DX_PLAYTYPE_BACK);
 				EnemyBulletBase* newBullet = new BulletST1B(); // 弾のインスタンスを作成(書類を飛ばすためステージ1のエネミーBの弾を流用)
 				Vector2F spownPos = this->pos; // 弾のスポーン位置を敵の位置に設定
 				gInst->AddEnemyBullet(newBullet, spownPos, bulletVel); // 弾をゲームシーンに追加

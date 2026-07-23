@@ -8,8 +8,6 @@
 
 void Boss1::GameInit(void)
 {
-
-	EnemyBase::GameInit(Vector2F(6200.0f, 800.0f));
 }
 
 void Boss1::SetEnemyParam(void)
@@ -24,6 +22,8 @@ void Boss1::SetEnemyParam(void)
 	hpMax = 15;
 	// ボスとして設定
 	eob = 10;
+	// 固有音声を設定
+	BossSEName = "Sound/Boss1.wav";
 }
 
 bool Boss1::CheckGrounded(float checkX, float checkY)
@@ -107,6 +107,11 @@ void Boss1::Update(void)
 		pos.y = (tileY * 32.0f) - halfH;
 
 		// 着地完了処理
+		if (SECN == 1)
+		{
+			SECN = 0;
+			PlaySoundMem(BossActionSE, DX_PLAYTYPE_BACK);
+		}
 		jumpVy = 0.0f;
 		jumpVx = 0.0f;
 		isJumping = false;
@@ -124,6 +129,7 @@ void Boss1::Update(void)
 		if (JumpTimer >= 180)
 		{
 			isJumping = true;
+			SECN = 1;
 			JumpTimer = 0;
 
 			jumpVy = -15.0f;
@@ -168,6 +174,8 @@ void Boss1::Update(void)
 	}
 #endif
 }
+
+
 
 
     

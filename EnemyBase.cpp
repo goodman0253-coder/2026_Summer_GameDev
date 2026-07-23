@@ -19,8 +19,6 @@ EnemyBase::~EnemyBase(void)
 
 bool EnemyBase::SystemInit(GameScene* gs) // 初期化処理(最初の１回のみ実行)
 {
-	printfDx("一回目EnemyBaseSystemInit(): imgFName=%s size=%d,%d\n", imgFName.c_str(), size.x, size.y);
-
 	gInst = gs;
 
 	// 敵キャラ個別のパラメータ設定処理
@@ -37,6 +35,28 @@ bool EnemyBase::SystemInit(GameScene* gs) // 初期化処理(最初の１回のみ実行)
 	if (err == -1)return false;
 
 	dir = 0;
+
+	if (deathSeHandle == -1)
+	{
+		if (eob > 0)
+		{
+			// ボス用の効果音（eobが0より大きい場合）
+			deathSeHandle = LoadSoundMem("Sound/BossStar.wav");
+		}
+		else
+		{
+			// 雑魚敵用の効果音（eobが0の場合）
+			deathSeHandle = LoadSoundMem("Sound/NormalStar.wav");
+		}
+	}
+
+	if (BossActionSE == -1)
+	{
+		if (!BossSEName.empty()) // ファイル名が設定されている場合のみ
+		{
+			BossActionSE = LoadSoundMem(BossSEName.c_str());
+		}
+	}
 
 	return true;
 }
@@ -103,7 +123,7 @@ void EnemyBase::Update(void) // 更新処理
 		{
 			dir = 1;
 		}
-		else
+		else if(dir == 2)
 		{
 			dir = 3;
 		}
@@ -250,6 +270,18 @@ bool EnemyBase::Release(void) // 解放処理(最後の１回のみ実行)
 			if (DeleteGraph(img[dir][anim]) == -1)bval = false;
 		}
 	}
+
+	// 音声の解放
+	if (deathSeHandle != -1)
+	{
+		DeleteSoundMem(deathSeHandle);
+		deathSeHandle = -1;
+	}
+	if (BossActionSE != -1)
+	{
+		DeleteSoundMem(BossActionSE);
+		BossActionSE = -1;
+	}
 	return bval;
 }
 
@@ -273,6 +305,11 @@ void EnemyBase::SetDamage(int dp)
 		return; // 無敵中はダメージを受けない
 	}
 
+	if (!aliveFlg)// 音が鳴り続けないようにするガード
+	{
+		return;
+	}
+
 	hp -= dp;
 	if (hp <= 0) {
 		hp = 0;
@@ -284,6 +321,10 @@ void EnemyBase::SetDamage(int dp)
 			}
 		}
 		
+		if (deathSeHandle != -1)
+		{
+			PlaySoundMem(deathSeHandle, DX_PLAYTYPE_BACK);
+		}
 
 		aliveFlg = false;
 	}
