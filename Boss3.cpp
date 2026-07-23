@@ -39,15 +39,14 @@ void Boss3::Update(void)
 	speed = 10.5 - BakHP; // HPが減るごとに加速
 	int PH = (player != nullptr) ? player->GetHig() : 0;
 	int PW = (player != nullptr) ? player->GetWid() : 0;
-	// プレイヤーの方向を向くように設定
+	// プレイヤーの位置を取得
+
 	int PX = (player != nullptr) ? player->GetPosX() : 0;
 	int PY = (player != nullptr) ? player->GetPosY() : 0;
 
 	PX += PW / 2; // プレイヤーの中心座標を取得
 	PY += PH / 2; // プレイヤーの中心座標を取得
 
-	Vector2F playerDir = Vector2F(PX - pos.x, 0.0f);
-	this->setMoveDirection(playerDir);
 
 	if (player == nullptr) { player = gInst->GetLpPlayer(); }
 
@@ -58,9 +57,11 @@ void Boss3::Update(void)
 	}
 	else if (PX < pos.x) {
 		pos.x -= speed;
+		dir = 0; // 左向き
 	}
 	else {
 		pos.x += speed;
+		dir = 2; // 右向き
 	}
 
 	if (PY - pos.y > -10 && PY - pos.y < 10)

@@ -6,6 +6,7 @@
 #include "Application.h"
 
 class GameScene;
+class Star;
 
 class EnemyBase
 {
@@ -23,6 +24,7 @@ public:
 	int EoB; // 通常敵かボスか
 	int animNo; // 現在表示しているアニメーション番号
 	int hp; // ヒットポイント
+	static constexpr int MAX_STARS = 8;
 
 	EnemyBase();
 	~EnemyBase(void);
@@ -62,9 +64,12 @@ public:
 	Vector2 size;
 protected:
 	GameScene* gInst; // ゲームシーンのインスタンスのポインタ
+	Star* stars[MAX_STARS]; // 星のインスタンスのポインタ
+
 
 	// 敵画像のハンドル番号テーブル
 	int img[static_cast<int>(AsoUtility::DIR::MAX)][ANIM_NUMS];
+
 
 	Vector2F pos; // 敵表示座標
 	int dir; // 敵が向いている方向

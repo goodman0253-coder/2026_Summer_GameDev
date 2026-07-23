@@ -64,8 +64,12 @@ void Boss1::Update(void)
 
 	// プレイヤーの方向を向くように設定
 	int PX = (player != nullptr) ? player->GetPosX() : 0;
-	Vector2F playerDir = Vector2F(PX - pos.x, 0.0f);
-	this->setMoveDirection(playerDir);
+	if (PX < pos.x) {
+		dir = 0; // 左向き
+	}
+	else {
+		dir = 2; // 右向き
+	}
 
 
 

@@ -117,6 +117,7 @@
     <ClCompile Include="CroissantRecipe.cpp">
       <Filter>GameObject\Recipe\Croissant</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyDeathStar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -237,6 +238,7 @@
     <ClInclude Include="CroissantRecipe.h">
       <Filter>GameObject\Recipe\Croissant</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyDeathStar.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Application">

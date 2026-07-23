@@ -1,12 +1,15 @@
 #include "EnemyBase.h"
 #include "Player.h"
 #include "Stage.h"
+#include "EnemyDeathStar.h"
 #include <DxLib.h>
 #include "GameScene.h"
 
 EnemyBase::EnemyBase()
 {
-
+	for (int i = 0; i < MAX_STARS; i++) {
+		stars[i] = nullptr;
+	}
 }
 
 EnemyBase::~EnemyBase(void)
@@ -19,18 +22,22 @@ bool EnemyBase::SystemInit(GameScene* gs) // 初期化処理(最初の１回のみ実行)
 	printfDx("一回目EnemyBaseSystemInit(): imgFName=%s size=%d,%d\n", imgFName.c_str(), size.x, size.y);
 
 	gInst = gs;
+
 	// 敵キャラ個別のパラメータ設定処理
 	SetEnemyParam();
+
 	std::string path = "image/";
+
 	path += imgFName;
-	printfDx("二回目EnemyBaseSystemInit(): imgFName=%s size=%d,%d\n", imgFName.c_str(), size.x, size.y);
+
 	int err = LoadDivGraph(path.c_str(), CHARA_MAX,
 		static_cast<int>(AsoUtility::DIR::MAX), ANIM_NUMS,
 		size.x, size.y, img[0]);
 
-	printfDx("三回目EnemyBaseSystemInit(): LoadDivGraph result=%d path=%s\n", err, path.c_str());
 	if (err == -1)return false;
+
 	dir = 0;
+
 	return true;
 }
 
@@ -57,10 +64,9 @@ void EnemyBase::Update(void) // 更新処理
 	if (hp <= 0)
 	{
 		aliveFlg = false;
-		return; // これ以上何もしない
 	}
 
-	
+
 	// カメラ座標の取得
 	float camX = gInst->GetCameraX();
 	float camY = gInst->GetCameraY();
@@ -79,12 +85,8 @@ void EnemyBase::Update(void) // 更新処理
 			if (hp > 0)
 			{
 				aliveFlg = true;
+				dir = 0;
 			}
-		}
-
-		if (aliveFlg == false)
-		{
-			return;
 		}
 	}
 	else
@@ -97,7 +99,7 @@ void EnemyBase::Update(void) // 更新処理
 
 	if (aliveFlg == false)
 	{
-		return;
+		dir = 1;
 	}
 
 	// アニメーションカウンタの進行
@@ -109,13 +111,16 @@ void EnemyBase::Update(void) // 更新処理
 	{
 		invincibleTimer--; // 1フレームごとに1減らす（60フレーム = 1秒）
 	}
-	;
+
+	for (int i = 0; i < MAX_STARS; i++) {
+		if (stars[i] != nullptr) {
+			stars[i]->Update();
+		}
+	}
 }
 
 void EnemyBase::Draw(void) // 描画処理
 {
-	// 死んでいるときは消して描画しない
-	if (!aliveFlg)return;
 
 	bool skipSprite = false;
 	if (IsInvincible())
@@ -212,10 +217,25 @@ void EnemyBase::Draw(void) // 描画処理
 		 }
 	 }
 
+	 // 星が存在していれば描画処理を呼ぶ
+	 for (int i = 0; i < MAX_STARS; i++) {
+		 if (stars[i] != nullptr) {
+			 stars[i]->Draw();
+		 }
+	 }
 }
 
 bool EnemyBase::Release(void) // 解放処理(最後の１回のみ実行)
 {
+	// 星の開放
+	for (int i = 0; i < MAX_STARS; i++) {
+		if (stars[i] != nullptr) {
+			stars[i]->Release();
+			delete stars[i];
+			stars[i] = nullptr;
+		}
+	}
+
 	// 敵画像の解放
 	bool bval = true;
 	for (int dir = static_cast<int>(AsoUtility::DIR::MAX) - 1; dir >= 0; dir--) {
@@ -249,6 +269,15 @@ void EnemyBase::SetDamage(int dp)
 	hp -= dp;
 	if (hp <= 0) {
 		hp = 0;
+		for (int i = 0; i < MAX_STARS; i++) {
+			if (stars[i] == nullptr) {
+				stars[i] = new Star();
+				stars[i]->SystemInit(gInst);
+				stars[i]->SetPos(pos);
+			}
+		}
+		
+
 		aliveFlg = false;
 	}
 
