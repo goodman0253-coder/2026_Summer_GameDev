@@ -13,7 +13,7 @@ public:
 private:
 	int BakHP = 20; // ‘O‰ñ‚ÌHP‚ğ•Û‘¶‚·‚é•Ï”
 	Player* player = nullptr;
-
+	int BossSE = -1;
 
 	// UŒ‚‚ğó‚¯‚é‚Æ’e‚ğ•úË‚·‚é
 };

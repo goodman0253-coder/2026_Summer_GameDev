@@ -7,7 +7,6 @@
 
 void Boss3::GameInit(void)
 {
-	EnemyBase::GameInit(Vector2F(6200.0f, 1225.0f));
 	BakHP = hpMax; // 初期HPを保存
 }
 
@@ -23,6 +22,8 @@ void Boss3::SetEnemyParam(void)
 	hpMax = 10;
 	// ボスとして設定
 	eob = 10;
+	// 固有音声を設定
+	BossSEName = "Sound/Boss3.wav";
 }
 
 void Boss3::Update(void)
@@ -79,6 +80,7 @@ void Boss3::Update(void)
 	{
 
 		worp = rand() % 2; // 0か1をランダムに生成
+		PlaySoundMem(BossActionSE, DX_PLAYTYPE_BACK);
 		if (worp == 0)
 		{
 			pos.x = PX + 300 + (50 * speed);
