@@ -22,7 +22,7 @@ Application::~Application()
 bool Application::SystemInit(void)
 {
 	// システム処理
-	SetWindowText("でりばりぃべぇかりぃ");
+	SetWindowText("デリバリーベーカリー");
 	SetGraphMode(SCREEN_SIZE_WID, SCREEN_SIZE_HIG,32);
 	SetWaitVSyncFlag(TRUE);
 	if (DxLib_Init() == -1) return false;
@@ -139,7 +139,9 @@ void Application::Draw(void)
 void Application::IdentityInit()
 {
 	auto& sm = SoundManager::GetInstance();
-	sm.LoadBGM("gameScene", "sound/natsuyasumi.wav");
+	sm.LoadBGM("gameScene", "sound/AllBGM.wav");
+
+	sm.PlayBGM("gameScene");
 
 	sm.LoadSE("jump", "sound/Jump.wav");
 	sm.LoadSE("throw", "sound/Throw.wav");
