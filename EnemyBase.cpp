@@ -215,28 +215,34 @@ void EnemyBase::Draw(void) // 描画処理
 		 {
 			 int currentHp = hp;
 			 int maxHp = hpMax;
+
+			 // 満腹度（これまでに与えたダメージの合計）を計算
+			 int fullness = maxHp - currentHp;
+
 			 int gaugeWidth = 300;
 			 int gaugeHeight = 24;
 
 			 int gaugeX = 1280 - gaugeWidth - 50;
 			 int gaugeY = 50;
 
-
 			 // HPゲージの背景を描画
 			 DrawBox(gaugeX - 10, gaugeY - 35, gaugeX + gaugeWidth + 10, gaugeY + gaugeHeight + 10, GetColor(0, 0, 0), TRUE);
+
+			 // テキストの描画（表示を計算した満腹度の数値に変更）
+			 DrawFormatString(gaugeX, gaugeY - 25, GetColor(255, 255, 255), "Boss 満腹度  %d / %d", fullness, maxHp);
+
 			 // HPゲージの枠を描画
 			 DrawBox(gaugeX, gaugeY, gaugeX + gaugeWidth, gaugeY + gaugeHeight, GetColor(255, 255, 255), FALSE);
 
-			 DrawFormatString(gaugeX, gaugeY - 25, GetColor(255, 255, 255), "Boss HP  %d / %d", currentHp, maxHp);
-
-			 // 現在のHPに応じたゲージの幅を計算
-			 int currentBarWidth = (int)((float)currentHp / (float)maxHp * gaugeWidth);
+			 // 現在の「満腹度」に応じたゲージの幅を計算
+			 int currentBarWidth = (int)((float)fullness / (float)maxHp * gaugeWidth);
 			 if (currentBarWidth < 0) currentBarWidth = 0;
+			 if (currentBarWidth > gaugeWidth) currentBarWidth = gaugeWidth; // ゲージが枠をはみ出さないための安全策
 
-			 // HPゲージの色を決定
+			 // ゲージの色を決定（満腹度が75%を超えたら赤くする警告色）
 			 unsigned int barColor = (currentHp <= maxHp / 4) ? GetColor(255, 0, 0) : GetColor(0, 255, 0);
 
-			 // 現在のHPに応じたゲージを描画
+			 // 現在の満腹度に応じたゲージを描画
 			 if (currentBarWidth > 0)
 			 {
 				 DrawBox(gaugeX + 2, gaugeY + 2, gaugeX + currentBarWidth - 2, gaugeY + gaugeHeight - 2, barColor, TRUE);
